@@ -1,5 +1,6 @@
 #include <fmt/core.h>
 #include <fmt/ranges.h>
+#include <fmt/format.h>
 #include <string>
 #include <iostream>
 
@@ -14,6 +15,8 @@ auto main() -> int {
         fmt::print(">");
         std::getline(std::cin, prompt);
 
-//        fmt::println("{}", interpreter::interpret_prompt(prompt));
+        auto result = lexer::tokenize(prompt);
+
+        fmt::println("{}", result);
     }
 }

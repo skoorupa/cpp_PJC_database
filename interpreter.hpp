@@ -4,29 +4,40 @@
 #include <map>
 #include <set>
 
-namespace interpreter {
+namespace lexer {
     enum class TokenType {
         Function, Method,
         ClosureBegin, ClosureEnd, Separator,
-        Expression
+        Expression,
+
+        BracketRoundBegin,
+        BracketRoundEnd,
+        Number,
+
+        KFGetTable,
+        KMSelect,
+        KMWhere,
+        KUndefined
     };
 
     class Token {
         TokenType type;
-        std::string name;
+        std::string value;
 
         std::map<char, char> closures;
         std::set<char> seperators;
+        std::map<std::string, TokenType> keywords;
 
         public:
 
-        Token(TokenType type, const std::string &name);
+        Token(TokenType type, const std::string &value);
 
         TokenType getType() const;
 
-        const std::string &getName() const;
+        const std::string &getValue() const;
     };
 
-    auto interpret_prompt(std::string input) -> std::vector<Token>;
+    auto tokenize(std::string input) -> std::vector<Token>;
+    auto format_as (Token token) -> std::string;
 }
 

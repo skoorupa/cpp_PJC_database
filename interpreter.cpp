@@ -6,11 +6,34 @@
 #include <stack>
 #include <map>
 #include <set>
+#include <fmt/core.h>
+#include <fmt/format.h>
 
-namespace interpreter {
-    auto interpret_prompt(std::string input) -> std::vector<Token> {
-        auto simple_token_vector = std::vector<Token>();
-        auto token_value = std::string();
+
+namespace lexer {
+    auto tokenize(std::string input) -> std::vector<Token> {
+        fmt::println("starting to tokenize");
+        // HELPFUL VARIABLES
+        auto closures = std::map<char, char>{
+                {'(',')'},
+                {'[',']'},
+                {'{','}'},
+                {'"','"'},
+                {'\'','\''}
+        };
+        auto seperators = std::set<char>{'.',','};
+        auto keywords = std::map<std::string, lexer::TokenType>{
+                {"gettable", TokenType::KFGetTable},
+                {"select", TokenType::KMSelect},
+                {"where", TokenType::KMWhere}
+        };
+        auto skip = std::set<char>{' ','\n','\t'};
+        auto isskip = [skip](char c) {
+            return skip.contains(c);
+        };
+
+        // TOKENIZER
+        auto tokens = std::vector<Token>();
         auto closures_stack = std::stack<char>();
         auto current_tokentype = TokenType::Function;
 
@@ -21,54 +44,82 @@ namespace interpreter {
             return closures_stack.top()=='(';
         };
 
-        for (auto c : input) {
+        auto pop_front_str = [](std::string& input) {
+            input.erase(0,1);
+        };
 
-            // building strings
-            if (is_string() && c != closures_stack.top()) {
-                token_value.push_back(c);
+        while (!input.empty()) {
+            auto c = input.begin();
+            if (*c=='(') {
+                tokens.push_back(Token(TokenType::BracketRoundBegin, "("));
+                pop_front_str(input);
             }
-            // closing strings
-//            else if (
-//                    (c == '"' || c == '\'') &&
-//                    c == closures_stack.top()
-//                    )
-            else if (c == '(' && !is_string() && !is_expression()) {
-                closures_stack.push('(');
-                simple_token_vector.push_back(Token(current_tokentype, token_value));
-                simple_token_vector.push_back(Token(TokenType::ClosureBegin, token_value));
-                current_tokentype = TokenType::Expression;
+            else if (*c==')') {
+                tokens.push_back(Token(TokenType::BracketRoundEnd, ")"));
+                pop_front_str(input);
+            } else {
+                // handle multicharacter tokens
 
-                token_value = std::string();
+                // number token
+                if (isdigit(*c)) {
+                    auto num = std::string();
+                    while (!input.empty() && isdigit(*c)) {
+                        num += *c;
+                        pop_front_str(input);
+                        fmt::println("{}",*c);
+                    }
+
+                    tokens.push_back(Token(TokenType::Number, num));
+                } else if (isalpha(*c)) {
+                    auto txt = std::string();
+                    while (!input.empty() && isalpha(*c)) {
+                        txt += *c;
+                        pop_front_str(input);
+                    }
+
+                    // look for keywords
+                    auto iskeyword = keywords.contains(txt);
+
+                    if (iskeyword) {
+                        tokens.push_back(Token(keywords.at(txt), txt));
+                    } else {
+                        tokens.push_back(Token(TokenType::KUndefined, txt));
+                    }
+                } else if (isskip(*c)) {
+                    pop_front_str(input);
+                } else {
+                    fmt::println("!!! Lexer error: cannot recognize character: {}",*c);
+                }
             }
-
-            token_value.push_back(c);
-
         }
-//        simple_token_vector.push_back(token_value);
 
-        return simple_token_vector;
+        fmt::println("stopped tokenizing");
+        return tokens;
     }
 
     ////////////////////////////////////////////
 
-    Token::Token(TokenType type, const std::string &name) : type(type), name(name) {}
-
-    std::map<char, char> closures = std::map<char, char>{
-            {'(',')'},
-            {'[',']'},
-            {'{','}'},
-            {'"','"'},
-            {'\'','\''}
-    };
-    std::set<char> seperators = std::set<char>{'.',','};
+    Token::Token(TokenType type, const std::string &value) : type(type), value(value) {}
 
     TokenType Token::getType() const {
         return type;
     }
 
-    const std::string &Token::getName() const {
-        return name;
+    const std::string &Token::getValue() const {
+        return value;
     }
 
-    auto tokentype_order = std::map<TokenType,std::vector<TokenType>>();
+    auto format_as(Token token) -> std::string {
+        auto tokentype_map = std::map<lexer::TokenType, std::string>{
+                {lexer::TokenType::BracketRoundBegin, "BracketRoundBegin"},
+                {lexer::TokenType::BracketRoundEnd, "BracketRoundEnd"},
+                {lexer::TokenType::Number, "Number"},
+                {lexer::TokenType::KFGetTable, "KFGetTable"},
+                {lexer::TokenType::KMSelect, "KMSelect"},
+                {lexer::TokenType::KMWhere, "KMWhere"},
+                {lexer::TokenType::KUndefined, "KUndefined"}
+        };
+//        return std::pair<int, int>(0, 0);
+        return fmt::format("{} {}",tokentype_map.at(token.getType()), token.getValue());
+    }
 }
