@@ -13,5 +13,7 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(fmt)
 
-add_executable(cpp_based main.cpp)
+add_executable(cpp_based main.cpp
+        interpreter.cpp
+        interpreter.hpp)
 target_link_libraries(cpp_based fmt)
