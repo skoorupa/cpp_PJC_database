@@ -45,6 +45,7 @@ namespace lexer {
 
         while (!input.empty()) {
             auto c = input.begin();
+
             if (*c=='(') {
                 tokens.push_back(Token(TokenType::BracketRoundBegin, "("));
                 pop_front_str(input);
@@ -56,12 +57,34 @@ namespace lexer {
                 // handle multicharacter tokens
 
                 // number token
-                if (isdigit(*c)) {
+                if (*c=='"' || *c=='\'') {
+                    auto string_char = *c;
+                    auto backslash_flag = false;
+                    auto str = std::string();
+
+                    pop_front_str(input); // remove first "
+
+                     do {
+                        fmt::println("{}",*c);
+                        str += *c;
+
+                        if (*c == '\\' && !backslash_flag) // \" nie oznacza zamkniecia stringa
+                            backslash_flag = true;
+                        else
+                            backslash_flag = false;
+
+                        pop_front_str(input);
+                    } while(!input.empty() && (*c!=string_char || backslash_flag));
+
+                    pop_front_str(input); // remove last "
+
+                    tokens.push_back(Token(TokenType::String, str));
+                }
+                else if (isdigit(*c)) {
                     auto num = std::string();
                     while (!input.empty() && isdigit(*c)) {
                         num += *c;
                         pop_front_str(input);
-                        fmt::println("{}",*c);
                     }
 
                     tokens.push_back(Token(TokenType::Number, num));
@@ -69,7 +92,7 @@ namespace lexer {
                 // keyword token
                 else if (isalpha(*c) || *c == '_') {
                     auto txt = std::string();
-                    while (!input.empty() && isalpha(*c)) {
+                    while (!input.empty() && (isalpha(*c) || *c == '_')) {
                         txt += *c;
                         pop_front_str(input);
                     }
@@ -112,6 +135,9 @@ namespace lexer {
                 {lexer::TokenType::BracketRoundBegin, "BracketRoundBegin"},
                 {lexer::TokenType::BracketRoundEnd, "BracketRoundEnd"},
                 {lexer::TokenType::Number, "Number"},
+                {lexer::TokenType::String, "String"},
+                {lexer::TokenType::DBConnect, "DBConnect"},
+                {lexer::TokenType::DBCreate, "DBCreate"},
                 {lexer::TokenType::KFGetTable, "KFGetTable"},
                 {lexer::TokenType::KMSelect, "KMSelect"},
                 {lexer::TokenType::KMWhere, "KMWhere"},

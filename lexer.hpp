@@ -9,6 +9,7 @@ namespace lexer {
         BracketRoundBegin,
         BracketRoundEnd,
         Number,
+        String,
 
         DBConnect,
         DBCreate,
