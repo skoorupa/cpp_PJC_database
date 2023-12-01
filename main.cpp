@@ -4,7 +4,7 @@
 #include <string>
 #include <iostream>
 
-#include "interpreter.hpp"
+#include "lexer.hpp"
 
 auto main() -> int {
     fmt::println("Welcome to Based - database in C++");
