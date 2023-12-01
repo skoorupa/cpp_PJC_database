@@ -1,3 +1,5 @@
+// napisane z pomocą https://www.youtube.com/watch?v=8VB5TY1sIRo
+
 #pragma once
 #include "lexer.hpp"
 
@@ -93,6 +95,7 @@ namespace lexer {
                     pop_front_str(input);
                 } else {
                     fmt::println("!!! Lexer error: cannot recognize character: {}",*c);
+                    return tokens;
                 }
             }
         }
