@@ -6,10 +6,6 @@
 
 namespace lexer {
     enum class TokenType {
-        Function, Method,
-        ClosureBegin, ClosureEnd, Separator,
-        Expression,
-
         BracketRoundBegin,
         BracketRoundEnd,
         Number,

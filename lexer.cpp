@@ -38,15 +38,6 @@ namespace lexer {
 
         // TOKENIZER
         auto tokens = std::vector<Token>();
-        auto closures_stack = std::stack<char>();
-        auto current_tokentype = TokenType::Function;
-
-        auto is_string = [closures_stack]() {
-            return closures_stack.top()=='"' || closures_stack.top()=='\'';
-        };
-        auto is_expression = [closures_stack]() {
-            return closures_stack.top()=='(';
-        };
 
         auto pop_front_str = [](std::string& input) {
             input.erase(0,1);
