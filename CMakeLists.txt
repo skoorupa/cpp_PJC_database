@@ -14,6 +14,8 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(fmt)
 
 add_executable(cpp_based main.cpp
-        lexer.cpp
-        lexer.hpp)
+        lang/lexer.cpp
+        lang/lexer.hpp
+        db/db.cpp
+        db/db.hpp)
 target_link_libraries(cpp_based fmt)
