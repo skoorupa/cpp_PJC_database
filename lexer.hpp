@@ -14,6 +14,9 @@ namespace lexer {
         BracketRoundEnd,
         Number,
 
+        DBConnect,
+        DBCreate,
+
         KFGetTable,
         KMSelect,
         KMWhere,

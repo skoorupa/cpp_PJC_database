@@ -23,7 +23,9 @@ namespace lexer {
         };
         auto seperators = std::set<char>{'.',','};
         auto keywords = std::map<std::string, lexer::TokenType>{
-                {"gettable", TokenType::KFGetTable},
+                {"db_connect", TokenType::DBConnect},
+                {"db_create", TokenType::DBCreate},
+                {"get_table", TokenType::KFGetTable},
                 {"select", TokenType::KMSelect},
                 {"where", TokenType::KMWhere}
         };
@@ -70,7 +72,9 @@ namespace lexer {
                     }
 
                     tokens.push_back(Token(TokenType::Number, num));
-                } else if (isalpha(*c)) {
+                }
+                // keyword token
+                else if (isalpha(*c) || *c == '_') {
                     auto txt = std::string();
                     while (!input.empty() && isalpha(*c)) {
                         txt += *c;
