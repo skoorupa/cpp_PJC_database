@@ -5,8 +5,11 @@
 #include <iostream>
 
 #include "lang/lexer.hpp"
+#include "db/db.hpp"
 
 auto main() -> int {
+    auto db = db::create("test.db");
+
     fmt::println("Welcome to Based - database in C++");
     auto quit = false;
 
