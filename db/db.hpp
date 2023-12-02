@@ -1,19 +1,23 @@
+#pragma once
 #include <string>
 #include <deque>
+#include <map>
+#include "table.hpp"
 
 namespace db {
     /////////////////////////////////////
     // DATABASE CLASS
     class Database {
         std::string filepath;
-        std::deque<Table> tables;
+        std::map<std::string, Table> tables;
 
     public:
+        Database(const std::string &filepath);
 
         auto create();
         auto connect();
-
-        Database(const std::string &filepath);
+        auto create_table(std::string name) -> Table;
+        auto get_table(std::string name) -> Table;
     };
 
     /////////////////////////////////////
