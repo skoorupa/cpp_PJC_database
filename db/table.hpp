@@ -1,6 +1,8 @@
+#pragma once
 #include <string>
 #include <deque>
 #include <map>
+#include <vector>
 
 namespace db {
     /////////////////////////////////////
@@ -31,6 +33,7 @@ namespace db {
 
     public:
         Row(int id, const std::map<int, std::string> &values);
+        auto get_value(int column_id) -> std::string;
     };
 
     /////////////////////////////////////
@@ -45,8 +48,8 @@ namespace db {
     public:
         Table(const std::string &name);
 
-        auto add_column(std::string name, DBType type);
-        auto add_row(std::map<int, std::string> values);
+        auto add_column(std::string name, DBType type) -> void;
+        auto add_row(std::vector<std::string> values) -> void;
         auto print();
     };
 };

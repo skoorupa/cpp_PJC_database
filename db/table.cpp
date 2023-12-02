@@ -15,6 +15,9 @@ namespace db {
     // ROW CLASS
 
     Row::Row(int id, const std::map<int, std::string> &values) : id(id), values(values) {}
+    auto Row::get_value(int column_id) -> std::string {
+        return values.at(column_id);
+    }
 
     /////////////////////////////////////
     // TABLE CLASS
@@ -29,8 +32,15 @@ namespace db {
         curr_column_id++;
     }
 
-    auto Table::add_row(std::map<int, std::string> values) {
-        rows.push_back(Row(curr_row_id, values));
+    auto Table::add_row(std::vector<std::string> values) -> void {
+        std::map<int, std::string> column_id_values = std::map<int, std::string>();
+        // TODO: co jesli values jest wiecej/mniej niz columns
+        for (int i = 0; i < columns.size(); ++i) {
+            auto column_id = columns.at(i).getId();
+            column_id_values[column_id] = values[i];
+        }
+
+        rows.push_back(Row(curr_row_id, column_id_values));
         curr_row_id++;
     }
 };
