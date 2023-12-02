@@ -21,3 +21,14 @@ add_executable(cpp_based main.cpp
         db/table.cpp
         db/table.hpp)
 target_link_libraries(cpp_based fmt)
+
+add_executable(cpp_based_db_test db_test.cpp
+        lang/lexer.cpp
+        lang/lexer.hpp
+        db/db.cpp
+        db/db.hpp
+        db/table.cpp
+        db/table.hpp)
+target_link_libraries(cpp_based_db_test fmt)
+
+
