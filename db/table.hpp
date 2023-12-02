@@ -11,11 +11,12 @@ namespace db {
     /////////////////////////////////////
     // COLUMN CLASS
     class Column {
+        int id;
         std::string name;
         DBType type;
 
     public:
-        Column(const std::string &name, DBType type);
+        Column(const std::string &name, DBType type, int id);
     };
 
     /////////////////////////////////////
@@ -23,6 +24,7 @@ namespace db {
     class Table {
         std::string name;
         std::deque<Column> columns;
+        int curr_column_id;
 
     public:
         Table(const std::string &name);
