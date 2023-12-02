@@ -9,7 +9,7 @@ auto main() -> int {
     emp.add_column("name",db::DBType::String);
     emp.add_row(std::vector<std::string>{"1", "Adam"});
     emp.add_row(std::vector<std::string>{"2", "Karolina"});
-    emp.add_row(std::vector<std::string>{"3", "Mikołaj"});
+    emp.add_row(std::vector<std::string>{"3", "Mikolaj"});
     emp.add_row(std::vector<std::string>{"4", "Ola"});
 
     emp.print();

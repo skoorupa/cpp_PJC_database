@@ -42,8 +42,8 @@ namespace db {
             for (int i = 0; i < max_length-column_name_length; ++i)
                 fmt::print(" ");
         }
-        fmt::println("");
-        for (int i = 0; i < full_width; ++i)
+        fmt::println("|");
+        for (int i = 0; i <= full_width; ++i)
             fmt::print("=");
         fmt::println("");
 
@@ -59,7 +59,7 @@ namespace db {
                     fmt::print(" ");
             }
 
-            fmt::println("");
+            fmt::println("|");
         }
     }
 };
