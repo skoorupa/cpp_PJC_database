@@ -24,7 +24,7 @@ namespace db {
         curr_row_id = 1;
     }
 
-    auto Table::add_column(std::string name, DBType type) {
+    auto Table::add_column(std::string name, DBType type) -> void {
         columns.push_back(Column(curr_column_id, name, type));
         curr_column_id++;
     }
