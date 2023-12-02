@@ -3,41 +3,10 @@
 #include <deque>
 #include <map>
 #include <vector>
+#include "column.hpp"
+#include "row.hpp"
 
 namespace db {
-    /////////////////////////////////////
-    // DBTYPES
-    enum class DBType {
-        Integer, String
-    };
-
-    /////////////////////////////////////
-    // COLUMN CLASS
-    class Column {
-        int id;
-        std::string name;
-        DBType type;
-    public:
-        Column(int id, const std::string &name, DBType type);
-
-        int getId() const;
-        const std::string &getName() const;
-        DBType getType() const;
-    };
-
-    /////////////////////////////////////
-    // ROW CLASS
-    class Row {
-        int id;
-        std::map<int, std::string> values; // int - column_id, string - value
-
-    public:
-        Row(int id, const std::map<int, std::string> &values);
-        auto get_value(int column_id) -> std::string;
-    };
-
-    /////////////////////////////////////
-    // TABLE CLASS
     class Table {
         std::string name;
         std::deque<Column> columns;

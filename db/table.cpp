@@ -2,26 +2,6 @@
 #include <fmt/core.h>
 
 namespace db {
-    /////////////////////////////////////
-    // COLUMN CLASS
-
-    Column::Column(int id, const std::string &name, DBType type) : id(id), name(name), type(type) {}
-
-    int Column::getId() const {return id;}
-    const std::string &Column::getName() const {return name;}
-    DBType Column::getType() const {return type;}
-
-    /////////////////////////////////////
-    // ROW CLASS
-
-    Row::Row(int id, const std::map<int, std::string> &values) : id(id), values(values) {}
-    auto Row::get_value(int column_id) -> std::string {
-        return values.at(column_id);
-    }
-
-    /////////////////////////////////////
-    // TABLE CLASS
-
     Table::Table(const std::string &name) : name(name), columns(std::deque<Column>()) {
         curr_column_id = 1;
         curr_row_id = 1;
