@@ -43,4 +43,43 @@ namespace db {
         rows.push_back(Row(curr_row_id, column_id_values));
         curr_row_id++;
     }
+
+    auto Table::print() -> void {
+        std::map<int, int> col_widths = std::map<int,int>();
+        auto full_width = 0;
+        for (Column column : columns) {
+            int column_name_length = column.getName().length();
+            int max_length = column_name_length;
+            for (Row row : rows) {
+                std::string value = row.get_value(column.getId());
+                if (max_length < value.length()) max_length = value.length();
+            }
+            col_widths[column.getId()] = max_length;
+            full_width += max_length+1;
+
+            fmt::print("|");
+            fmt::print("{}",column.getName());
+            for (int i = 0; i < max_length-column_name_length; ++i)
+                fmt::print(" ");
+        }
+        fmt::println("");
+        for (int i = 0; i < full_width; ++i)
+            fmt::print("=");
+        fmt::println("");
+
+        for (Row row : rows) {
+            for (Column column : columns) {
+                auto value = row.get_value(column.getId());
+
+                fmt::print("|");
+                fmt::print("{}", value);
+
+                auto max_length = col_widths.at(column.getId());
+                for (int i = 0; i < max_length - value.length(); ++i)
+                    fmt::print(" ");
+            }
+
+            fmt::println("");
+        }
+    }
 };
