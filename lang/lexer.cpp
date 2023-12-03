@@ -137,7 +137,8 @@ namespace lexer {
                 {lexer::TokenType::KFGetTable,        "KFGetTable"},
                 {lexer::TokenType::KMSelect,          "KMSelect"},
                 {lexer::TokenType::KMWhere,           "KMWhere"},
-                {lexer::TokenType::KUndefined,        "KUndefined"}
+                {lexer::TokenType::KUndefined,        "KUndefined"},
+                {lexer::TokenType::EndOfFile,         "EndOfFile"}
         };
 //        return std::pair<int, int>(0, 0);
         return fmt::format("{} {}",tokentype_map.at(token.getType()), token.getValue());

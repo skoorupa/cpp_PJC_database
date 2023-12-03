@@ -20,7 +20,8 @@ namespace lexer {
         KFGetTable,
         KMSelect,
         KMWhere,
-        KUndefined
+        KUndefined,
+        EndOfFile
     };
 
     class Token {
