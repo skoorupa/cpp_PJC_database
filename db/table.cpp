@@ -2,22 +2,22 @@
 #include <fmt/core.h>
 
 namespace db {
-    Table::Table(const std::string &name) : name(name), columns(std::deque<Column>()) {
-        curr_column_id = 1;
+    Table::Table(const std::string &name) : name(name), columns(std::map<std::string, Column>()) {
         curr_row_id = 1;
     }
 
     auto Table::add_column(std::string name, DBType type) -> void {
-        columns.push_back(Column(curr_column_id, name, type));
-        curr_column_id++;
+        columns.insert(std::pair<std::string, Column>(name, Column(name, type)));
     }
 
     auto Table::add_row(std::vector<std::string> values) -> void {
-        std::map<int, std::string> column_id_values = std::map<int, std::string>();
+        std::map<std::string, std::string> column_id_values = std::map<std::string, std::string>();
         // TODO: co jesli values jest wiecej/mniej niz columns
-        for (int i = 0; i < columns.size(); ++i) {
-            auto column_id = columns.at(i).getId();
+        auto i = 0;
+        for (auto column : columns) {
+            auto column_id = column.first;
             column_id_values[column_id] = values[i];
+            i++;
         }
 
         rows.push_back(Row(curr_row_id, column_id_values));
@@ -25,20 +25,21 @@ namespace db {
     }
 
     auto Table::print() -> void {
-        std::map<int, int> col_widths = std::map<int,int>();
+        std::map<std::string, int> col_widths = std::map<std::string,int>();
         auto full_width = 0;
-        for (Column column : columns) {
-            int column_name_length = column.getName().length();
+        for (auto column : columns) {
+            auto column_id = column.first;
+            int column_name_length = column_id.length();
             int max_length = column_name_length;
             for (Row row : rows) {
-                std::string value = row.get_value(column.getId());
+                std::string value = row.get_value(column_id);
                 if (max_length < value.length()) max_length = value.length();
             }
-            col_widths[column.getId()] = max_length;
+            col_widths[column_id] = max_length;
             full_width += max_length+1;
 
             fmt::print("|");
-            fmt::print("{}",column.getName());
+            fmt::print("{}",column_id);
             for (int i = 0; i < max_length-column_name_length; ++i)
                 fmt::print(" ");
         }
@@ -48,13 +49,14 @@ namespace db {
         fmt::println("");
 
         for (Row row : rows) {
-            for (Column column : columns) {
-                auto value = row.get_value(column.getId());
+            for (auto column : columns) {
+                auto column_id = column.first;
+                auto value = row.get_value(column_id);
 
                 fmt::print("|");
                 fmt::print("{}", value);
 
-                auto max_length = col_widths.at(column.getId());
+                auto max_length = col_widths.at(column_id);
                 for (int i = 0; i < max_length - value.length(); ++i)
                     fmt::print(" ");
             }

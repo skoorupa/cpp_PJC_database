@@ -9,9 +9,8 @@
 namespace db {
     class Table {
         std::string name;
-        std::deque<Column> columns;
+        std::map<std::string, Column> columns;
         std::deque<Row> rows;
-        int curr_column_id; // wewnetrzne id dla programu
         int curr_row_id;  // wewnetrzne id dla programu
 
     public:

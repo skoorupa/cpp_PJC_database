@@ -4,10 +4,10 @@
 namespace db {
     class Row {
         int id;
-        std::map<int, std::string> values; // int - column_id, string - value
+        std::map<std::string, std::string> values; // int - column_id, string - value
 
     public:
-        Row(int id, const std::map<int, std::string> &values);
-        auto get_value(int column_id) -> std::string;
+        Row(int id, const std::map<std::string, std::string> &values);
+        auto get_value(std::string column_id) -> std::string;
     };
 }
