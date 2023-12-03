@@ -23,7 +23,9 @@ add_executable(cpp_based main.cpp
         db/column.cpp
         db/column.hpp
         db/row.cpp
-        db/row.hpp)
+        db/row.hpp
+        lang/ast.cpp
+        lang/ast.h)
 target_link_libraries(cpp_based fmt)
 
 add_executable(cpp_based_db_test db_test.cpp
