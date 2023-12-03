@@ -1,11 +1,13 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <deque>
 #include <map>
 #include <set>
 
 namespace lexer {
     enum class TokenType {
+        Identifier,
         BracketRoundBegin,
         BracketRoundEnd,
         DotOperator,
@@ -41,7 +43,7 @@ namespace lexer {
         const std::string &getValue() const;
     };
 
-    auto tokenize(std::string input) -> std::vector<Token>;
+    auto tokenize(std::string input) -> std::deque<Token>;
     auto format_as (Token token) -> std::string;
 }
 

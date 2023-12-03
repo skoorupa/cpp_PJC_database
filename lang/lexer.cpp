@@ -13,7 +13,7 @@
 
 
 namespace lexer {
-    auto tokenize(std::string input) -> std::vector<Token> {
+    auto tokenize(std::string input) -> std::deque<Token> {
         fmt::println("starting to tokenize");
         // HELPFUL VARIABLES
         auto one_char_tokens = std::map<char, lexer::TokenType>{
@@ -35,7 +35,7 @@ namespace lexer {
         };
 
         // TOKENIZER
-        auto tokens = std::vector<Token>();
+        auto tokens = std::deque<Token>();
 
         auto pop_front_str = [](std::string& input) {
             input.erase(0,1);
@@ -97,7 +97,7 @@ namespace lexer {
                     if (iskeyword) {
                         tokens.push_back(Token(keywords.at(txt), txt));
                     } else {
-                        tokens.push_back(Token(TokenType::KUndefined, txt));
+                        tokens.push_back(Token(TokenType::Identifier, txt));
                     }
                 } else if (isskip(*c)) {
                     pop_front_str(input);
@@ -141,7 +141,6 @@ namespace lexer {
                 {lexer::TokenType::KUndefined,        "KUndefined"},
                 {lexer::TokenType::EndOfFile,         "EndOfFile"}
         };
-//        return std::pair<int, int>(0, 0);
         return fmt::format("{} {}",tokentype_map.at(token.getType()), token.getValue());
     }
 }

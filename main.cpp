@@ -5,10 +5,12 @@
 #include <iostream>
 
 #include "lang/lexer.hpp"
+#include "lang/parser.hpp"
 #include "db/db.hpp"
 
 auto main() -> int {
     fmt::println("Welcome to Based - database in C++");
+    auto parser = parser::Parser();
     auto quit = false;
 
     while (!quit) {
@@ -16,7 +18,7 @@ auto main() -> int {
         fmt::print(">");
         std::getline(std::cin, prompt);
 
-        auto result = lexer::tokenize(prompt);
+        auto result = parser.produceAST(prompt);
 
         fmt::println("{}", result);
     }
