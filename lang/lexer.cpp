@@ -109,6 +109,7 @@ namespace lexer {
         }
 
         fmt::println("stopped tokenizing");
+        tokens.push_back(Token(TokenType::EndOfFile,"EndOfFile"));
         return tokens;
     }
 

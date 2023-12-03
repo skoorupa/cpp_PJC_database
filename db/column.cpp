@@ -1,4 +1,3 @@
-#include <string>
 #include "column.hpp"
 
 namespace db {

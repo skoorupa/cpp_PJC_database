@@ -25,12 +25,12 @@ add_executable(cpp_based main.cpp
         db/row.cpp
         db/row.hpp
         lang/ast.cpp
-        lang/ast.h)
+        lang/ast.hpp
+        lang/parser.cpp
+        lang/parser.hpp)
 target_link_libraries(cpp_based fmt)
 
 add_executable(cpp_based_db_test db_test.cpp
-        lang/lexer.cpp
-        lang/lexer.hpp
         db/db.cpp
         db/db.hpp
         db/table.cpp

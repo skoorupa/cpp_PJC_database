@@ -1,4 +1,4 @@
-#include "ast.h"
+#include "ast.hpp"
 
 namespace ast {
     Statement::Statement(NodeType kind) : kind(kind) {}
