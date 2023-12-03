@@ -1,8 +1,8 @@
 #include "column.hpp"
 
 namespace db {
-    Column::Column(const std::string &name, DBType type) : name(name), type(type) {}
+    Column::Column(const std::string &name, ColumnType type) : name(name), type(type) {}
 
     const std::string &Column::getName() const {return name;}
-    DBType Column::getType() const {return type;}
+    ColumnType Column::getType() const {return type;}
 }

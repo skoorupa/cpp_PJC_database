@@ -6,7 +6,7 @@ namespace db {
         curr_row_id = 1;
     }
 
-    auto Table::add_column(std::string name, DBType type) -> void {
+    auto Table::add_column(std::string name, ColumnType type) -> void {
         columns.insert(std::pair<std::string, Column>(name, Column(name, type)));
     }
 

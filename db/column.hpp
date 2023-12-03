@@ -3,7 +3,7 @@
 namespace db {
     /////////////////////////////////////
     // DBTYPES
-    enum class DBType {
+    enum class ColumnType {
         Integer, String
     };
 
@@ -11,12 +11,12 @@ namespace db {
     // COLUMN CLASS
     class Column {
         std::string name;
-        DBType type;
+        ColumnType type;
     public:
-        Column(const std::string &name, DBType type);
+        Column(const std::string &name, ColumnType type);
 
         int getId() const;
         const std::string &getName() const;
-        DBType getType() const;
+        ColumnType getType() const;
     };
 }
