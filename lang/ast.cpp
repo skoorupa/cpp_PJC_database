@@ -1,17 +1,17 @@
 #include "ast.hpp"
 
 namespace ast {
-    Statement::Statement(NodeType kind) : kind(kind) {}
+    Node::Node(NodeType kind) : kind(kind) {}
 
-    Program::Program() : Statement(NodeType::Program) {
-        body = std::vector<Statement>();
+    Program::Program() : Node(NodeType::Program) {
+        body = std::vector<Node>();
     }
 
     BinaryExpression::BinaryExpression
     (Expression &left, Expression &right, std::string &expOperator)
             : Expression(NodeType::BinaryExpression), left(left), right(right), exp_operator(expOperator) {}
 
-    Expression::Expression(NodeType kind) : Statement(kind) {}
+    Expression::Expression(NodeType kind) : Node(kind) {}
 
     Identifier::Identifier(std::string &symbol) : Expression(NodeType::Identifier), symbol(symbol) {}
 

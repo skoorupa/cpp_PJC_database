@@ -7,24 +7,33 @@ namespace ast {
         NumericLiteral,
         StringLiteral,
         Identifier,
-        BinaryExpression
+        BinaryExpression,
+
+        DBConnect,
+        DBCreate,
+
+        KFGetTable,
+        KMSelect,
+        KMWhere,
+        KUndefined,
+        EndOfFile
     };
 
-    class Statement {
+    class Node {
         NodeType kind;
 
     public:
-        Statement(NodeType kind);
+        Node(NodeType kind);
     };
 
-    class Program : public Statement {
+    class Program : public Node {
         NodeType kind;
-        std::vector<Statement> body;
+        std::vector<Node> body;
     public:
         Program();
     };
 
-    class Expression : public Statement {
+    class Expression : public Node {
     public:
         Expression(NodeType kind);
     };
