@@ -20,7 +20,7 @@ namespace lexer {
         KFGetTable,
         KMSelect,
         KMWhere,
-        KUndefined,
+        Identifier,
         EndOfFile
     };
 

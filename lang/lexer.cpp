@@ -97,7 +97,7 @@ namespace lexer {
                     if (iskeyword) {
                         tokens.push_back(Token(keywords.at(txt), txt));
                     } else {
-                        tokens.push_back(Token(TokenType::KUndefined, txt));
+                        tokens.push_back(Token(TokenType::Identifier, txt));
                     }
                 } else if (isskip(*c)) {
                     pop_front_str(input);
@@ -138,7 +138,7 @@ namespace lexer {
                 {lexer::TokenType::KFGetTable,        "KFGetTable"},
                 {lexer::TokenType::KMSelect,          "KMSelect"},
                 {lexer::TokenType::KMWhere,           "KMWhere"},
-                {lexer::TokenType::KUndefined,        "KUndefined"},
+                {lexer::TokenType::Identifier,        "Identifier"},
                 {lexer::TokenType::EndOfFile,         "EndOfFile"}
         };
 //        return std::pair<int, int>(0, 0);
