@@ -2,5 +2,5 @@
 #include "lexer.hpp"
 
 namespace parser {
-    
+
 }

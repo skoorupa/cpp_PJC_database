@@ -4,7 +4,7 @@
 #include "lexer.hpp"
 
 #include <string>
-#include <vector>
+#include <deque>
 #include <stack>
 #include <map>
 #include <set>
@@ -13,7 +13,7 @@
 
 
 namespace lexer {
-    auto tokenize(std::string input) -> std::vector<Token> {
+    auto tokenize(std::string input) -> std::deque<Token> {
         fmt::println("starting to tokenize");
         // HELPFUL VARIABLES
         auto one_char_tokens = std::map<char, lexer::TokenType>{
@@ -35,7 +35,7 @@ namespace lexer {
         };
 
         // TOKENIZER
-        auto tokens = std::vector<Token>();
+        auto tokens = std::deque<Token>();
 
         auto pop_front_str = [](std::string& input) {
             input.erase(0,1);
