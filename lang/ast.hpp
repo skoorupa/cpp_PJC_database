@@ -1,3 +1,4 @@
+#include <deque>
 #include <vector>
 #include <string>
 
@@ -14,9 +15,7 @@ namespace ast {
 
         KFGetTable,
         KMSelect,
-        KMWhere,
-        KUndefined,
-        EndOfFile
+        KMWhere
     };
 
     class Node {
@@ -28,15 +27,18 @@ namespace ast {
 
     class Program : public Node {
         NodeType kind;
-        std::vector<Node> body;
+        std::deque<Node> body;
     public:
         Program();
+        auto add_node(Node node) -> void;
     };
 
     class Expression : public Node {
     public:
         Expression(NodeType kind);
     };
+
+    //////// EXPRESSIONS
 
     class BinaryExpression : public Expression {
         Expression left;
@@ -66,5 +68,42 @@ namespace ast {
 
     public:
         StringLiteral(std::string &value);
+    };
+
+    //////// NODES
+
+    class DBCreate : public Node {
+        StringLiteral db_name;
+
+    public:
+        DBCreate(const StringLiteral &dbName);
+    };
+
+    class DBConnect : public Node {
+        StringLiteral db_name;
+
+    public:
+        DBConnect(const StringLiteral &dbName);
+    };
+
+    class KFGetTable : public Node {
+        StringLiteral table_name;
+
+    public:
+        KFGetTable(const StringLiteral &tableName);
+    };
+
+    class KMSelect : public Node {
+        std::vector<Expression> args;
+
+    public:
+        KMSelect(const std::vector<Expression> &args);
+    };
+
+    class KMWhere : public Node {
+        Expression expression;
+
+    public:
+        KMWhere(const Expression &expression);
     };
 }
