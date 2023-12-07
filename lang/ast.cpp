@@ -1,4 +1,5 @@
 #include "ast.hpp"
+#include "parser.hpp"
 
 namespace ast {
     // NODE
@@ -16,6 +17,13 @@ namespace ast {
     // EXPRESSION
     Expression::Expression(NodeType kind) : Node(kind) {}
 
+    auto get_expression_value(auto expression) -> std::string {
+        return "null";
+    }
+    auto get_expression_value(StringLiteral s) -> std::string {
+        return s.getValue();
+    }
+
     //////// EXPRESSIONS
 
     // BINARY EXPRESSION
@@ -27,14 +35,20 @@ namespace ast {
     Identifier::Identifier(std::string &symbol) : Expression(NodeType::Identifier), symbol(symbol) {}
 
     // NUMERIC LITERAL
-    NumericLiteral::NumericLiteral(int &value) : Expression(NodeType::NumericLiteral), value(value) {}
+    NumericLiteral::NumericLiteral(int const& value) : Expression(NodeType::NumericLiteral), value(value) {}
 
     // STRING LITERAL
-    StringLiteral::StringLiteral(std::string &value) : Expression(NodeType::StringLiteral), value(value) {}
+    StringLiteral::StringLiteral(std::string value) : Expression(NodeType::StringLiteral), value(value) {}
+
+    const std::string &StringLiteral::getValue() const {
+        return value;
+    }
 
     //////// NODES
 
-    DBCreate::DBCreate(const StringLiteral &dbName) : Node(NodeType::DBCreate), db_name(dbName) {}
+    DBCreate::DBCreate(StringLiteral expression) : Node(NodeType::DBCreate), db_name(get_expression_value(expression)) {
+        fmt::println("{}",db_name.getValue());
+    }
 
     DBConnect::DBConnect(const StringLiteral &dbName) : Node(NodeType::DBConnect), db_name(dbName) {}
 

@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "lang/lexer.hpp"
+#include "lang/parser.hpp"
 #include "db/db.hpp"
 
 auto main() -> int {
@@ -16,8 +17,9 @@ auto main() -> int {
         fmt::print(">");
         std::getline(std::cin, prompt);
 
-        auto result = lexer::tokenize(prompt);
+        auto parser = parser::Parser(prompt);
+        auto result = parser.produceAST();
 
-        fmt::println("{}", result);
+//        fmt::println("{}", result);
     }
 }

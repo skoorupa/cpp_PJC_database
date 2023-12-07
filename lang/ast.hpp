@@ -1,3 +1,4 @@
+#pragma once
 #include <deque>
 #include <vector>
 #include <string>
@@ -38,6 +39,8 @@ namespace ast {
         Expression(NodeType kind);
     };
 
+    auto get_expression_value(auto expression) -> std::string;
+
     //////// EXPRESSIONS
 
     class BinaryExpression : public Expression {
@@ -60,15 +63,19 @@ namespace ast {
         int value;
 
     public:
-        NumericLiteral(int &value);
+        NumericLiteral(int const& value);
     };
 
     class StringLiteral : public Expression {
         std::string value;
 
     public:
-        StringLiteral(std::string &value);
+        StringLiteral(std::string value);
+
+        const std::string &getValue() const;
     };
+
+    auto get_expression_value(StringLiteral s) -> std::string;
 
     //////// NODES
 
@@ -76,7 +83,7 @@ namespace ast {
         StringLiteral db_name;
 
     public:
-        DBCreate(const StringLiteral &dbName);
+        DBCreate(StringLiteral expression);
     };
 
     class DBConnect : public Node {
