@@ -17,12 +17,12 @@ namespace ast {
     // EXPRESSION
     Expression::Expression(NodeType kind) : Node(kind) {}
 
-    auto get_expression_value(auto expression) -> std::string {
-        return "null";
-    }
-    auto get_expression_value(StringLiteral s) -> std::string {
-        return s.getValue();
-    }
+//    auto get_expression_value(auto expression) -> std::string {
+//        return "null";
+//    }
+//    auto get_expression_value(StringLiteral s) -> std::string {
+//        return s.getValue();
+//    }
 
     //////// EXPRESSIONS
 
@@ -46,7 +46,7 @@ namespace ast {
 
     //////// NODES
 
-    DBCreate::DBCreate(StringLiteral expression) : Node(NodeType::DBCreate), db_name(get_expression_value(expression)) {
+    DBCreate::DBCreate(StringLiteral expression) : Node(NodeType::DBCreate), db_name(expression.getValue()) {
         fmt::println("{}",db_name.getValue());
     }
 
