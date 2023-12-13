@@ -25,14 +25,22 @@ namespace ast {
 
     public:
         Node(const NodeType& kind);
+
+        virtual const NodeType getKind() const;
     };
 
     class Program : public Node {
         NodeType kind;
-        std::deque<Node> body;
+        std::deque<std::unique_ptr<Node>> body;
     public:
         Program();
-        auto add_node(Node node) -> void;
+
+//        template<typename T>
+//        auto add_node(auto node) -> void {
+//            body.emplace_back(std::make_unique<T>(node));
+//        };
+
+        std::deque<std::unique_ptr<Node>> &getBody();
     };
 
     class Expression : public Node {
@@ -71,7 +79,7 @@ namespace ast {
     public:
         StringLiteral(const std::string& value);
 
-        std::string getValue();
+        std::string getValue() const;
     };
 
     auto get_expression_value(StringLiteral s) -> std::string;
@@ -83,6 +91,8 @@ namespace ast {
 
     public:
         DBCreate(const StringLiteral &stringLiteral);
+
+        const StringLiteral getDbName() const;
     };
 
     class DBConnect : public Node {

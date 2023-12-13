@@ -27,7 +27,9 @@ add_executable(cpp_based main.cpp
         lang/ast.cpp
         lang/ast.hpp
         lang/parser.cpp
-        lang/parser.hpp)
+        lang/parser.hpp
+        lang/interpreter.cpp
+        lang/interpreter.hpp)
 target_link_libraries(cpp_based fmt)
 
 add_executable(cpp_based_db_test db_test.cpp

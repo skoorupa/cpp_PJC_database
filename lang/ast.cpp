@@ -5,13 +5,17 @@ namespace ast {
     // NODE
     Node::Node(const NodeType& kind) : kind(kind) {}
 
-    // PROGRAM
-    Program::Program() : Node(NodeType::Program) {
-        body = std::deque<Node>();
+    const NodeType Node::getKind() const {
+        return kind;
     }
 
-    auto Program::add_node(Node node) -> void {
-        body.push_back(node);
+    // PROGRAM
+    Program::Program() : Node(NodeType::Program) {
+        body = std::deque<std::unique_ptr<Node>>();
+    }
+
+    std::deque<std::unique_ptr<Node>> &Program::getBody() {
+        return body;
     }
 
     // EXPRESSION
@@ -33,14 +37,16 @@ namespace ast {
     // STRING LITERAL
     StringLiteral::StringLiteral(const std::string& value) : Expression(NodeType::StringLiteral), value(value) {}
 
-    std::string StringLiteral::getValue() {
+    std::string StringLiteral::getValue() const {
         return value;
     }
 
     //////// NODES
 
-    DBCreate::DBCreate(const StringLiteral& stringLiteral) : Node(NodeType::DBCreate), db_name(stringLiteral) {
-        fmt::println("{}",db_name.getValue());
+    DBCreate::DBCreate(const StringLiteral& stringLiteral) : Node(NodeType::DBCreate), db_name(stringLiteral) {}
+
+    const StringLiteral DBCreate::getDbName() const {
+        return db_name;
     }
 
     DBConnect::DBConnect(const StringLiteral &dbName) : Node(NodeType::DBConnect), db_name(dbName) {}

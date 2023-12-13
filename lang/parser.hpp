@@ -1,9 +1,9 @@
 #include "ast.hpp"
 #include "lexer.hpp"
 #include "fmt/core.h"
+#include <memory>
 
 namespace parser {
-//    template <class iterator>
     class Parser {
         std::deque<lexer::Token> tokens;
         std::deque<lexer::Token>::iterator point; // o tym sposobie trzymania iteratora dowiedzialem sie z GPT
@@ -22,12 +22,12 @@ namespace parser {
             point++;
             return token;
         }
-        auto parse_node() -> ast::Node {
+        auto parse_node() -> std::unique_ptr<ast::Node> {
             auto token_type = shift_token().getType();
 
             switch (token_type) {
                 case lexer::TokenType::DBCreate:
-                    return ast::DBCreate(parse_call_single_arg<ast::StringLiteral>());
+                    return std::make_unique<ast::DBCreate>(parse_call_single_arg<ast::StringLiteral>());
                     break;
                 default:
                     fmt::println("!!! Parser error: Unexpected tokentype while parsing node");
@@ -91,7 +91,8 @@ namespace parser {
             auto program = ast::Program();
 
             while (get_token().getType() != lexer::TokenType::EndOfFile) {
-                program.add_node(parse_node());
+//                program.add_node(parse_node());
+                program.getBody().emplace_back(parse_node());
             }
 
             return program;
