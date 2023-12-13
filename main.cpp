@@ -17,8 +17,12 @@ auto main() -> int {
         fmt::print(">");
         std::getline(std::cin, prompt);
 
-        auto parser = parser::Parser(prompt);
-        auto result = parser.produceAST();
+        if (prompt == "quit()" || prompt == "quit();")
+            quit = true;
+        else {
+            auto parser = parser::Parser(prompt);
+            auto result = parser.produceAST();
+        }
 
 //        fmt::println("{}", result);
     }
