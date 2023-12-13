@@ -10,7 +10,6 @@
 
 auto main() -> int {
     fmt::println("Welcome to Based - database in C++");
-    auto parser = parser::Parser();
     auto quit = false;
 
     while (!quit) {
@@ -18,8 +17,13 @@ auto main() -> int {
         fmt::print(">");
         std::getline(std::cin, prompt);
 
-        auto result = parser.produceAST(prompt);
+        if (prompt == "quit()" || prompt == "quit();")
+            quit = true;
+        else {
+            auto parser = parser::Parser(prompt);
+            auto result = parser.produceAST();
+        }
 
-        fmt::println("{}", result);
+//        fmt::println("{}", result);
     }
 }

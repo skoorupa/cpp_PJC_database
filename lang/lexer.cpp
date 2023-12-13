@@ -4,7 +4,7 @@
 #include "lexer.hpp"
 
 #include <string>
-#include <vector>
+#include <deque>
 #include <stack>
 #include <map>
 #include <set>
@@ -14,7 +14,7 @@
 
 namespace lexer {
     auto tokenize(std::string input) -> std::deque<Token> {
-        fmt::println("starting to tokenize");
+//        fmt::println("starting to tokenize");
         // HELPFUL VARIABLES
         auto one_char_tokens = std::map<char, lexer::TokenType>{
                 {'(',TokenType::BracketRoundBegin},
@@ -59,7 +59,7 @@ namespace lexer {
                     pop_front_str(input); // remove first "
 
                      do {
-                        fmt::println("{}",*c);
+//                        fmt::println("{}",*c);
                         str += *c;
 
                         if (*c == '\\' && !backslash_flag) // \" nie oznacza zamkniecia stringa
@@ -108,7 +108,7 @@ namespace lexer {
             }
         }
 
-        fmt::println("stopped tokenizing");
+//        fmt::println("stopped tokenizing");
         tokens.push_back(Token(TokenType::EndOfFile,"EndOfFile"));
         return tokens;
     }
@@ -138,9 +138,10 @@ namespace lexer {
                 {lexer::TokenType::KFGetTable,        "KFGetTable"},
                 {lexer::TokenType::KMSelect,          "KMSelect"},
                 {lexer::TokenType::KMWhere,           "KMWhere"},
-                {lexer::TokenType::KUndefined,        "KUndefined"},
+                {lexer::TokenType::Identifier,        "Identifier"},
                 {lexer::TokenType::EndOfFile,         "EndOfFile"}
         };
+//        return std::pair<int, int>(0, 0);
         return fmt::format("{} {}",tokentype_map.at(token.getType()), token.getValue());
     }
 }

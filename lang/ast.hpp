@@ -1,3 +1,5 @@
+#pragma once
+#include <deque>
 #include <vector>
 #include <string>
 
@@ -7,42 +9,40 @@ namespace ast {
         NumericLiteral,
         StringLiteral,
         Identifier,
-        BinaryExpression
-    };
-    auto format_as(NodeType nodeType) -> std::string;
+        BinaryExpression,
 
-    // STATEMENT
-    class Statement {
+        DBConnect,
+        DBCreate,
+
+        KFGetTable,
+        KMSelect,
+        KMWhere
+    };
+
+    class Node {
         NodeType kind;
 
     public:
-        Statement(NodeType kind);
-        NodeType getKind() const;
+        Node(NodeType kind);
     };
 
-    auto format_as(Statement statement) -> std::string;
-
-    // PROGRAM
-    class Program : public Statement {
+    class Program : public Node {
         NodeType kind;
-        std::vector<Statement> body;
+        std::deque<Node> body;
     public:
         Program();
-        const std::vector<Statement> &getBody() const;
-        auto add_statement(Statement statement) -> void;
+        auto add_node(Node node) -> void;
     };
 
-    auto format_as(Program program) -> std::string;
-
-    // EXPRESSION
-    class Expression : public Statement {
+    class Expression : public Node {
     public:
         Expression(NodeType kind);
     };
 
-    auto format_as(Expression expression) -> std::string;
+    auto get_expression_value(auto expression) -> std::string;
 
-    // BINARY EXPRESSION
+    //////// EXPRESSIONS
+
     class BinaryExpression : public Expression {
         Expression left;
         Expression right;
@@ -50,47 +50,67 @@ namespace ast {
 
     public:
         BinaryExpression(Expression &left, Expression &right, std::string &expOperator);
-
-        const Expression &getLeft() const;
-        const Expression &getRight() const;
-        const std::string &getExpOperator() const;
     };
 
-    auto format_as(BinaryExpression binaryExpression) -> std::string;
-
-    // IDENTIFIER
     class Identifier : public Expression {
         std::string symbol;
 
     public:
-        Identifier(std::string symbol);
-
-        const std::string &getSymbol() const;
+        Identifier(std::string &symbol);
     };
 
-    auto format_as(Identifier identifier) -> std::string;
-
-    // NUMERICLITERAL
     class NumericLiteral : public Expression {
         int value;
 
     public:
-        NumericLiteral(int value);
-
-        int getValue() const;
+        NumericLiteral(int const& value);
     };
 
-    auto format_as(NumericLiteral numericLiteral) -> std::string;
-
-    // STRINGLITERAL
     class StringLiteral : public Expression {
         std::string value;
 
     public:
-        StringLiteral(std::string &value);
+        StringLiteral(std::string value);
 
         const std::string &getValue() const;
     };
 
-    auto format_as(StringLiteral stringLiteral) -> std::string;
+    auto get_expression_value(StringLiteral s) -> std::string;
+
+    //////// NODES
+
+    class DBCreate : public Node {
+        StringLiteral db_name;
+
+    public:
+        DBCreate(StringLiteral expression);
+    };
+
+    class DBConnect : public Node {
+        StringLiteral db_name;
+
+    public:
+        DBConnect(const StringLiteral &dbName);
+    };
+
+    class KFGetTable : public Node {
+        StringLiteral table_name;
+
+    public:
+        KFGetTable(const StringLiteral &tableName);
+    };
+
+    class KMSelect : public Node {
+        std::vector<Expression> args;
+
+    public:
+        KMSelect(const std::vector<Expression> &args);
+    };
+
+    class KMWhere : public Node {
+        Expression expression;
+
+    public:
+        KMWhere(const Expression &expression);
+    };
 }

@@ -1,102 +1,60 @@
 #include "ast.hpp"
-#include <fmt/core.h>
-#include <fmt/ranges.h>
-#include <map>
+#include "parser.hpp"
 
 namespace ast {
-    // STATEMENT
-    Statement::Statement(NodeType kind) : kind(kind) {}
-
-    NodeType Statement::getKind() const {
-        return kind;
-    }
+    // NODE
+    Node::Node(NodeType kind) : kind(kind) {}
 
     // PROGRAM
-    Program::Program() : Statement(NodeType::Program) {
-        body = std::vector<Statement>();
+    Program::Program() : Node(NodeType::Program) {
+        body = std::deque<Node>();
     }
 
-    auto Program::add_statement(ast::Statement statement) -> void {
-        body.push_back(statement);
-    }
-
-    const std::vector<Statement> &Program::getBody() const {
-        return body;
+    auto Program::add_node(Node node) -> void {
+        body.push_back(node);
     }
 
     // EXPRESSION
-    Expression::Expression(NodeType kind) : Statement(kind) {}
+    Expression::Expression(NodeType kind) : Node(kind) {}
+
+//    auto get_expression_value(auto expression) -> std::string {
+//        return "null";
+//    }
+//    auto get_expression_value(StringLiteral s) -> std::string {
+//        return s.getValue();
+//    }
+
+    //////// EXPRESSIONS
 
     // BINARY EXPRESSION
     BinaryExpression::BinaryExpression
     (Expression &left, Expression &right, std::string &expOperator)
             : Expression(NodeType::BinaryExpression), left(left), right(right), exp_operator(expOperator) {}
 
-    const Expression &BinaryExpression::getLeft() const {return left;}
-    const Expression &BinaryExpression::getRight() const {return right;}
-    const std::string &BinaryExpression::getExpOperator() const {return exp_operator;}
+            // IDENTIFIER
+    Identifier::Identifier(std::string &symbol) : Expression(NodeType::Identifier), symbol(symbol) {}
 
-    // IDENTIFIER
-    Identifier::Identifier(std::string symbol) : Expression(NodeType::Identifier), symbol(symbol) {}
+    // NUMERIC LITERAL
+    NumericLiteral::NumericLiteral(int const& value) : Expression(NodeType::NumericLiteral), value(value) {}
 
-    const std::string &Identifier::getSymbol() const {return symbol;}
+    // STRING LITERAL
+    StringLiteral::StringLiteral(std::string value) : Expression(NodeType::StringLiteral), value(value) {}
 
-    // NUMERICLITERAL
-    NumericLiteral::NumericLiteral(int value) : Expression(NodeType::NumericLiteral), value(value) {}
-
-    int NumericLiteral::getValue() const {return value;}
-
-    // STRINGLITERAL
-    StringLiteral::StringLiteral(std::string &value) : Expression(NodeType::StringLiteral), value(value) {}
-
-    const std::string &StringLiteral::getValue() const {return value;}
-
-    // // FORMATAS
-    auto format_as(NodeType nodeType) -> std::string {
-        auto map = std::map<NodeType, std::string>{
-                {NodeType::Program, "Program"},
-                {NodeType::NumericLiteral, "NumericLiteral"},
-                {NodeType::StringLiteral, "StringLiteral"},
-                {NodeType::Identifier, "Identifier"},
-                {NodeType::BinaryExpression, "BinaryExpression"}
-        };
-        return map.at(nodeType);
+    const std::string &StringLiteral::getValue() const {
+        return value;
     }
 
-    auto format_as(Statement statement) -> std::string {
-        return fmt::format("Statement({})", statement.getKind());
+    //////// NODES
+
+    DBCreate::DBCreate(StringLiteral expression) : Node(NodeType::DBCreate), db_name(expression.getValue()) {
+        fmt::println("{}",db_name.getValue());
     }
 
-    auto format_as(Program program) -> std::string {
-        return fmt::format(
-                "Program(kind: {}, body : {})",
-                format_as(program.getKind()),
-                program.getBody()
-                );
-    }
+    DBConnect::DBConnect(const StringLiteral &dbName) : Node(NodeType::DBConnect), db_name(dbName) {}
 
-    auto format_as(Expression expression) -> std::string {
-        return fmt::format("Expression({})", expression);
-    }
+    KFGetTable::KFGetTable(const StringLiteral &tableName) : Node(NodeType::KFGetTable), table_name(tableName) {}
 
-    auto format_as(BinaryExpression binaryExpression) -> std::string {
-        return fmt::format(
-                "BinaryExpression({} {} {})",
-                binaryExpression.getLeft(),
-                binaryExpression.getExpOperator(),
-                binaryExpression.getRight()
-                );
-    }
+    KMSelect::KMSelect(const std::vector<Expression> &args) : Node(NodeType::KMSelect), args(args) {}
 
-    auto format_as(Identifier identifier) -> std::string {
-        return fmt::format("Identifier({})", identifier.getSymbol());
-    }
-
-    auto format_as(NumericLiteral numericLiteral) -> std::string {
-        return fmt::format("NumericLiteral({})", numericLiteral.getValue());
-    }
-
-    auto format_as(StringLiteral stringLiteral) -> std::string {
-        return fmt::format("StringLiteral({})", stringLiteral.getValue());
-    }
+    KMWhere::KMWhere(const Expression &expression) : Node(NodeType::KMWhere), expression(expression) {}
 }

@@ -1,13 +1,11 @@
 #pragma once
 #include <string>
-#include <vector>
 #include <deque>
 #include <map>
 #include <set>
 
 namespace lexer {
     enum class TokenType {
-        Identifier,
         BracketRoundBegin,
         BracketRoundEnd,
         DotOperator,
@@ -22,7 +20,7 @@ namespace lexer {
         KFGetTable,
         KMSelect,
         KMWhere,
-        KUndefined,
+        Identifier,
         EndOfFile
     };
 
