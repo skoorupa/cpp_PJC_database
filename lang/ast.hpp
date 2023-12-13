@@ -2,6 +2,7 @@
 #include <deque>
 #include <vector>
 #include <string>
+#include <memory>
 
 namespace ast {
     enum class NodeType {
@@ -20,10 +21,10 @@ namespace ast {
     };
 
     class Node {
-        NodeType kind;
+        NodeType const kind;
 
     public:
-        Node(NodeType kind);
+        Node(const NodeType& kind);
     };
 
     class Program : public Node {
@@ -36,10 +37,8 @@ namespace ast {
 
     class Expression : public Node {
     public:
-        Expression(NodeType kind);
+        Expression(const NodeType& kind);
     };
-
-    auto get_expression_value(auto expression) -> std::string;
 
     //////// EXPRESSIONS
 
@@ -49,7 +48,7 @@ namespace ast {
         std::string exp_operator;
 
     public:
-        BinaryExpression(Expression &left, Expression &right, std::string &expOperator);
+        BinaryExpression(const Expression &left, const Expression &right, const std::string &expOperator);
     };
 
     class Identifier : public Expression {
@@ -70,7 +69,7 @@ namespace ast {
         std::string value;
 
     public:
-        StringLiteral(std::string value);
+        StringLiteral(std::string& value);
 
         const std::string &getValue() const;
     };
@@ -83,7 +82,7 @@ namespace ast {
         StringLiteral db_name;
 
     public:
-        DBCreate(StringLiteral expression);
+        DBCreate(const StringLiteral &expression);
     };
 
     class DBConnect : public Node {

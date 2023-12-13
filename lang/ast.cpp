@@ -3,7 +3,7 @@
 
 namespace ast {
     // NODE
-    Node::Node(NodeType kind) : kind(kind) {}
+    Node::Node(const NodeType& kind) : kind(kind) {}
 
     // PROGRAM
     Program::Program() : Node(NodeType::Program) {
@@ -15,20 +15,13 @@ namespace ast {
     }
 
     // EXPRESSION
-    Expression::Expression(NodeType kind) : Node(kind) {}
-
-//    auto get_expression_value(auto expression) -> std::string {
-//        return "null";
-//    }
-//    auto get_expression_value(StringLiteral s) -> std::string {
-//        return s.getValue();
-//    }
+    Expression::Expression(const NodeType& kind) : Node(kind) {}
 
     //////// EXPRESSIONS
 
     // BINARY EXPRESSION
     BinaryExpression::BinaryExpression
-    (Expression &left, Expression &right, std::string &expOperator)
+    (const Expression &left, const Expression &right, const std::string &expOperator)
             : Expression(NodeType::BinaryExpression), left(left), right(right), exp_operator(expOperator) {}
 
             // IDENTIFIER
@@ -38,7 +31,7 @@ namespace ast {
     NumericLiteral::NumericLiteral(int const& value) : Expression(NodeType::NumericLiteral), value(value) {}
 
     // STRING LITERAL
-    StringLiteral::StringLiteral(std::string value) : Expression(NodeType::StringLiteral), value(value) {}
+    StringLiteral::StringLiteral(std::string& value) : Expression(NodeType::StringLiteral), value(value) {}
 
     const std::string &StringLiteral::getValue() const {
         return value;
@@ -46,7 +39,7 @@ namespace ast {
 
     //////// NODES
 
-    DBCreate::DBCreate(StringLiteral expression) : Node(NodeType::DBCreate), db_name(expression.getValue()) {
+    DBCreate::DBCreate(const StringLiteral& expression) : Node(NodeType::DBCreate), db_name(expression.getValue()) {
         fmt::println("{}",db_name.getValue());
     }
 
