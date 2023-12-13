@@ -66,12 +66,12 @@ namespace ast {
     };
 
     class StringLiteral : public Expression {
-        std::string value;
+        const std::string value;
 
     public:
-        StringLiteral(std::string& value);
+        StringLiteral(const std::string& value);
 
-        const std::string &getValue() const;
+        std::string getValue();
     };
 
     auto get_expression_value(StringLiteral s) -> std::string;
@@ -82,7 +82,7 @@ namespace ast {
         StringLiteral db_name;
 
     public:
-        DBCreate(const StringLiteral &expression);
+        DBCreate(const StringLiteral &stringLiteral);
     };
 
     class DBConnect : public Node {

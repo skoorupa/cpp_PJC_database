@@ -31,15 +31,15 @@ namespace ast {
     NumericLiteral::NumericLiteral(int const& value) : Expression(NodeType::NumericLiteral), value(value) {}
 
     // STRING LITERAL
-    StringLiteral::StringLiteral(std::string& value) : Expression(NodeType::StringLiteral), value(value) {}
+    StringLiteral::StringLiteral(const std::string& value) : Expression(NodeType::StringLiteral), value(value) {}
 
-    const std::string &StringLiteral::getValue() const {
+    std::string StringLiteral::getValue() {
         return value;
     }
 
     //////// NODES
 
-    DBCreate::DBCreate(const StringLiteral& expression) : Node(NodeType::DBCreate), db_name(expression.getValue()) {
+    DBCreate::DBCreate(const StringLiteral& stringLiteral) : Node(NodeType::DBCreate), db_name(stringLiteral) {
         fmt::println("{}",db_name.getValue());
     }
 
