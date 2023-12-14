@@ -17,14 +17,10 @@ auto main() -> int {
         auto prompt = std::string();
         fmt::print(">");
         std::getline(std::cin, prompt);
+        
+        auto parser = parser::Parser(prompt);
+        auto result = parser.produceAST();
 
-        if (prompt == "quit()" || prompt == "quit();")
-            interpreter.quit();
-        else {
-            auto parser = parser::Parser(prompt);
-            auto result = parser.produceAST();
-
-            interpreter.runAST(result);
-        }
+        interpreter.runAST(result);
     }
 }

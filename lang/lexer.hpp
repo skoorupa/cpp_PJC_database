@@ -14,6 +14,7 @@ namespace lexer {
         Number,
         String,
 
+        Quit,
         DBConnect,
         DBCreate,
 
@@ -43,5 +44,6 @@ namespace lexer {
 
     auto tokenize(std::string input) -> std::deque<Token>;
     auto format_as (Token token) -> std::string;
+    auto format_as (TokenType tokentype) -> std::string;
 }
 

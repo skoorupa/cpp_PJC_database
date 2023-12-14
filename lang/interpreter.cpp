@@ -15,6 +15,9 @@ auto Interpreter::runAST(ast::Program& program) -> void {
         auto node_kind = node->getKind();
 
         switch (node_kind) {
+            case ast::NodeType::Quit:
+                quit();
+                break;
             case ast::NodeType::DBCreate:
                 auto command = dynamic_cast<ast::DBCreate*>(node.get());
                 database = db::create(command->getDbName().getValue());

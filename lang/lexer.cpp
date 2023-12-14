@@ -8,6 +8,23 @@
 
 
 namespace lexer {
+    auto tokentype_map = std::map<lexer::TokenType, std::string>{
+            {lexer::TokenType::BracketRoundBegin, "BracketRoundBegin"},
+            {lexer::TokenType::BracketRoundEnd,   "BracketRoundEnd"},
+            {lexer::TokenType::DotOperator,       "DotOperator"},
+            {lexer::TokenType::AsteriskOperator,  "AsteriskOperator"},
+            {lexer::TokenType::Number,            "Number"},
+            {lexer::TokenType::String,            "String"},
+            {lexer::TokenType::Quit,              "Quit"},
+            {lexer::TokenType::DBConnect,         "DBConnect"},
+            {lexer::TokenType::DBCreate,          "DBCreate"},
+            {lexer::TokenType::KFGetTable,        "KFGetTable"},
+            {lexer::TokenType::KMSelect,          "KMSelect"},
+            {lexer::TokenType::KMWhere,           "KMWhere"},
+            {lexer::TokenType::Identifier,        "Identifier"},
+            {lexer::TokenType::EndOfFile,         "EndOfFile"}
+    };
+
     auto tokenize(std::string input) -> std::deque<Token> {
 //        fmt::println("starting to tokenize");
         // HELPFUL VARIABLES
@@ -18,6 +35,7 @@ namespace lexer {
                 {'*',TokenType::AsteriskOperator}
         };
         auto keywords = std::map<std::string, lexer::TokenType>{
+                {"quit", TokenType::Quit},
                 {"db_connect", TokenType::DBConnect},
                 {"db_create", TokenType::DBCreate},
                 {"get_table", TokenType::KFGetTable},
@@ -122,22 +140,12 @@ namespace lexer {
     }
 
     auto format_as(Token token) -> std::string {
-        auto tokentype_map = std::map<lexer::TokenType, std::string>{
-                {lexer::TokenType::BracketRoundBegin, "BracketRoundBegin"},
-                {lexer::TokenType::BracketRoundEnd,   "BracketRoundEnd"},
-                {lexer::TokenType::DotOperator,       "DotOperator"},
-                {lexer::TokenType::AsteriskOperator,  "AsteriskOperator"},
-                {lexer::TokenType::Number,            "Number"},
-                {lexer::TokenType::String,            "String"},
-                {lexer::TokenType::DBConnect,         "DBConnect"},
-                {lexer::TokenType::DBCreate,          "DBCreate"},
-                {lexer::TokenType::KFGetTable,        "KFGetTable"},
-                {lexer::TokenType::KMSelect,          "KMSelect"},
-                {lexer::TokenType::KMWhere,           "KMWhere"},
-                {lexer::TokenType::Identifier,        "Identifier"},
-                {lexer::TokenType::EndOfFile,         "EndOfFile"}
-        };
 //        return std::pair<int, int>(0, 0);
         return fmt::format("{} {}",tokentype_map.at(token.getType()), token.getValue());
+    }
+
+    auto format_as(TokenType tokentype) -> std::string {
+//        return std::pair<int, int>(0, 0);
+        return fmt::format("{}",tokentype_map.at(tokentype));
     }
 }

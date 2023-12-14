@@ -43,6 +43,8 @@ namespace ast {
 
     //////// NODES
 
+    Quit::Quit() : Node(NodeType::Quit) {}
+
     DBCreate::DBCreate(const StringLiteral& stringLiteral) : Node(NodeType::DBCreate), db_name(stringLiteral) {}
 
     const StringLiteral DBCreate::getDbName() const {

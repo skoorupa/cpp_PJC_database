@@ -27,17 +27,33 @@ namespace parser {
             auto token_type = shift_token().getType();
 
             switch (token_type) {
+                case lexer::TokenType::Quit:
+                    parse_call_no_args();
+                    return std::make_unique<ast::Quit>();
+                    break;
                 case lexer::TokenType::DBCreate:
                     return std::make_unique<ast::DBCreate>(parse_call_single_arg<ast::StringLiteral>());
                     break;
                 default:
-                    fmt::println("!!! Parser error: Unexpected tokentype while parsing node");
+                    fmt::println("!!! Parser error: Unexpected tokentype while parsing node: {}",lexer::format_as(token_type));
             }
         }
 
         template<typename T>
         auto parse_expression() -> T {
             return parse_primary_expression<T>();
+        }
+        auto parse_call_no_args() -> void {
+            auto token = shift_token();
+            if (token.getType() != lexer::TokenType::BracketRoundBegin) {
+                fmt::println("!!! Error: Expected call for {}", get_prev_token());
+                fmt::println("got: {}", token);
+                throw;
+            }
+            if (shift_token().getType() != lexer::TokenType::BracketRoundEnd) {
+                fmt::println("!!! Error: Expected one argument for {}", get_prev_token());
+                throw;
+            }
         }
         template <typename T>
         auto parse_call_single_arg() -> T {

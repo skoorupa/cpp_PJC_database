@@ -12,6 +12,7 @@ namespace ast {
         Identifier,
         BinaryExpression,
 
+        Quit,
         DBConnect,
         DBCreate,
 
@@ -85,6 +86,11 @@ namespace ast {
     auto get_expression_value(StringLiteral s) -> std::string;
 
     //////// NODES
+
+    class Quit : public Node {
+    public:
+        Quit();
+    };
 
     class DBCreate : public Node {
         StringLiteral db_name;
