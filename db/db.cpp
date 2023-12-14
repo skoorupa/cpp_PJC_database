@@ -18,6 +18,7 @@ namespace db {
 
     auto Database::create_table(std::string name) -> Table {
         tables.insert(std::pair<std::string, Table>(name, Table(name)));
+        fmt::println("TEST - created table {}", name);
         return get_table(name);
     }
 
