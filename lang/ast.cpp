@@ -2,6 +2,27 @@
 #include "parser.hpp"
 
 namespace ast {
+    auto nodetype_map = std::map<ast::NodeType, std::string>{
+            {ast::NodeType::Program,"Program"},
+            {ast::NodeType::NumericLiteral,"NumericLiteral"},
+            {ast::NodeType::StringLiteral,"StringLiteral"},
+            {ast::NodeType::Identifier,"Identifier"},
+            {ast::NodeType::BinaryExpression,"BinaryExpression"},
+
+            {ast::NodeType::Quit,"Quit"},
+            {ast::NodeType::DBConnect,"DBConnect"},
+            {ast::NodeType::DBCreate,"DBCreate"},
+
+            {ast::NodeType::KFCreateTable,"KFCreateTable"},
+            {ast::NodeType::KFGetTable,"KFGetTable"},
+            {ast::NodeType::KMSelect,"KMSelect"},
+            {ast::NodeType::KMWhere,"KMWhere"}
+    };
+
+    auto format_as(NodeType nodeType) -> std::string {
+        return fmt::format("{}",nodetype_map.at(nodeType));
+    }
+
     // NODE
     Node::Node(const NodeType& kind) : kind(kind) {}
 

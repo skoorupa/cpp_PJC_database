@@ -22,6 +22,8 @@ namespace ast {
         KMWhere
     };
 
+    auto format_as(NodeType nodeType) -> std::string;
+
     class Node {
         NodeType const kind;
 

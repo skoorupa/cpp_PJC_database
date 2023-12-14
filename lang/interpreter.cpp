@@ -29,6 +29,8 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 database.create_table(command->getTableName().getValue());
                 break;
             }
+            default:
+                fmt::println("!!! Interpreter error: unknown node type: {}", node_kind);
         }
     }
 }
