@@ -1,6 +1,7 @@
 #include "ast.hpp"
 #include "lexer.hpp"
 #include "fmt/core.h"
+#include "fmt/format.h"
 #include <memory>
 
 namespace parser {
@@ -42,13 +43,13 @@ namespace parser {
         auto parse_call_single_arg() -> T {
             auto token = shift_token();
             if (token.getType() != lexer::TokenType::BracketRoundBegin) {
-                fmt::println("!!! Error: Expected call for {}", lexer::format_as(get_prev_token()));
-                fmt::println("got: {}", lexer::format_as(token));
+                fmt::println("!!! Error: Expected call for {}", get_prev_token());
+                fmt::println("got: {}", token);
                 throw;
             }
             auto expression = parse_expression<T>();
             if (shift_token().getType() != lexer::TokenType::BracketRoundEnd) {
-                fmt::println("!!! Error: Expected one argument for {}", lexer::format_as(get_prev_token()));
+                fmt::println("!!! Error: Expected one argument for {}", get_prev_token());
                 throw;
             }
             return expression;

@@ -1,7 +1,10 @@
-namespace interpreter {
+class Interpreter {
+    bool running;
 
-    class interpreter {
+public:
+    Interpreter();
+    auto runAST();
 
-    };
-
-} // interpreter
+    bool isRunning() const;
+    void quit();
+};

@@ -45,7 +45,7 @@ namespace lexer {
             } else {
                 // handle multicharacter tokens
 
-                // number token
+                // string token
                 if (*c=='"' || *c=='\'') {
                     auto string_char = *c;
                     auto backslash_flag = false;
@@ -69,6 +69,7 @@ namespace lexer {
 
                     tokens.push_back(Token(TokenType::String, str));
                 }
+                // number token
                 else if (isdigit(*c)) {
                     auto num = std::string();
                     while (!input.empty() && isdigit(*c)) {

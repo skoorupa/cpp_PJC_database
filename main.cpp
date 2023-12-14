@@ -6,19 +6,20 @@
 
 #include "lang/lexer.hpp"
 #include "lang/parser.hpp"
+#include "lang/interpreter.hpp"
 #include "db/db.hpp"
 
 auto main() -> int {
     fmt::println("Welcome to Based - database in C++");
-    auto quit = false;
+    auto interpreter = Interpreter();
 
-    while (!quit) {
+    while (interpreter.isRunning()) {
         auto prompt = std::string();
         fmt::print(">");
         std::getline(std::cin, prompt);
 
         if (prompt == "quit()" || prompt == "quit();")
-            quit = true;
+            interpreter.quit();
         else {
             auto parser = parser::Parser(prompt);
             auto result = parser.produceAST();
