@@ -2,6 +2,7 @@
 #include <string>
 #include <deque>
 #include <map>
+#include <fmt/core.h>
 #include "table.hpp"
 
 namespace db {
@@ -13,9 +14,10 @@ namespace db {
 
     public:
         Database(const std::string &filepath);
+        Database();
 
-        auto create();
-        auto connect();
+        auto create() -> bool;
+        auto connect() -> bool;
         auto create_table(std::string name) -> Table;
         auto get_table(std::string name) -> Table;
     };

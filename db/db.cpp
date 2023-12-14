@@ -4,13 +4,16 @@ namespace db {
     /////////////////////////////////////
     // DATABASE CLASS
     Database::Database(const std::string &filepath) : filepath(filepath), tables(std::map<std::string, Table>()) {}
+    Database::Database() : filepath(""), tables(std::map<std::string, Table>()) {}
 
-    auto Database::create() {
-        return nullptr;
+    auto Database::create() -> bool {
+        fmt::println("TEST - created new db {}",filepath);
+        return true;
     }
 
-    auto Database::connect() {
-        return nullptr;
+    auto Database::connect() -> bool {
+        fmt::println("TEST - connected to db {}",filepath);
+        return true;
     }
 
     auto Database::create_table(std::string name) -> Table {
