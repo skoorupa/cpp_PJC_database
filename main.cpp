@@ -24,14 +24,7 @@ auto main() -> int {
             auto parser = parser::Parser(prompt);
             auto result = parser.produceAST();
 
-            for (const auto& node : result.getBody()) {
-                if (node->getKind() == ast::NodeType::DBCreate) {
-                    auto n = dynamic_cast<ast::DBCreate*>(node.get());
-                    fmt::println("casting - {}", n->getDbName().getValue());
-                }
-            }
+            interpreter.runAST(result);
         }
-
-//        fmt::println("{}", result);
     }
 }
