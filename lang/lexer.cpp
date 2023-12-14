@@ -15,8 +15,7 @@ namespace lexer {
                 {'(',TokenType::BracketRoundBegin},
                 {')',TokenType::BracketRoundEnd},
                 {'.',TokenType::DotOperator},
-                {'*',TokenType::AsteriskOperator},
-                {';',TokenType::Semicolon}
+                {'*',TokenType::AsteriskOperator}
         };
         auto keywords = std::map<std::string, lexer::TokenType>{
                 {"db_connect", TokenType::DBConnect},
@@ -25,7 +24,7 @@ namespace lexer {
                 {"select", TokenType::KMSelect},
                 {"where", TokenType::KMWhere}
         };
-        auto skip = std::set<char>{' ','\n','\t'};
+        auto skip = std::set<char>{' ','\n','\t',';'};
         auto isskip = [skip](char c) {
             return skip.contains(c);
         };
@@ -127,7 +126,6 @@ namespace lexer {
                 {lexer::TokenType::BracketRoundEnd,   "BracketRoundEnd"},
                 {lexer::TokenType::DotOperator,       "DotOperator"},
                 {lexer::TokenType::AsteriskOperator,  "AsteriskOperator"},
-                {lexer::TokenType::Semicolon,         "Semicolon"},
                 {lexer::TokenType::Number,            "Number"},
                 {lexer::TokenType::String,            "String"},
                 {lexer::TokenType::DBConnect,         "DBConnect"},
