@@ -34,7 +34,6 @@ namespace ast {
     };
 
     class Program : public Node {
-        NodeType kind;
         std::deque<std::unique_ptr<Node>> body;
     public:
         Program();
