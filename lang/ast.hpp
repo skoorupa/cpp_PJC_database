@@ -115,6 +115,8 @@ namespace ast {
 
     public:
         KFGetTable(const StringLiteral &tableName);
+
+        const StringLiteral &getTableName() const;
     };
 
     class KFCreateTable : public Node {

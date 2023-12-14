@@ -27,16 +27,23 @@ namespace parser {
             auto token_type = shift_token().getType();
 
             switch (token_type) {
-                case lexer::TokenType::Quit:
+                case lexer::TokenType::Quit: {
                     parse_call_no_args();
                     return std::make_unique<ast::Quit>();
                     break;
-                case lexer::TokenType::DBCreate:
+                }
+                case lexer::TokenType::DBCreate: {
                     return std::make_unique<ast::DBCreate>(parse_call_single_arg<ast::StringLiteral>());
                     break;
-                case lexer::TokenType::KFCreateTable:
+                }
+                case lexer::TokenType::KFCreateTable: {
                     return std::make_unique<ast::KFCreateTable>(parse_call_single_arg<ast::StringLiteral>());
                     break;
+                }
+                case lexer::TokenType::KFGetTable: {
+                    return std::make_unique<ast::KFGetTable>(parse_call_single_arg<ast::StringLiteral>());
+                    break;
+                }
                 default:
                     fmt::println("!!! Parser error: Unexpected tokentype while parsing node: {}",lexer::format_as(token_type));
             }

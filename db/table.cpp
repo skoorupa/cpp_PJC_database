@@ -2,9 +2,10 @@
 #include <fmt/core.h>
 
 namespace db {
-    Table::Table(const std::string &name) : name(name), columns(std::map<std::string, Column>()) {
-        curr_row_id = 1;
-    }
+    Table::Table(const std::string &name) :
+        name(name),
+        columns(std::map<std::string, Column>()),
+        curr_row_id(1) {}
 
     auto Table::add_column(std::string name, ColumnType type) -> void {
         columns.insert(std::pair<std::string, Column>(name, Column(name, type)));

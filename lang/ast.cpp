@@ -82,6 +82,10 @@ namespace ast {
 
     KFGetTable::KFGetTable(const StringLiteral &tableName) : Node(NodeType::KFGetTable), table_name(tableName) {}
 
+    const StringLiteral &KFGetTable::getTableName() const {
+        return table_name;
+    }
+
     KMSelect::KMSelect(const std::vector<Expression> &args) : Node(NodeType::KMSelect), args(args) {}
 
     KMWhere::KMWhere(const Expression &expression) : Node(NodeType::KMWhere), expression(expression) {}
