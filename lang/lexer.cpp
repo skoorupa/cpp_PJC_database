@@ -3,11 +3,6 @@
 #pragma once
 #include "lexer.hpp"
 
-#include <string>
-#include <deque>
-#include <stack>
-#include <map>
-#include <set>
 #include <fmt/core.h>
 #include <fmt/format.h>
 
@@ -20,7 +15,8 @@ namespace lexer {
                 {'(',TokenType::BracketRoundBegin},
                 {')',TokenType::BracketRoundEnd},
                 {'.',TokenType::DotOperator},
-                {'*',TokenType::AsteriskOperator}
+                {'*',TokenType::AsteriskOperator},
+                {';',TokenType::Semicolon}
         };
         auto keywords = std::map<std::string, lexer::TokenType>{
                 {"db_connect", TokenType::DBConnect},
@@ -131,6 +127,7 @@ namespace lexer {
                 {lexer::TokenType::BracketRoundEnd,   "BracketRoundEnd"},
                 {lexer::TokenType::DotOperator,       "DotOperator"},
                 {lexer::TokenType::AsteriskOperator,  "AsteriskOperator"},
+                {lexer::TokenType::Semicolon,         "Semicolon"},
                 {lexer::TokenType::Number,            "Number"},
                 {lexer::TokenType::String,            "String"},
                 {lexer::TokenType::DBConnect,         "DBConnect"},

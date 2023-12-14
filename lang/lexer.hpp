@@ -10,6 +10,7 @@ namespace lexer {
         BracketRoundEnd,
         DotOperator,
         AsteriskOperator,
+        Semicolon,
 
         Number,
         String,
