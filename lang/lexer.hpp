@@ -9,6 +9,7 @@ namespace lexer {
         BracketRoundBegin,
         BracketRoundEnd,
         DotOperator,
+        CommaOperator,
         AsteriskOperator,
 
         Number,
@@ -20,6 +21,7 @@ namespace lexer {
 
         KFCreateTable,
         KFGetTable,
+        KMAddColumn,
         KMSelect,
         KMWhere,
         Identifier,

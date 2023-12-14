@@ -1,4 +1,5 @@
 #include <string>
+#include <map>
 
 namespace db {
     /////////////////////////////////////
@@ -18,5 +19,7 @@ namespace db {
         int getId() const;
         const std::string &getName() const;
         ColumnType getType() const;
+
+        static auto toColumnType(const std::string& str) -> ColumnType;
     };
 }

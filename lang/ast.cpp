@@ -16,6 +16,7 @@ namespace ast {
             {ast::NodeType::KFCreateTable,"KFCreateTable"},
             {ast::NodeType::KFGetTable,"KFGetTable"},
             {ast::NodeType::KMSelect,"KMSelect"},
+            {ast::NodeType::KMAddColumn,"KMAddColumn"},
             {ast::NodeType::KMWhere,"KMWhere"}
     };
 
@@ -86,7 +87,19 @@ namespace ast {
         return table_name;
     }
 
+    KMAddColumn::KMAddColumn(const std::string &name, const std::string &type)
+    : Node(NodeType::KMAddColumn),  name(name), type(type) {}
+
+    const std::string &KMAddColumn::getName() const {
+        return name;
+    }
+
+    const std::string &KMAddColumn::getType() const {
+        return type;
+    }
+
     KMSelect::KMSelect(const std::vector<Expression> &args) : Node(NodeType::KMSelect), args(args) {}
 
     KMWhere::KMWhere(const Expression &expression) : Node(NodeType::KMWhere), expression(expression) {}
+
 }

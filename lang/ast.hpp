@@ -18,6 +18,7 @@ namespace ast {
 
         KFCreateTable,
         KFGetTable,
+        KMAddColumn,
         KMSelect,
         KMWhere
     };
@@ -126,6 +127,18 @@ namespace ast {
         KFCreateTable(const StringLiteral &tableName);
 
         const StringLiteral &getTableName() const;
+    };
+
+    class KMAddColumn : public Node {
+        std::string name;
+        std::string type;
+
+    public:
+        KMAddColumn(const std::string &name, const std::string &type);
+
+        const std::string &getName() const;
+
+        const std::string &getType() const;
     };
 
     class KMSelect : public Node {

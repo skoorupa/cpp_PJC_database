@@ -12,6 +12,7 @@ namespace lexer {
             {lexer::TokenType::BracketRoundBegin, "BracketRoundBegin"},
             {lexer::TokenType::BracketRoundEnd,   "BracketRoundEnd"},
             {lexer::TokenType::DotOperator,       "DotOperator"},
+            {lexer::TokenType::CommaOperator,     "CommaOperator"},
             {lexer::TokenType::AsteriskOperator,  "AsteriskOperator"},
             {lexer::TokenType::Number,            "Number"},
             {lexer::TokenType::String,            "String"},
@@ -21,6 +22,7 @@ namespace lexer {
             {lexer::TokenType::KFGetTable,        "KFGetTable"},
             {lexer::TokenType::KFCreateTable,     "KFCreateTable"},
             {lexer::TokenType::KMSelect,          "KMSelect"},
+            {lexer::TokenType::KMAddColumn,       "KMAddColumn"},
             {lexer::TokenType::KMWhere,           "KMWhere"},
             {lexer::TokenType::Identifier,        "Identifier"},
             {lexer::TokenType::EndOfFile,         "EndOfFile"}
@@ -33,6 +35,7 @@ namespace lexer {
                 {'(',TokenType::BracketRoundBegin},
                 {')',TokenType::BracketRoundEnd},
                 {'.',TokenType::DotOperator},
+                {',',TokenType::CommaOperator},
                 {'*',TokenType::AsteriskOperator}
         };
         auto keywords = std::map<std::string, lexer::TokenType>{
@@ -41,6 +44,7 @@ namespace lexer {
                 {"db_create", TokenType::DBCreate},
                 {"get_table", TokenType::KFGetTable},
                 {"create_table", TokenType::KFCreateTable},
+                {"add_column", TokenType::KMAddColumn},
                 {"select", TokenType::KMSelect},
                 {"where", TokenType::KMWhere}
         };
