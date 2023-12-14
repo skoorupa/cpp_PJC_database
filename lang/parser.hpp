@@ -34,6 +34,9 @@ namespace parser {
                 case lexer::TokenType::DBCreate:
                     return std::make_unique<ast::DBCreate>(parse_call_single_arg<ast::StringLiteral>());
                     break;
+                case lexer::TokenType::KFCreateTable:
+                    return std::make_unique<ast::KFCreateTable>(parse_call_single_arg<ast::StringLiteral>());
+                    break;
                 default:
                     fmt::println("!!! Parser error: Unexpected tokentype while parsing node: {}",lexer::format_as(token_type));
             }

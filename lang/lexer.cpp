@@ -19,6 +19,7 @@ namespace lexer {
             {lexer::TokenType::DBConnect,         "DBConnect"},
             {lexer::TokenType::DBCreate,          "DBCreate"},
             {lexer::TokenType::KFGetTable,        "KFGetTable"},
+            {lexer::TokenType::KFCreateTable,     "KFCreateTable"},
             {lexer::TokenType::KMSelect,          "KMSelect"},
             {lexer::TokenType::KMWhere,           "KMWhere"},
             {lexer::TokenType::Identifier,        "Identifier"},
@@ -39,6 +40,7 @@ namespace lexer {
                 {"db_connect", TokenType::DBConnect},
                 {"db_create", TokenType::DBCreate},
                 {"get_table", TokenType::KFGetTable},
+                {"create_table", TokenType::KFCreateTable},
                 {"select", TokenType::KMSelect},
                 {"where", TokenType::KMWhere}
         };

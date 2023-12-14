@@ -16,6 +16,7 @@ namespace ast {
         DBConnect,
         DBCreate,
 
+        KFCreateTable,
         KFGetTable,
         KMSelect,
         KMWhere
@@ -113,6 +114,15 @@ namespace ast {
 
     public:
         KFGetTable(const StringLiteral &tableName);
+    };
+
+    class KFCreateTable : public Node {
+        StringLiteral table_name;
+
+    public:
+        KFCreateTable(const StringLiteral &tableName);
+
+        const StringLiteral &getTableName() const;
     };
 
     class KMSelect : public Node {

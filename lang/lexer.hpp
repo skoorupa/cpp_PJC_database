@@ -18,6 +18,7 @@ namespace lexer {
         DBConnect,
         DBCreate,
 
+        KFCreateTable,
         KFGetTable,
         KMSelect,
         KMWhere,

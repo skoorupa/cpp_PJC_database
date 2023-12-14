@@ -17,7 +17,7 @@ auto main() -> int {
         auto prompt = std::string();
         fmt::print(">");
         std::getline(std::cin, prompt);
-        
+
         auto parser = parser::Parser(prompt);
         auto result = parser.produceAST();
 
