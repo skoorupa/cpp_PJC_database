@@ -55,8 +55,6 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                         command->getName(),
                         db::Column::toColumnType(command->getType())
                         );
-//                curr_table->add_row(std::vector<std::string>{"hahahah"});
-//                curr_table->print();
                 break;
             }
             default:

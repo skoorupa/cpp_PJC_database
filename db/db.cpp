@@ -7,18 +7,18 @@ namespace db {
     Database::Database() : filepath(""), tables(std::map<std::string, Table>()) {}
 
     auto Database::create() -> bool {
-        fmt::println("TEST - created new db {}",filepath);
+        fmt::println("created new database: {}",filepath);
         return true;
     }
 
     auto Database::connect() -> bool {
-        fmt::println("TEST - connected to db {}",filepath);
+        fmt::println("connected to database: {}",filepath);
         return true;
     }
 
     auto Database::create_table(std::string name) -> Table {
         tables.insert(std::pair<std::string, Table>(name, Table(name)));
-        fmt::println("TEST - created table {}", name);
+        fmt::println("created new table: {}", name);
         return get_table(name);
     }
 
