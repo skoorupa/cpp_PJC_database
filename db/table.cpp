@@ -36,15 +36,17 @@ namespace db {
             int column_name_length = column_id.length();
             int max_length = column_name_length;
             for (Row row : rows) {
-                std::string value = row.get_value(column_id);
-                if (max_length < value.length()) max_length = value.length();
+                if (row.has_column(column_id)) {
+                    std::string value = row.get_value(column_id);
+                    if (max_length < value.length()) max_length = value.length();
+                }
             }
             col_widths[column_id] = max_length;
             full_width += max_length+1;
 
             fmt::print("|");
             fmt::print("{}",column_id);
-            for (int i = 0; i < max_length-column_name_length; ++i)
+            for (int i = 0; i < max_length - column_name_length; ++i)
                 fmt::print(" ");
         }
         fmt::println("|");
@@ -54,14 +56,18 @@ namespace db {
 
         for (Row row : rows) {
             for (auto column : columns) {
-                auto column_id = column.first;
-                auto value = row.get_value(column_id);
-
                 fmt::print("|");
-                fmt::print("{}", value);
+                auto column_id = column.first;
+                auto letters = 0;
+
+                if (row.has_column(column_id)) {
+                    auto value = row.get_value(column_id);
+                    letters = value.length();
+                    fmt::print("{}", value);
+                }
 
                 auto max_length = col_widths.at(column_id);
-                for (int i = 0; i < max_length - value.length(); ++i)
+                for (int i = 0; i < max_length - letters; ++i)
                     fmt::print(" ");
             }
 

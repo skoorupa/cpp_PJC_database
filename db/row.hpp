@@ -8,6 +8,8 @@ namespace db {
 
     public:
         Row(int id, const std::map<std::string, std::string> &values);
-        auto get_value(std::string column_id) -> std::string;
+        auto get_value(const std::string& column_id) -> std::string;
+        auto add_value(const std::string& column_id, std::string value) -> void;
+        auto has_column(const std::string& column_id) -> bool;
     };
 }
