@@ -51,7 +51,11 @@ namespace ast {
             : Expression(NodeType::BinaryExpression), left(left), right(right), exp_operator(expOperator) {}
 
             // IDENTIFIER
-    Identifier::Identifier(std::string &symbol) : Expression(NodeType::Identifier), symbol(symbol) {}
+    Identifier::Identifier(const std::string &symbol) : Expression(NodeType::Identifier), symbol(symbol) {}
+
+    const std::string &Identifier::getSymbol() const {
+        return symbol;
+    }
 
     // NUMERIC LITERAL
     NumericLiteral::NumericLiteral(int const& value) : Expression(NodeType::NumericLiteral), value(value) {}

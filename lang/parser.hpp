@@ -48,7 +48,7 @@ namespace parser {
                     auto args = parse_call_multiple_args();
                     return std::make_unique<ast::KMAddColumn>(
                             ((ast::StringLiteral*)args.at(0).get())->getValue(),
-                            ((ast::StringLiteral*)args.at(1).get())->getValue()
+                            ((ast::Identifier*)args.at(1).get())->getSymbol()
                             );
                     break;
                 }
@@ -69,9 +69,10 @@ namespace parser {
 //                case lexer::TokenType::Number:
 //                    return ast::NumericLiteral(std::stoi(shift_token().getValue()));
 //                    break;
-                case lexer::TokenType::String:
+                case lexer::TokenType::String: {
                     return ast::StringLiteral(shift_token().getValue());
                     break;
+                }
 
                 default:
                     fmt::println("!!! Parser error: Unexpected tokentype while parsing primary expression: {}",token_type);
@@ -86,12 +87,18 @@ namespace parser {
     //                case lexer::TokenType::Number:
     //                    return ast::NumericLiteral(std::stoi(shift_token().getValue()));
     //                    break;
-                    case lexer::TokenType::String:
-                        expr =  std::make_unique<ast::StringLiteral>(shift_token().getValue());
+                    case lexer::TokenType::Identifier: {
+                        expr = std::make_unique<ast::Identifier>(shift_token().getValue());
                         break;
+                    }
+                    case lexer::TokenType::String: {
+                        expr = std::make_unique<ast::StringLiteral>(shift_token().getValue());
+                        break;
+                    }
 
                     default:
                         fmt::println("!!! Parser error: Unexpected tokentype while parsing expression ptr: {}", token_type);
+                        throw;
                 }
                 token_type = get_token().getType();
             }
@@ -148,8 +155,11 @@ namespace parser {
         auto produceAST() -> ast::Program {
             auto program = ast::Program();
 
+//            for (lexer::Token token : tokens) {
+//                fmt::println("{}",token);
+//            }
+
             while (get_token().getType() != lexer::TokenType::EndOfFile) {
-//                program.add_node(parse_node());
                 program.getBody().emplace_back(parse_node());
             }
 

@@ -51,9 +51,10 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                     fmt::println("!!! Interpreter error: add column used without chosen table");
                     break;
                 }
+                auto column_type = db::Column::toColumnType(command->getType());
                 curr_table->add_column(
                         command->getName(),
-                        db::Column::toColumnType(command->getType())
+                        column_type
                         );
                 break;
             }

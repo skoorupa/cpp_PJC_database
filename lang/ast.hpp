@@ -67,7 +67,9 @@ namespace ast {
         std::string symbol;
 
     public:
-        Identifier(std::string &symbol);
+        Identifier(const std::string &symbol);
+
+        const std::string &getSymbol() const;
     };
 
     class NumericLiteral : public Expression {
