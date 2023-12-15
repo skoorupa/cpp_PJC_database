@@ -22,29 +22,7 @@ namespace parser {
             return parse_primary_expression();
         }
         auto parse_primary_expression() -> std::unique_ptr<ast::Expression> {
-            auto token_type = get_token().getType();
-
-            switch (token_type) {
-                case lexer::TokenType::Number: {
-                    return std::make_unique<ast::NumericLiteral>(std::stoi(shift_token().getValue()));
-                    break;
-                }
-                case lexer::TokenType::Identifier: {
-                    return std::make_unique<ast::Identifier>(shift_token().getValue());
-                    break;
-                }
-                case lexer::TokenType::String: {
-                    return std::make_unique<ast::StringLiteral>(shift_token().getValue());
-                    break;
-                }
-                case lexer::TokenType::Null: {
-                    shift_token();
-                    return std::make_unique<ast::NullLiteral>();
-                    break;
-                }
-                default:
-                    fmt::println("!!! Parser error: Unexpected tokentype while parsing primary expression: {}",token_type);
-            }
+            return parse_expression_ptr();
         }
         auto parse_expression_ptr() -> std::unique_ptr<ast::Expression>;
         auto parse_call_no_args() -> void;
