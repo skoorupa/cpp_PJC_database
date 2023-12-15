@@ -109,9 +109,9 @@ namespace ast {
         return type;
     }
 
-    KMAddRow::KMAddRow(const std::vector<std::string> &values) : Node(NodeType::KMAddRow), values(values) {}
+    KMAddRow::KMAddRow(const std::vector<db::Value> &values) : Node(NodeType::KMAddRow), values(values) {}
 
-    const std::vector<std::string> &KMAddRow::getValues() const {
+    const std::vector<db::Value> &KMAddRow::getValues() const {
         return values;
     }
 

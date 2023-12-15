@@ -1,4 +1,5 @@
 #include "parser.hpp"
+#include "../db/column.hpp"
 
 namespace parser {
     auto Parser::get_token() -> lexer::Token {
@@ -46,12 +47,18 @@ namespace parser {
             }
             case lexer::TokenType::KMAddRow: {
                 auto args = parse_call_multiple_args();
-                auto values = std::vector<std::string>();
+                auto values = std::vector<db::Value>();
                 for (const auto& arg : args) {
                     if (arg->getKind() == ast::NodeType::StringLiteral) {
-                        values.push_back(((ast::StringLiteral*)arg.get())->getValue());
+                        values.push_back(db::Value(
+                                ((ast::StringLiteral*)arg.get())->getValue(),
+                                db::ColumnType::String
+                                ));
                     } else if (arg->getKind() == ast::NodeType::NumericLiteral) {
-                        values.push_back( std::to_string(( (ast::NumericLiteral*)arg.get() )->getValue()) );
+                        values.push_back(db::Value(
+                                std::to_string(((ast::NumericLiteral*)arg.get())->getValue()),
+                                db::ColumnType::Integer
+                        ));
                         // TO BE CHANGED
                     }
                 }
@@ -88,7 +95,6 @@ namespace parser {
                     expr = std::make_unique<ast::StringLiteral>(shift_token().getValue());
                     break;
                 }
-
                 default:
                     fmt::println("!!! Parser error: Unexpected tokentype while parsing expression ptr: {}", token_type);
                     throw;

@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include "../db/column.hpp"
 
 namespace ast {
     enum class NodeType {
@@ -149,12 +150,12 @@ namespace ast {
     };
 
     class KMAddRow : public Node {
-        std::vector<std::string> values;
+        std::vector<db::Value> values;
 
     public:
-        KMAddRow(const std::vector<std::string> &values);
+        KMAddRow(const std::vector<db::Value> &values);
 
-        const std::vector<std::string> &getValues() const;
+        const std::vector<db::Value> &getValues() const;
     };
 
     // DQL

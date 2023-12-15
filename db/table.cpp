@@ -12,13 +12,13 @@ namespace db {
         fmt::println("< added new column to {} - {}",name,columnname);
     }
 
-    auto Table::add_row(std::vector<std::string> values) -> void {
+    auto Table::add_row(std::vector<Value> values) -> void {
         std::map<std::string, std::string> column_id_values = std::map<std::string, std::string>();
         // TODO: co jesli values jest wiecej/mniej niz columns
         auto i = 0;
         for (auto column : columns) {
             auto column_id = column.first;
-            column_id_values[column_id] = values[i];
+            column_id_values[column_id] = values[i].getValue();
             i++;
         }
 

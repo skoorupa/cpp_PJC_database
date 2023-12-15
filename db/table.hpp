@@ -17,7 +17,7 @@ namespace db {
         Table(const std::string &name);
 
         auto add_column(std::string name, ColumnType type) -> void;
-        auto add_row(std::vector<std::string> values) -> void;
+        auto add_row(std::vector<Value> values) -> void;
         auto print() -> void;
     };
 };
