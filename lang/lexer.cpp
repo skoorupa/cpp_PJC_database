@@ -23,6 +23,7 @@ namespace lexer {
             {lexer::TokenType::KFCreateTable,     "KFCreateTable"},
             {lexer::TokenType::KMSelect,          "KMSelect"},
             {lexer::TokenType::KMAddColumn,       "KMAddColumn"},
+            {lexer::TokenType::KMAddRow,          "KMAddRow"},
             {lexer::TokenType::KMWhere,           "KMWhere"},
             {lexer::TokenType::Identifier,        "Identifier"},
             {lexer::TokenType::EndOfFile,         "EndOfFile"}
@@ -45,6 +46,7 @@ namespace lexer {
                 {"get_table", TokenType::KFGetTable},
                 {"create_table", TokenType::KFCreateTable},
                 {"add_column", TokenType::KMAddColumn},
+                {"add_row", TokenType::KMAddRow},
                 {"select", TokenType::KMSelect},
                 {"where", TokenType::KMWhere}
         };

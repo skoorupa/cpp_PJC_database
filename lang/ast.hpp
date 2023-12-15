@@ -19,6 +19,7 @@ namespace ast {
         KFCreateTable,
         KFGetTable,
         KMAddColumn,
+        KMAddRow,
         KMSelect,
         KMWhere
     };
@@ -142,6 +143,17 @@ namespace ast {
 
         const std::string &getType() const;
     };
+
+    class KMAddRow : public Node {
+        std::vector<std::string> values;
+
+    public:
+        KMAddRow(const std::vector<std::string> &values);
+
+        const std::vector<std::string> &getValues() const;
+    };
+
+    // DQL
 
     class KMSelect : public Node {
         std::vector<Expression> args;

@@ -13,7 +13,7 @@ auto Interpreter::quit() -> void{
 auto Interpreter::runAST(ast::Program& program) -> void {
     std::unique_ptr<db::Table> curr_table;
 
-    for (const auto& node : program.getBody()) {
+    for (auto& node : program.getBody()) {
         auto node_kind = node->getKind();
 
         switch (node_kind) {
@@ -48,7 +48,7 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                     break;
                 }
                 if (!curr_table) {
-                    fmt::println("!!! Interpreter error: add column used without chosen table");
+                    fmt::println("!!! Interpreter error: add_column used without chosen table");
                     break;
                 }
                 auto column_type = db::Column::toColumnType(command->getType());
@@ -56,6 +56,19 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                         command->getName(),
                         column_type
                         );
+                break;
+            }
+            case ast::NodeType::KMAddRow: {
+                auto command = dynamic_cast<ast::KMAddRow*>(node.get());
+                if (!connected_to_db) {
+                    fmt::println("!!! Interpreter error: not connected to database in {}", node_kind);
+                    break;
+                }
+                if (!curr_table) {
+                    fmt::println("!!! Interpreter error: add_row used without chosen table");
+                    break;
+                }
+                curr_table->add_row(command->getValues());
                 break;
             }
             default:

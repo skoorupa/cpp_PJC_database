@@ -52,6 +52,18 @@ namespace parser {
                             );
                     break;
                 }
+                case lexer::TokenType::KMAddRow: {
+                    auto args = parse_call_multiple_args();
+                    auto values = std::vector<std::string>();
+                    for (const auto& arg : args) {
+                        if (arg->getKind() == ast::NodeType::StringLiteral)
+                            values.push_back(((ast::StringLiteral*)arg.get())->getValue());
+                    }
+                    return std::make_unique<ast::KMAddRow>(
+                        values
+                    );
+                    break;
+                }
                 default:
                     fmt::println("!!! Parser error: Unexpected tokentype while parsing node: {}",lexer::format_as(token_type));
             }

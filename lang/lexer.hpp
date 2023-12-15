@@ -22,6 +22,7 @@ namespace lexer {
         KFCreateTable,
         KFGetTable,
         KMAddColumn,
+        KMAddRow,
         KMSelect,
         KMWhere,
         Identifier,
