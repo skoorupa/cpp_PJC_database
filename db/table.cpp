@@ -13,12 +13,12 @@ namespace db {
     }
 
     auto Table::add_row(std::vector<Value> values) -> void {
-        std::map<std::string, std::string> column_id_values = std::map<std::string, std::string>();
+        std::map<std::string, db::Value> column_id_values = std::map<std::string, db::Value>();
         // TODO: co jesli values jest wiecej/mniej niz columns
         auto i = 0;
         for (auto column : columns) {
             auto column_id = column.first;
-            column_id_values[column_id] = values[i].getValue();
+            column_id_values.insert(std::pair<std::string, db::Value>(column_id,values[i]));
             i++;
         }
 
@@ -37,7 +37,7 @@ namespace db {
             int max_length = column_name_length;
             for (Row row : rows) {
                 if (row.has_column(column_id)) {
-                    std::string value = row.get_value(column_id);
+                    std::string value = row.get_value_as_string(column_id);
                     if (max_length < value.length()) max_length = value.length();
                 }
             }
@@ -61,7 +61,7 @@ namespace db {
                 auto letters = 0;
 
                 if (row.has_column(column_id)) {
-                    auto value = row.get_value(column_id);
+                    auto value = row.get_value_as_string(column_id);
                     letters = value.length();
                     fmt::print("{}", value);
                 }
