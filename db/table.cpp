@@ -10,7 +10,8 @@ namespace db {
     auto Table::add_column(std::string columnname, ColumnType type) -> void {
         columns.insert(std::pair<std::string, Column>(columnname, Column(columnname, type)));
         fmt::println("< added new column to {} - {}",name,columnname);
-        // TODO: wypelnic nowa kolumne nullami
+        for (Row& row : rows)
+            row.set_value(columnname, Value("null", ColumnType::Null));
     }
 
     auto Table::add_row(std::vector<Value> values) -> void {

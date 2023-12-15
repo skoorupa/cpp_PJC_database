@@ -10,7 +10,7 @@ namespace db {
         return values.at(column_id).getValue();
     }
 
-    auto Row::add_value(const std::string& column_id, const db::Value& value) -> void {
+    auto Row::set_value(const std::string& column_id, const db::Value& value) -> void {
         values.insert(std::pair<std::string, db::Value>(column_id, value));
     }
 
