@@ -14,6 +14,7 @@ namespace lexer {
 
         Number,
         String,
+        Null,
 
         Quit,
         DBConnect,

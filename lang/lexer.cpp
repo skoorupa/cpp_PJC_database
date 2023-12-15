@@ -16,6 +16,7 @@ namespace lexer {
             {lexer::TokenType::AsteriskOperator,  "AsteriskOperator"},
             {lexer::TokenType::Number,            "Number"},
             {lexer::TokenType::String,            "String"},
+            {lexer::TokenType::Null,              "Null"},
             {lexer::TokenType::Quit,              "Quit"},
             {lexer::TokenType::DBConnect,         "DBConnect"},
             {lexer::TokenType::DBCreate,          "DBCreate"},
@@ -41,6 +42,7 @@ namespace lexer {
                 {'*',TokenType::AsteriskOperator}
         };
         auto keywords = std::map<std::string, lexer::TokenType>{
+                {"~null", TokenType::Null},
                 {"quit", TokenType::Quit},
                 {"connect_db", TokenType::DBConnect},
                 {"create_db", TokenType::DBCreate},
@@ -108,9 +110,9 @@ namespace lexer {
                     tokens.push_back(Token(TokenType::Number, num));
                 }
                 // keyword token
-                else if (isalpha(*c) || *c == '_') {
+                else if (isalpha(*c) || *c == '_' || *c == '~') {
                     auto txt = std::string();
-                    while (!input.empty() && (isalpha(*c) || *c == '_')) {
+                    while (!input.empty() && (isalpha(*c) || *c == '_' || *c == '~')) {
                         txt += *c;
                         pop_front_str(input);
                     }

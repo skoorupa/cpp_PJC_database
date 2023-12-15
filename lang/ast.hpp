@@ -10,6 +10,7 @@ namespace ast {
         Program,
         NumericLiteral,
         StringLiteral,
+        NullLiteral,
         Identifier,
         BinaryExpression,
 
@@ -92,6 +93,11 @@ namespace ast {
         StringLiteral(const std::string& value);
 
         std::string getValue() const;
+    };
+
+    class NullLiteral : public Expression {
+    public:
+        NullLiteral();
     };
 
     auto get_expression_value(StringLiteral s) -> std::string;

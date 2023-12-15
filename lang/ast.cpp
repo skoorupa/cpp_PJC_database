@@ -74,6 +74,8 @@ namespace ast {
         return value;
     }
 
+    NullLiteral::NullLiteral() : Expression(NodeType::NullLiteral) {}
+
     //////// NODES
 
     Quit::Quit() : Node(NodeType::Quit) {}

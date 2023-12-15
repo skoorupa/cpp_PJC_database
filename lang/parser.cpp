@@ -59,7 +59,11 @@ namespace parser {
                                 std::to_string(((ast::NumericLiteral*)arg.get())->getValue()),
                                 db::ColumnType::Integer
                         ));
-                        // TO BE CHANGED
+                    } else if (arg->getKind() == ast::NodeType::NullLiteral) {
+                        values.push_back(db::Value(
+                                "null",
+                                db::ColumnType::Null
+                        ));
                     }
                 }
                 return std::make_unique<ast::KMAddRow>(
@@ -95,6 +99,11 @@ namespace parser {
                     expr = std::make_unique<ast::StringLiteral>(shift_token().getValue());
                     break;
                 }
+                case lexer::TokenType::Null: {
+                    shift_token();
+                    expr = std::make_unique<ast::NullLiteral>();
+                    break;
+                }
                 default:
                     fmt::println("!!! Parser error: Unexpected tokentype while parsing expression ptr: {}", token_type);
                     throw;
@@ -110,12 +119,11 @@ namespace parser {
     auto Parser::parse_call_no_args() -> void {
         auto token = shift_token();
         if (token.getType() != lexer::TokenType::BracketRoundBegin) {
-            fmt::println("!!! Error: Expected call for {}", get_prev_token());
-            fmt::println("got: {}", token);
+            fmt::println("!!! Parser error: Expected call for {}", get_prev_token());
             throw;
         }
         if (shift_token().getType() != lexer::TokenType::BracketRoundEnd) {
-            fmt::println("!!! Error: Expected one argument for {}", get_prev_token());
+            fmt::println("!!! Parser error: Expected no arguments for {}", get_prev_token());
             throw;
         }
     }
@@ -124,7 +132,7 @@ namespace parser {
         auto args = std::deque<std::unique_ptr<ast::Expression>>();
         auto token = shift_token();
         if (token.getType() != lexer::TokenType::BracketRoundBegin) {
-            fmt::println("!!! Error: Expected call for {}", get_prev_token());
+            fmt::println("!!! Parser error: Expected call for {}", get_prev_token());
             throw;
         }
 

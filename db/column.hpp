@@ -6,7 +6,7 @@ namespace db {
     /////////////////////////////////////
     // DBTYPES
     enum class ColumnType {
-        Integer, String
+        Integer, String, Null
     };
 
     /////////////////////////////////////
