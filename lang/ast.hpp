@@ -80,6 +80,8 @@ namespace ast {
 
     public:
         NumericLiteral(int const& value);
+
+        int getValue() const;
     };
 
     class StringLiteral : public Expression {

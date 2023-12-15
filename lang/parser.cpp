@@ -22,15 +22,18 @@ namespace parser {
                 break;
             }
             case lexer::TokenType::DBCreate: {
-                return std::make_unique<ast::DBCreate>(parse_call_single_arg<ast::StringLiteral>());
+                auto arg = parse_call_single_arg();
+                return std::make_unique<ast::DBCreate>(((ast::StringLiteral*)arg.get())->getValue());
                 break;
             }
             case lexer::TokenType::KFCreateTable: {
-                return std::make_unique<ast::KFCreateTable>(parse_call_single_arg<ast::StringLiteral>());
+                auto arg = parse_call_single_arg();
+                return std::make_unique<ast::KFCreateTable>(((ast::StringLiteral*)arg.get())->getValue());
                 break;
             }
             case lexer::TokenType::KFGetTable: {
-                return std::make_unique<ast::KFGetTable>(parse_call_single_arg<ast::StringLiteral>());
+                auto arg = parse_call_single_arg();
+                return std::make_unique<ast::KFGetTable>(((ast::StringLiteral*)arg.get())->getValue());
                 break;
             }
             case lexer::TokenType::KMAddColumn: {
@@ -47,6 +50,9 @@ namespace parser {
                 for (const auto& arg : args) {
                     if (arg->getKind() == ast::NodeType::StringLiteral) {
                         values.push_back(((ast::StringLiteral*)arg.get())->getValue());
+                    } else if (arg->getKind() == ast::NodeType::NumericLiteral) {
+                        values.push_back( std::to_string(( (ast::NumericLiteral*)arg.get() )->getValue()) );
+                        // TO BE CHANGED
                     }
                 }
                 return std::make_unique<ast::KMAddRow>(
@@ -70,9 +76,10 @@ namespace parser {
 
         while (token_type != lexer::TokenType::CommaOperator && token_type != lexer::TokenType::BracketRoundEnd) {
             switch (token_type) {
-                //                case lexer::TokenType::Number:
-                //                    return ast::NumericLiteral(std::stoi(shift_token().getValue()));
-                //                    break;
+                case lexer::TokenType::Number: {
+                    expr = std::make_unique<ast::NumericLiteral>(std::stoi(shift_token().getValue()));
+                    break;
+                }
                 case lexer::TokenType::Identifier: {
                     expr = std::make_unique<ast::Identifier>(shift_token().getValue());
                     break;

@@ -3,6 +3,7 @@
 #include "fmt/core.h"
 #include "fmt/format.h"
 #include <memory>
+#include <string>
 
 namespace parser {
     class Parser {
@@ -17,20 +18,18 @@ namespace parser {
         auto shift_token() -> lexer::Token;
         auto parse_node() -> std::unique_ptr<ast::Node>;
 
-        template<typename T>
-        auto parse_expression() -> T {
-            return parse_primary_expression<T>();
+        auto parse_expression() -> std::unique_ptr<ast::Expression> {
+            return parse_primary_expression();
         }
-        template<typename T>
-        auto parse_primary_expression() -> T {
+        auto parse_primary_expression() -> std::unique_ptr<ast::Expression> {
             auto token_type = get_token().getType();
 
             switch (token_type) {
-//                case lexer::TokenType::Number:
-//                    return ast::NumericLiteral(std::stoi(shift_token().getValue()));
-//                    break;
+                case lexer::TokenType::Number:
+                    return std::make_unique<ast::NumericLiteral>(std::stoi(shift_token().getValue()));
+                    break;
                 case lexer::TokenType::String: {
-                    return ast::StringLiteral(shift_token().getValue());
+                    return std::make_unique<ast::StringLiteral>(shift_token().getValue());
                     break;
                 }
 
@@ -41,15 +40,14 @@ namespace parser {
         auto parse_expression_ptr() -> std::unique_ptr<ast::Expression>;
         auto parse_call_no_args() -> void;
 
-        template <typename T>
-        auto parse_call_single_arg() -> T {
+        auto parse_call_single_arg() -> std::unique_ptr<ast::Expression> {
             auto token = shift_token();
             if (token.getType() != lexer::TokenType::BracketRoundBegin) {
                 fmt::println("!!! Error: Expected call for {}", get_prev_token());
                 fmt::println("got: {}", token);
                 throw;
             }
-            auto expression = parse_expression<T>();
+            auto expression = parse_expression();
             if (shift_token().getType() != lexer::TokenType::BracketRoundEnd) {
                 fmt::println("!!! Error: Expected one argument for {}", get_prev_token());
                 throw;

@@ -63,6 +63,10 @@ namespace ast {
     // NUMERIC LITERAL
     NumericLiteral::NumericLiteral(int const& value) : Expression(NodeType::NumericLiteral), value(value) {}
 
+    int NumericLiteral::getValue() const {
+        return value;
+    }
+
     // STRING LITERAL
     StringLiteral::StringLiteral(const std::string& value) : Expression(NodeType::StringLiteral), value(value) {}
 

@@ -18,10 +18,10 @@ auto main() -> int {
     for (std::string devcmd : {
         "create_db('baza')",
         "create_table('tablica')",
-        "get_table('tablica') add_column('imie','string')",
+        "get_table('tablica') add_column('id','int')",
         "get_table('tablica') add_column('nazwisko','string')",
-        "get_table('tablica') add_row('adam','skorupski')",
-        "get_table('tablica') add_row('kacper','kacperowski')",
+        "get_table('tablica') add_row(1,'skorupski')",
+        "get_table('tablica') add_row(2,'kacperowski')",
         "get_table('tablica') print()"
     }) {
         auto parser = parser::Parser(devcmd);
@@ -34,7 +34,7 @@ auto main() -> int {
 
     while (interpreter.isRunning()) {
         auto prompt = std::string();
-        fmt::print(">");
+        fmt::print("> ");
         std::getline(std::cin, prompt);
 
         auto parser = parser::Parser(prompt);
