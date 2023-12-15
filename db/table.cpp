@@ -26,6 +26,7 @@ namespace db {
     }
 
     auto Table::print() -> void {
+        fmt::println("< Table {}:", name);
         std::map<std::string, int> col_widths = std::map<std::string,int>();
         auto full_width = 0;
         for (auto column : columns) {
