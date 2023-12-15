@@ -27,8 +27,9 @@ namespace db {
         auto pair = tables.find(name);
         if (pair != tables.end())
             return pair->second;
-        else
-            fmt::println("nie ma takiej tabeli");
+        else {
+            throw name;
+        }
     }
 
     /////////////////////////////////////

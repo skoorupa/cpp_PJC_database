@@ -36,7 +36,11 @@ auto Interpreter::runAST(ast::Program& program) -> void {
             case ast::NodeType::KFGetTable: {
                 auto command = (ast::KFGetTable*) node.get();
                 if (connected_to_db) {
-                    curr_table = &database.get_table(command->getTableName().getValue());;
+                    try {
+                        curr_table = &database.get_table(command->getTableName().getValue());
+                    } catch (std::string& name) {
+                        fmt::println("!!! Interpreter error: cannot find table {}",name);
+                    }
                 } else
                     fmt::println("!!! Interpreter error: not connected to database in {}", node_kind);
                 break;
@@ -77,7 +81,7 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                     break;
                 }
                 if (!curr_table) {
-                    fmt::println("!!! Interpreter error: add_row used without chosen table");
+                    fmt::println("!!! Interpreter error: print used without chosen table");
                     break;
                 }
                 curr_table->print();
