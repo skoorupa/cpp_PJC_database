@@ -40,8 +40,8 @@ namespace lexer {
         };
         auto keywords = std::map<std::string, lexer::TokenType>{
                 {"quit", TokenType::Quit},
-                {"db_connect", TokenType::DBConnect},
-                {"db_create", TokenType::DBCreate},
+                {"connect_db", TokenType::DBConnect},
+                {"create_db", TokenType::DBCreate},
                 {"get_table", TokenType::KFGetTable},
                 {"create_table", TokenType::KFCreateTable},
                 {"add_column", TokenType::KMAddColumn},
