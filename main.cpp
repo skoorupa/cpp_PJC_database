@@ -34,7 +34,7 @@ auto main() -> int {
 
     while (interpreter.isRunning()) {
         auto prompt = std::string();
-        fmt::print("> ");
+        fmt::print(">");
         std::getline(std::cin, prompt);
 
         auto parser = parser::Parser(prompt);

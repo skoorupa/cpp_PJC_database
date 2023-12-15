@@ -7,8 +7,9 @@ namespace db {
         columns(std::map<std::string, Column>()),
         curr_row_id(1) {}
 
-    auto Table::add_column(std::string name, ColumnType type) -> void {
-        columns.insert(std::pair<std::string, Column>(name, Column(name, type)));
+    auto Table::add_column(std::string columnname, ColumnType type) -> void {
+        columns.insert(std::pair<std::string, Column>(columnname, Column(columnname, type)));
+        fmt::println("< added new column to {} - {}",name,columnname);
     }
 
     auto Table::add_row(std::vector<std::string> values) -> void {
@@ -23,6 +24,7 @@ namespace db {
 
         rows.push_back(Row(curr_row_id, column_id_values));
         curr_row_id++;
+        fmt::println("< added new row to {}",name);
     }
 
     auto Table::print() -> void {
