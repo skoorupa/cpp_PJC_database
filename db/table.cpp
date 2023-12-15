@@ -35,8 +35,8 @@ namespace db {
         auto full_width = 0;
         for (auto column : columns) {
             auto column_id = column.first;
-            int column_name_length = column_id.length();
-            int max_length = column_name_length;
+            auto column_name_length = column_id.length();
+            auto max_length = column_name_length;
             for (Row row : rows) {
                 if (row.has_column(column_id)) {
                     std::string value = row.get_value_as_string(column_id);
