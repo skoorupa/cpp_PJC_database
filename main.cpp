@@ -13,6 +13,20 @@ auto main() -> int {
     fmt::println("Welcome to Based - database in C++");
     auto interpreter = Interpreter();
 
+    // DEV
+
+    for (std::string devcmd : {
+        "create_db(\"baza\")",
+        "create_table(\"tablica\")"
+    }) {
+        auto parser = parser::Parser(devcmd);
+        auto result = parser.produceAST();
+
+        interpreter.runAST(result);
+    }
+
+    // ENDDEV
+
     while (interpreter.isRunning()) {
         auto prompt = std::string();
         fmt::print(">");
