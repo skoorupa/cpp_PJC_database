@@ -24,6 +24,7 @@ namespace lexer {
         KMAddColumn,
         KMAddRow,
         KMSelect,
+        KMPrint,
         KMWhere,
         Identifier,
         EndOfFile

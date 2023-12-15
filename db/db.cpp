@@ -22,8 +22,13 @@ namespace db {
         return get_table(name);
     }
 
-    auto Database::get_table(std::string name) -> Table {
-        return tables.at(name);
+    auto Database::get_table(std::string name) -> Table& {
+//        return tables.at(name);
+        auto pair = tables.find(name);
+        if (pair != tables.end())
+            return pair->second;
+        else
+            fmt::println("nie ma takiej tabeli");
     }
 
     /////////////////////////////////////

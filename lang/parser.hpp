@@ -56,12 +56,18 @@ namespace parser {
                     auto args = parse_call_multiple_args();
                     auto values = std::vector<std::string>();
                     for (const auto& arg : args) {
-                        if (arg->getKind() == ast::NodeType::StringLiteral)
+                        if (arg->getKind() == ast::NodeType::StringLiteral) {
                             values.push_back(((ast::StringLiteral*)arg.get())->getValue());
+                        }
                     }
                     return std::make_unique<ast::KMAddRow>(
                         values
                     );
+                    break;
+                }
+                case lexer::TokenType::KMPrint: {
+                    parse_call_no_args();
+                    return std::make_unique<ast::KMPrint>();
                     break;
                 }
                 default:

@@ -17,6 +17,8 @@ namespace ast {
             {ast::NodeType::KFGetTable,"KFGetTable"},
             {ast::NodeType::KMAddColumn,"KMAddColumn"},
             {ast::NodeType::KMAddRow,"KMAddRow"},
+            {ast::NodeType::KMAddRow,"KMPrint"},
+
             {ast::NodeType::KMSelect,"KMSelect"},
             {ast::NodeType::KMWhere,"KMWhere"}
     };
@@ -109,8 +111,9 @@ namespace ast {
         return values;
     }
 
+    KMPrint::KMPrint() : Node(NodeType::KMPrint) {}
+
     KMSelect::KMSelect(const std::vector<Expression> &args) : Node(NodeType::KMSelect), args(args) {}
 
     KMWhere::KMWhere(const Expression &expression) : Node(NodeType::KMWhere), expression(expression) {}
-
 }

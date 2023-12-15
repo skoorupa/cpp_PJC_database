@@ -11,7 +11,7 @@ auto Interpreter::quit() -> void{
 }
 
 auto Interpreter::runAST(ast::Program& program) -> void {
-    std::unique_ptr<db::Table> curr_table;
+    db::Table* curr_table = nullptr;
 
     for (auto& node : program.getBody()) {
         auto node_kind = node->getKind();
@@ -36,7 +36,7 @@ auto Interpreter::runAST(ast::Program& program) -> void {
             case ast::NodeType::KFGetTable: {
                 auto command = (ast::KFGetTable*) node.get();
                 if (connected_to_db) {
-                    curr_table = std::make_unique<db::Table>(database.get_table(command->getTableName().getValue()));
+                    curr_table = &database.get_table(command->getTableName().getValue());;
                 } else
                     fmt::println("!!! Interpreter error: not connected to database in {}", node_kind);
                 break;
@@ -59,7 +59,7 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 break;
             }
             case ast::NodeType::KMAddRow: {
-                auto command = dynamic_cast<ast::KMAddRow*>(node.get());
+                auto command = (ast::KMAddRow*)node.get();
                 if (!connected_to_db) {
                     fmt::println("!!! Interpreter error: not connected to database in {}", node_kind);
                     break;
@@ -69,6 +69,18 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                     break;
                 }
                 curr_table->add_row(command->getValues());
+                break;
+            }
+            case ast::NodeType::KMPrint: {
+                if (!connected_to_db) {
+                    fmt::println("!!! Interpreter error: not connected to database in {}", node_kind);
+                    break;
+                }
+                if (!curr_table) {
+                    fmt::println("!!! Interpreter error: add_row used without chosen table");
+                    break;
+                }
+                curr_table->print();
                 break;
             }
             default:

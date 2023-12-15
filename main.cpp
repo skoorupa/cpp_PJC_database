@@ -16,8 +16,13 @@ auto main() -> int {
     // DEV
 
     for (std::string devcmd : {
-        "create_db(\"baza\")",
-        "create_table(\"tablica\")"
+        "create_db('baza')",
+        "create_table('tablica')",
+        "get_table('tablica') add_column('imie','string')",
+        "get_table('tablica') add_column('nazwisko','string')",
+        "get_table('tablica') add_row('adam','skorupski')",
+        "get_table('tablica') add_row('kacper','kacperowski')",
+        "get_table('tablica') print()"
     }) {
         auto parser = parser::Parser(devcmd);
         auto result = parser.produceAST();

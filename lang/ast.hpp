@@ -20,6 +20,8 @@ namespace ast {
         KFGetTable,
         KMAddColumn,
         KMAddRow,
+        KMPrint,
+
         KMSelect,
         KMWhere
     };
@@ -154,6 +156,11 @@ namespace ast {
     };
 
     // DQL
+
+    class KMPrint : public Node {
+    public:
+        KMPrint();
+    };
 
     class KMSelect : public Node {
         std::vector<Expression> args;
