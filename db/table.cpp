@@ -20,6 +20,16 @@ namespace db {
             row.remove_value(name);
     }
 
+    auto Table::rename_column(const std::string& old_name, const std::string& new_name) -> void {
+        // https://stackoverflow.com/questions/5743545/what-is-the-fastest-way-to-change-a-key-of-an-element-inside-stdmap
+        // TODO: kolejnosc!!!
+        auto node = columns.extract(old_name);
+        node.key() = old_name;
+        columns.insert(std::pair<std::string, Column>(new_name, node.mapped()));
+        for (Row& row : rows)
+            row.rename_column(old_name, new_name);
+    }
+
     auto Table::add_row(std::vector<Value> values) -> void {
         std::map<std::string, db::Value> column_id_values = std::map<std::string, db::Value>();
         // TODO: co jesli values jest wiecej/mniej niz columns

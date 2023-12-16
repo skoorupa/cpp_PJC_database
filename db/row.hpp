@@ -14,5 +14,6 @@ namespace db {
         auto set_value(const std::string& column_id, const db::Value& value) -> void;
         auto remove_value(const std::string& column_id) -> void;
         auto has_column(const std::string& column_id) -> bool;
+        auto rename_column(const std::string& old_name, const std::string& new_name) -> void;
     };
 }

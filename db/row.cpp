@@ -21,4 +21,10 @@ namespace db {
     auto Row::has_column(const std::string &column_id) -> bool {
         return values.contains(column_id);
     }
+
+    auto Row::rename_column(const std::string &old_name, const std::string &new_name) -> void {
+        auto node = values.extract(old_name);
+        node.key() = old_name;
+        values.insert(std::pair<std::string, Value>(new_name, node.mapped()));
+    }
 }
