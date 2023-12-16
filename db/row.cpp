@@ -14,6 +14,10 @@ namespace db {
         values.insert(std::pair<std::string, db::Value>(column_id, value));
     }
 
+    auto Row::remove_value(const std::string &column_id) -> void {
+        values.erase(column_id);
+    }
+
     auto Row::has_column(const std::string &column_id) -> bool {
         return values.contains(column_id);
     }

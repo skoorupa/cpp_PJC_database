@@ -14,6 +14,12 @@ namespace db {
             row.set_value(columnname, Value("null", ColumnType::Null));
     }
 
+    auto Table::remove_column(const std::string& name) -> void {
+        columns.erase(name);
+        for (Row& row : rows)
+            row.remove_value(name);
+    }
+
     auto Table::add_row(std::vector<Value> values) -> void {
         std::map<std::string, db::Value> column_id_values = std::map<std::string, db::Value>();
         // TODO: co jesli values jest wiecej/mniej niz columns

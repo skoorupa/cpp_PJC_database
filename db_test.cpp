@@ -34,4 +34,6 @@ auto main() -> int {
             );
 
     emp.print();
+    emp.remove_column("name");
+    emp.print();
 }
