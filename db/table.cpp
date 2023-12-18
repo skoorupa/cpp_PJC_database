@@ -4,38 +4,57 @@
 namespace db {
     Table::Table(const std::string &name) :
         name(name),
-        columns(std::map<std::string, Column>()),
+        columns(std::deque<Column>()),
         curr_row_id(1) {}
 
     auto Table::add_column(std::string columnname, ColumnType type) -> void {
-        columns.insert(std::pair<std::string, Column>(columnname, Column(columnname, type)));
+        columns.push_back(Column(columnname, type));
         fmt::println("< added new column to {} - {}",name,columnname);
         for (Row& row : rows)
             row.set_value(columnname, Value("null", ColumnType::Null));
     }
 
-    auto Table::remove_column(const std::string& name) -> void {
-        columns.erase(name);
+    auto Table::get_column_iterator(const std::string& columnname) {
+        return std::ranges::find_if(
+                columns.begin(),
+                columns.end(),
+                [columnname](const Column& column)->bool{return column.getName() == columnname;}
+        );
+    }
+
+    auto Table::has_column(const std::string& columnname) -> bool {
+        return get_column_iterator(columnname) != columns.end();
+    }
+
+    auto Table::remove_column(const std::string& columnname) -> void {
+        auto col = get_column_iterator(columnname);
+        if (col != columns.end()) {
+
+        }
         for (Row& row : rows)
-            row.remove_value(name);
+            row.remove_value(columnname);
     }
 
     auto Table::rename_column(const std::string& old_name, const std::string& new_name) -> void {
-        // https://stackoverflow.com/questions/5743545/what-is-the-fastest-way-to-change-a-key-of-an-element-inside-stdmap
-        // TODO: kolejnosc!!!
-        auto node = columns.extract(old_name);
-        node.key() = old_name;
-        columns.insert(std::pair<std::string, Column>(new_name, node.mapped()));
-        for (Row& row : rows)
-            row.rename_column(old_name, new_name);
+        auto col = get_column_iterator(old_name);
+        if (col == columns.end())
+            fmt::println("< cannot find column {} in table {}",old_name,name);
+        else if (has_column(new_name)) {
+            fmt::println("< column {} already exists in table {}",old_name,name);
+        } else {
+            col->setName(new_name);
+            for (Row& row : rows)
+                row.rename_column(old_name, new_name);
+            fmt::println("< renamed column {} to {} in table {}",old_name,new_name,name);
+        }
     }
 
     auto Table::add_row(std::vector<Value> values) -> void {
-        std::map<std::string, db::Value> column_id_values = std::map<std::string, db::Value>();
+        std::unordered_map<std::string, db::Value> column_id_values = std::unordered_map<std::string, db::Value>();
         // TODO: co jesli values jest wiecej/mniej niz columns
         auto i = 0;
-        for (auto column : columns) {
-            auto column_id = column.first;
+        for (const auto& column : columns) {
+            auto column_id = column.getName();
             column_id_values.insert(std::pair<std::string, db::Value>(column_id,values[i]));
             i++;
         }
@@ -47,13 +66,13 @@ namespace db {
 
     auto Table::print() -> void {
         fmt::println("< Table {}:", name);
-        std::map<std::string, int> col_widths = std::map<std::string,int>();
+        std::unordered_map<std::string, int> col_widths = std::unordered_map<std::string,int>();
         auto full_width = 0;
-        for (auto column : columns) {
-            auto column_id = column.first;
+        for (const auto& column : columns) {
+            auto column_id = column.getName();
             auto column_name_length = column_id.length();
             auto max_length = column_name_length;
-            for (Row row : rows) {
+            for (Row& row : rows) {
                 if (row.has_column(column_id)) {
                     std::string value = row.get_value_as_string(column_id);
                     if (max_length < value.length()) max_length = value.length();
@@ -73,9 +92,9 @@ namespace db {
         fmt::println("");
 
         for (Row row : rows) {
-            for (auto column : columns) {
+            for (const auto& column : columns) {
                 fmt::print("|");
-                auto column_id = column.first;
+                auto column_id = column.getName();
                 auto letters = 0;
 
                 if (row.has_column(column_id)) {

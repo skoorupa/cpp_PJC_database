@@ -1,7 +1,7 @@
 #include "row.hpp"
 
 namespace db {
-    Row::Row(int id, const std::map<std::string, db::Value> &values) : id(id), values(values) {}
+    Row::Row(int id, const std::unordered_map<std::string, db::Value> &values) : id(id), values(values) {}
     auto Row::get_value(const std::string& column_id) -> db::Value {
         return values.at(column_id);
     }

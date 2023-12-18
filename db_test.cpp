@@ -4,10 +4,10 @@
 
 auto main() -> int {
     auto test_db = db::create("test.db");
-    db::Table emp0 = test_db.create_table("emp");
+    test_db.create_table("emp");
     db::Table& emp = test_db.get_table("emp");
-    emp.add_column("zzz",db::ColumnType::Integer);
-    emp.add_column("name",db::ColumnType::String);
+    emp.add_column("id",db::ColumnType::Integer);
+    emp.add_column("imie",db::ColumnType::String);
     emp.add_row(
             std::vector<db::Value>{
                 db::Value("1",db::ColumnType::Integer),
@@ -34,6 +34,6 @@ auto main() -> int {
             );
 
     emp.print();
-    emp.rename_column("zzz","id");
+    emp.rename_column("id","zzz");
     emp.print();
 }

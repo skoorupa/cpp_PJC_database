@@ -33,6 +33,8 @@ namespace db {
         int getId() const;
         const std::string &getName() const;
         ColumnType getType() const;
+        void setName(const std::string &name);
+        void setType(ColumnType type);
 
         static auto toColumnType(const std::string& str) -> ColumnType;
     };
