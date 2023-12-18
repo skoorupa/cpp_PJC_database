@@ -40,6 +40,12 @@ namespace db {
         fmt::println("< renamed table {} to {}", old_name, new_name);
     }
 
+    auto Database::remove_table(const std::string& name) -> void {
+        auto table = tables.find(name);
+        tables.erase(name);
+        fmt::println("< removed table {}", name);
+    }
+
     /////////////////////////////////////
     // DB HANDLING
     auto create(std::string filepath) -> Database {

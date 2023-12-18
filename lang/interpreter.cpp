@@ -93,7 +93,6 @@ auto Interpreter::runAST(ast::Program& program) -> void {
 
                 if (!curr_column.empty()) {
                     // renaming column
-
                     try {
                         curr_table->rename_column(curr_column, new_name);
                         curr_column = new_name;
@@ -102,7 +101,6 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                     }
                 } else {
                     // renaming table
-                    // TODO
                     try {
                         curr_database.rename_table(curr_table->getName(), new_name);
                     } catch (std::string& message) {
@@ -132,7 +130,12 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                     }
                 } else {
                     // removing table
-                    // TODO
+                    try {
+                        curr_database.remove_table(curr_table->getName());
+                        curr_column = "";
+                    } catch (std::string& message) {
+                        fmt::println("[DB ERROR] {}", message);
+                    }
                 }
 
                 break;
