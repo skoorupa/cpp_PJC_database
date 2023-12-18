@@ -17,7 +17,7 @@ namespace ast {
             {ast::NodeType::KFGetTable,"KFGetTable"},
             {ast::NodeType::KMAddColumn,"KMAddColumn"},
             {ast::NodeType::KMAddRow,"KMAddRow"},
-            {ast::NodeType::KMAddRow,"KMPrint"},
+            {ast::NodeType::KMPrint,"KMPrint"},
 
             {ast::NodeType::KMSelect,"KMSelect"},
             {ast::NodeType::KMWhere,"KMWhere"}
@@ -29,19 +29,11 @@ namespace ast {
 
     // NODE
     Node::Node(const NodeType& kind) : kind(kind) {}
-
-    const NodeType Node::getKind() const {
-        return kind;
-    }
+    const NodeType Node::getKind() const {return kind;}
 
     // PROGRAM
-    Program::Program() : Node(NodeType::Program) {
-        body = std::deque<std::unique_ptr<Node>>();
-    }
-
-    std::deque<std::unique_ptr<Node>> &Program::getBody() {
-        return body;
-    }
+    Program::Program() : Node(NodeType::Program), body(std::deque<std::unique_ptr<Node>>()) {}
+    std::deque<std::unique_ptr<Node>> &Program::getBody() {return body;}
 
     // EXPRESSION
     Expression::Expression(const NodeType& kind) : Node(kind) {}
@@ -55,24 +47,15 @@ namespace ast {
 
             // IDENTIFIER
     Identifier::Identifier(const std::string &symbol) : Expression(NodeType::Identifier), symbol(symbol) {}
-
-    const std::string &Identifier::getSymbol() const {
-        return symbol;
-    }
+    const std::string &Identifier::getSymbol() const {return symbol;}
 
     // NUMERIC LITERAL
     NumericLiteral::NumericLiteral(int const& value) : Expression(NodeType::NumericLiteral), value(value) {}
-
-    int NumericLiteral::getValue() const {
-        return value;
-    }
+    int NumericLiteral::getValue() const {return value;}
 
     // STRING LITERAL
     StringLiteral::StringLiteral(const std::string& value) : Expression(NodeType::StringLiteral), value(value) {}
-
-    std::string StringLiteral::getValue() const {
-        return value;
-    }
+    std::string StringLiteral::getValue() const {return value;}
 
     NullLiteral::NullLiteral() : Expression(NodeType::NullLiteral) {}
 
@@ -81,27 +64,20 @@ namespace ast {
     Quit::Quit() : Node(NodeType::Quit) {}
 
     DBCreate::DBCreate(const StringLiteral& stringLiteral) : Node(NodeType::DBCreate), db_name(stringLiteral) {}
-
-    const StringLiteral DBCreate::getDbName() const {
-        return db_name;
-    }
+    const StringLiteral DBCreate::getDbName() const {return db_name;}
 
     DBConnect::DBConnect(const StringLiteral &dbName) : Node(NodeType::DBConnect), db_name(dbName) {}
 
     KFCreateTable::KFCreateTable(const ast::StringLiteral &tableName) : Node(NodeType::KFCreateTable), table_name(tableName) {}
-
-    const StringLiteral &KFCreateTable::getTableName() const {
-        return table_name;
-    }
+    const StringLiteral &KFCreateTable::getTableName() const {return table_name;}
 
     KFGetTable::KFGetTable(const StringLiteral &tableName) : Node(NodeType::KFGetTable), table_name(tableName) {}
-
-    const StringLiteral &KFGetTable::getTableName() const {
-        return table_name;
-    }
+    const StringLiteral &KFGetTable::getTableName() const {return table_name;}
 
     KMAddColumn::KMAddColumn(const std::string &name, const std::string &type)
     : Node(NodeType::KMAddColumn),  name(name), type(type) {}
+    const std::string &KMAddColumn::getName() const {return name;}
+    const std::string &KMAddColumn::getType() const {return type;}
 
     const std::string &KMAddColumn::getName() const {
         return name;
@@ -112,10 +88,7 @@ namespace ast {
     }
 
     KMAddRow::KMAddRow(const std::vector<db::Value> &values) : Node(NodeType::KMAddRow), values(values) {}
-
-    const std::vector<db::Value> &KMAddRow::getValues() const {
-        return values;
-    }
+    const std::vector<db::Value> &KMAddRow::getValues() const {return values;}
 
     KMPrint::KMPrint() : Node(NodeType::KMPrint) {}
 
