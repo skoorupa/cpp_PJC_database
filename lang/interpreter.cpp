@@ -1,6 +1,6 @@
 #include "interpreter.hpp"
 
-Interpreter::Interpreter() : running(true), connected_to_db(false), database() {}
+Interpreter::Interpreter() : running(true), connected_to_db(false), curr_database() {}
 
 auto Interpreter::isRunning() -> bool const {
     return running;
@@ -24,13 +24,13 @@ auto Interpreter::runAST(ast::Program& program) -> void {
             }
             case ast::NodeType::DBCreate: {
                 auto command = (ast::DBCreate *) node.get();
-                database = db::create(command->getDbName().getValue());
+                curr_database = db::create(command->getDbName().getValue());
                 connected_to_db = true;
                 break;
             }
             case ast::NodeType::KFCreateTable: {
                 auto command = (ast::KFCreateTable *) node.get();
-                database.create_table(command->getTableName().getValue());
+                curr_database.create_table(command->getTableName().getValue());
                 connected_to_db = true;
                 break;
             }
@@ -40,7 +40,7 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                     throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
 
                 try {
-                    curr_table = &database.get_table(command->getTableName().getValue());
+                    curr_table = &curr_database.get_table(command->getTableName().getValue());
                     curr_column = "";
                 } catch (std::string& message) {
                     throw fmt::format("[DB ERROR] {}",message);
@@ -103,6 +103,11 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 } else {
                     // renaming table
                     // TODO
+                    try {
+                        curr_database.rename_table(curr_table->getName(), new_name);
+                    } catch (std::string& message) {
+                        fmt::println("[DB ERROR] {}", message);
+                    }
                 }
 
                 break;

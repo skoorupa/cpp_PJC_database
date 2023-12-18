@@ -31,6 +31,14 @@ namespace db {
             throw fmt::format("< cannot find table {}",name);
     }
 
+    auto Database::rename_table(std::string old_name, std::string new_name) -> void {
+        get_table(old_name).rename(new_name);
+//      src:  https://stackoverflow.com/questions/5743545/what-is-the-fastest-way-to-change-a-key-of-an-element-inside-stdmap
+        auto table = tables.extract(old_name);
+        table.key() = new_name;
+        tables.insert(std::move(table));
+    }
+
     /////////////////////////////////////
     // DB HANDLING
     auto create(std::string filepath) -> Database {

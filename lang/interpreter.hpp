@@ -9,7 +9,7 @@
 class Interpreter {
     bool running;
     bool connected_to_db;
-    db::Database database;
+    db::Database curr_database;
 
 public:
     Interpreter();

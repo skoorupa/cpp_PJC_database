@@ -11,6 +11,10 @@ namespace db {
         return name;
     }
 
+    auto Table::rename(const std::string& new_name) -> void {
+        name = new_name;
+    }
+
     auto Table::add_column(std::string columnname, ColumnType type) -> void {
         columns.push_back(Column(columnname, type));
         fmt::println("< added new column to {} - {}",name,columnname);
