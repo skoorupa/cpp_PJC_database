@@ -42,6 +42,8 @@ namespace db {
 
     auto Database::remove_table(const std::string& name) -> void {
         auto table = tables.find(name);
+        if (table == tables.end())
+            throw fmt::format("< cannot find table {}", name);
         tables.erase(name);
         fmt::println("< removed table {}", name);
     }
