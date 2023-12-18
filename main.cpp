@@ -25,7 +25,6 @@ auto main() -> int {
         "get_table('tablica') print()",
         "get_table('tablica') add_column('test',string)",
         "get_table('tablica') print()",
-        "get_table('tablica') get_column('nazwisko')",
     }) {
         try {
             auto parser = parser::Parser(devcmd);

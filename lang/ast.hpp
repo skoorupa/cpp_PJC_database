@@ -22,6 +22,7 @@ namespace ast {
         KFGetTable,
         KMAddColumn,
         KMGetColumn,
+        KMRenameColumn,
         KMAddRow,
         KMPrint,
 
@@ -163,6 +164,17 @@ namespace ast {
         KMGetColumn(const StringLiteral &column_name);
 
         const StringLiteral &getColumnName() const;
+    };
+
+    class KMRenameColumn : public Node {
+        StringLiteral old_name;
+        StringLiteral new_name;
+
+    public:
+        KMRenameColumn(const StringLiteral &oldName, const StringLiteral &newName);
+
+        const StringLiteral &getOldName() const;
+        const StringLiteral &getNewName() const;
     };
 
     class KMAddRow : public Node {

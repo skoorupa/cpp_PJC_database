@@ -77,6 +77,20 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 curr_column = column_name;
                 break;
             }
+            case ast::NodeType::KMRenameColumn: {
+                auto command = (ast::KMRenameColumn*) node.get();
+                auto old_name = command->getOldName().getValue();
+                auto new_name = command->getNewName().getValue();
+
+                if (!connected_to_db)
+                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
+
+                if (!curr_table)
+                   throw fmt::format("!!! Interpreter error: rename_column used without chosen table");
+
+                curr_table->rename_column(old_name, new_name);
+                break;
+            }
             case ast::NodeType::KMAddRow: {
                 auto command = (ast::KMAddRow*)node.get();
                 if (!connected_to_db)
