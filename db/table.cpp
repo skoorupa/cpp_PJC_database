@@ -32,9 +32,11 @@ namespace db {
 
     auto Table::remove_column(const std::string& columnname) -> void {
         auto col = get_column_iterator(columnname);
-        if (col != columns.end()) {
+        if (col == columns.end())
+            throw fmt::format("< cannot find column {} in table {}",columnname,name);
 
-        }
+        columns.erase(col);
+
         for (Row& row : rows)
             row.remove_value(columnname);
     }
