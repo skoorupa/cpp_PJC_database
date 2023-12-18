@@ -41,6 +41,7 @@ auto Interpreter::runAST(ast::Program& program) -> void {
 
                 try {
                     curr_table = &database.get_table(command->getTableName().getValue());
+                    curr_column = "";
                 } catch (std::string& message) {
                     throw fmt::format("[DB ERROR] {}",message);
                 }
@@ -93,6 +94,7 @@ auto Interpreter::runAST(ast::Program& program) -> void {
 
                 try {
                     curr_table->rename_column(old_name, new_name);
+                    curr_column = new_name;
                 } catch (std::string& message) {
                     fmt::println("[DB ERROR] {}", message);
                 }
