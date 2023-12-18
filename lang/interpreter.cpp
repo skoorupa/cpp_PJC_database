@@ -36,14 +36,13 @@ auto Interpreter::runAST(ast::Program& program) -> void {
             }
             case ast::NodeType::KFGetTable: {
                 auto command = (ast::KFGetTable*) node.get();
-                if (!connected_to_db) {
+                if (!connected_to_db)
                     throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
-                    break;
-                }
+
                 try {
                     curr_table = &database.get_table(command->getTableName().getValue());
-                } catch (std::string& name) {
-                    throw fmt::format("!!! Interpreter error: cannot find table {}",name);
+                } catch (std::string& message) {
+                    throw fmt::format("[DB ERROR] {}",message);
                 }
                 break;
             }
@@ -56,10 +55,14 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                     throw fmt::format("!!! Interpreter error: add_column used without chosen table");
 
                 auto column_type = db::Column::toColumnType(command->getType());
-                curr_table->add_column(
-                        command->getName(),
-                        column_type
-                        );
+                try {
+                    curr_table->add_column(
+                    command->getName(),
+                    column_type
+                    );
+                } catch (std::string& message) {
+                    fmt::println("[DB ERROR] {}", message);
+                }
                 break;
             }
             case ast::NodeType::KMGetColumn: {
@@ -88,7 +91,11 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 if (!curr_table)
                    throw fmt::format("!!! Interpreter error: rename_column used without chosen table");
 
-                curr_table->rename_column(old_name, new_name);
+                try {
+                    curr_table->rename_column(old_name, new_name);
+                } catch (std::string& message) {
+                    fmt::println("[DB ERROR] {}", message);
+                }
                 break;
             }
             case ast::NodeType::KMAddRow: {

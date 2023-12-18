@@ -42,15 +42,14 @@ namespace db {
     auto Table::rename_column(const std::string& old_name, const std::string& new_name) -> void {
         auto col = get_column_iterator(old_name);
         if (col == columns.end())
-            fmt::println("< cannot find column {} in table {}",old_name,name);
-        else if (has_column(new_name)) {
-            fmt::println("< column {} already exists in table {}",old_name,name);
-        } else {
-            col->setName(new_name);
-            for (Row& row : rows)
-                row.rename_column(old_name, new_name);
-            fmt::println("< renamed column {} to {} in table {}",old_name,new_name,name);
-        }
+            throw fmt::format("< cannot find column {} in table {}",old_name,name);
+        if (has_column(new_name))
+            throw fmt::format("< column {} already exists in table {}",old_name,name);
+
+        col->setName(new_name);
+        for (Row& row : rows)
+            row.rename_column(old_name, new_name);
+        fmt::println("< renamed column {} to {} in table {}",old_name,new_name,name);
     }
 
     auto Table::add_row(std::vector<Value> values) -> void {

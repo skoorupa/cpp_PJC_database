@@ -22,14 +22,13 @@ namespace db {
         return get_table(name);
     }
 
-    auto Database::get_table(std::string name) -> Table& {
+    auto Database::get_table(const std::string& name) -> Table& {
 //        return tables.at(name);
         auto pair = tables.find(name);
         if (pair != tables.end())
             return pair->second;
-        else {
-            throw name;
-        }
+        else
+            throw fmt::format("< cannot find table {}",name);
     }
 
     /////////////////////////////////////

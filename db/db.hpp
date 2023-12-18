@@ -19,7 +19,7 @@ namespace db {
         auto create() -> bool;
         auto connect() -> bool;
         auto create_table(std::string name) -> Table;
-        auto get_table(std::string name) -> Table&;
+        auto get_table(const std::string& name) -> Table&;
     };
 
     /////////////////////////////////////
