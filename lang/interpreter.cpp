@@ -81,23 +81,30 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 curr_column = column_name;
                 break;
             }
-            case ast::NodeType::KMRenameColumn: {
-                auto command = (ast::KMRenameColumn*) node.get();
-                auto old_name = command->getOldName().getValue();
+            case ast::NodeType::KMRename: {
+                auto command = (ast::KMRename*) node.get();
                 auto new_name = command->getNewName().getValue();
 
                 if (!connected_to_db)
                     throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
 
                 if (!curr_table)
-                   throw fmt::format("!!! Interpreter error: rename_column used without chosen table");
+                   throw fmt::format("!!! Interpreter error: rename used without chosen table");
 
-                try {
-                    curr_table->rename_column(old_name, new_name);
-                    curr_column = new_name;
-                } catch (std::string& message) {
-                    fmt::println("[DB ERROR] {}", message);
+                if (!curr_column.empty()) {
+                    // renaming column
+
+                    try {
+                        curr_table->rename_column(curr_column, new_name);
+                        curr_column = new_name;
+                    } catch (std::string& message) {
+                        fmt::println("[DB ERROR] {}", message);
+                    }
+                } else {
+                    // renaming table
+                    // TODO
                 }
+
                 break;
             }
             case ast::NodeType::KMAddRow: {

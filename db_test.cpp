@@ -35,6 +35,6 @@ auto main() -> int {
 
     emp.print();
     emp.rename_column("id","zzz");
-    emp.remove_column("zzz");
+//    emp.remove_column("zzz");
     emp.print();
 }
