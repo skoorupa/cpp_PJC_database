@@ -37,6 +37,7 @@ namespace db {
         auto table = tables.extract(old_name);
         table.key() = new_name;
         tables.insert(std::move(table));
+        fmt::println("< renamed table {} to {}", old_name, new_name);
     }
 
     /////////////////////////////////////
