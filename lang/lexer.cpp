@@ -130,8 +130,7 @@ namespace lexer {
                 } else if (isskip(*c)) {
                     pop_front_str(input);
                 } else {
-                    fmt::println("!!! Lexer error: cannot recognize character: {}",*c);
-                    return tokens;
+                    throw fmt::format("!!! Lexer error: cannot recognize character: {}",*c);
                 }
             }
         }

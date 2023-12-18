@@ -37,26 +37,24 @@ auto Interpreter::runAST(ast::Program& program) -> void {
             case ast::NodeType::KFGetTable: {
                 auto command = (ast::KFGetTable*) node.get();
                 if (!connected_to_db) {
-                    fmt::println("!!! Interpreter error: not connected to database in {}", node_kind);
+                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
                     break;
                 }
                 try {
                     curr_table = &database.get_table(command->getTableName().getValue());
                 } catch (std::string& name) {
-                    fmt::println("!!! Interpreter error: cannot find table {}",name);
+                    throw fmt::format("!!! Interpreter error: cannot find table {}",name);
                 }
                 break;
             }
             case ast::NodeType::KMAddColumn: {
                 auto command = (ast::KMAddColumn*) node.get();
-                if (!connected_to_db) {
-                    fmt::println("!!! Interpreter error: not connected to database in {}", node_kind);
-                    break;
-                }
-                if (!curr_table) {
-                    fmt::println("!!! Interpreter error: add_column used without chosen table");
-                    break;
-                }
+                if (!connected_to_db)
+                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
+
+                if (!curr_table)
+                    throw fmt::format("!!! Interpreter error: add_column used without chosen table");
+
                 auto column_type = db::Column::toColumnType(command->getType());
                 curr_table->add_column(
                         command->getName(),
@@ -66,49 +64,42 @@ auto Interpreter::runAST(ast::Program& program) -> void {
             }
             case ast::NodeType::KMGetColumn: {
                 auto command = (ast::KMGetColumn*) node.get();
-                if (!connected_to_db) {
-                    fmt::println("!!! Interpreter error: not connected to database in {}", node_kind);
-                    break;
-                }
-                if (!curr_table) {
-                    fmt::println("!!! Interpreter error: get_column used without chosen table");
-                    break;
-                }
+                if (!connected_to_db)
+                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
+
+                if (!curr_table)
+                    throw fmt::format("!!! Interpreter error: get_column used without chosen table");
+
                 auto column_name = command->getColumnName().getValue();
-                if (!curr_table->has_column(column_name)) {
-                    fmt::println("!!! Interpreter error: table {} does not have column {}", curr_table->getName(), column_name);
-                    break;
-                }
+                if (!curr_table->has_column(column_name))
+                    throw fmt::format("!!! Interpreter error: table {} does not have column {}", curr_table->getName(), column_name);
+
                 curr_column = column_name;
                 break;
             }
             case ast::NodeType::KMAddRow: {
                 auto command = (ast::KMAddRow*)node.get();
-                if (!connected_to_db) {
-                    fmt::println("!!! Interpreter error: not connected to database in {}", node_kind);
-                    break;
-                }
-                if (!curr_table) {
-                    fmt::println("!!! Interpreter error: add_row used without chosen table");
-                    break;
-                }
+                if (!connected_to_db)
+                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
+
+                if (!curr_table)
+                    throw fmt::format("!!! Interpreter error: add_row used without chosen table");
+
                 curr_table->add_row(command->getValues());
                 break;
             }
             case ast::NodeType::KMPrint: {
-                if (!connected_to_db) {
-                    fmt::println("!!! Interpreter error: not connected to database in {}", node_kind);
-                    break;
-                }
-                if (!curr_table) {
-                    fmt::println("!!! Interpreter error: print used without chosen table");
-                    break;
-                }
+                if (!connected_to_db)
+                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
+
+                if (!curr_table)
+                    throw fmt::format("!!! Interpreter error: print used without chosen table");
+
                 curr_table->print();
                 break;
             }
             default:
-                fmt::println("!!! Interpreter error: unknown node type: {}", node_kind);
+                throw fmt::format("!!! Interpreter error: unknown node type: {}", node_kind);
         }
     }
 }

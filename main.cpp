@@ -27,10 +27,14 @@ auto main() -> int {
         "get_table('tablica') print()",
         "get_table('tablica') get_column('nazwisko')",
     }) {
-        auto parser = parser::Parser(devcmd);
-        auto result = parser.produceAST();
+        try {
+            auto parser = parser::Parser(devcmd);
+            auto result = parser.produceAST();
 
-        interpreter.runAST(result);
+            interpreter.runAST(result);
+        } catch (std::string& message) {
+            fmt::println("{}", message);
+        }
     }
 
     // ENDDEV
@@ -40,9 +44,13 @@ auto main() -> int {
         fmt::print(">");
         std::getline(std::cin, prompt);
 
-        auto parser = parser::Parser(prompt);
-        auto result = parser.produceAST();
+        try {
+            auto parser = parser::Parser(prompt);
+            auto result = parser.produceAST();
 
-        interpreter.runAST(result);
+            interpreter.runAST(result);
+        } catch (std::string& message) {
+            fmt::println("{}", message);
+        }
     }
 }

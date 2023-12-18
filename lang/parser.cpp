@@ -82,7 +82,7 @@ namespace parser {
                 break;
             }
             default:
-                fmt::println("!!! Parser error: Unexpected tokentype while parsing node: {}",lexer::format_as(token_type));
+                throw fmt::format("!!! Parser error: Unexpected tokentype while parsing node: {}",lexer::format_as(token_type));
         }
     }
 
@@ -117,8 +117,7 @@ namespace parser {
                     break;
                 }
                 default:
-                    fmt::println("!!! Parser error: Unexpected tokentype while parsing expression ptr: {}", token_type);
-                    throw;
+                    throw fmt::format("!!! Parser error: Unexpected tokentype while parsing expression ptr: {}", token_type);
             }
             token_type = get_token().getType();
         }
@@ -130,42 +129,34 @@ namespace parser {
 
     auto Parser::parse_call_no_args() -> void {
         auto token = shift_token();
-        if (token.getType() != lexer::TokenType::BracketRoundBegin) {
-            fmt::println("!!! Parser error: Expected call for {}", get_prev_token());
-            throw;
-        }
-        if (shift_token().getType() != lexer::TokenType::BracketRoundEnd) {
-            fmt::println("!!! Parser error: Expected no arguments for {}", get_prev_token());
-            throw;
-        }
+        if (token.getType() != lexer::TokenType::BracketRoundBegin)
+            throw fmt::format("!!! Parser error: Expected call for {}", get_prev_token());
+
+        if (shift_token().getType() != lexer::TokenType::BracketRoundEnd)
+            throw fmt::format("!!! Parser error: Expected no arguments for {}", get_prev_token());
     }
 
     auto Parser::parse_call_single_arg() -> std::unique_ptr<ast::Expression> {
         auto token = shift_token();
-        if (token.getType() != lexer::TokenType::BracketRoundBegin) {
-            fmt::println("!!! Error: Expected call for {}", get_prev_token());
-            fmt::println("got: {}", token);
-            throw;
-        }
+        if (token.getType() != lexer::TokenType::BracketRoundBegin)
+            throw fmt::format("!!! Parser error: Expected call for {}, got {}", get_prev_token(), token);
+
         auto expression = parse_expression();
-        if (shift_token().getType() != lexer::TokenType::BracketRoundEnd) {
-            fmt::println("!!! Error: Expected one argument for {}", get_prev_token());
-            throw;
-        }
+        if (shift_token().getType() != lexer::TokenType::BracketRoundEnd)
+            throw fmt::format("!!! Parser error: Expected one argument for {}", get_prev_token());
+
         return expression;
     }
 
     auto Parser::parse_call_multiple_args() -> std::deque<std::unique_ptr<ast::Expression>> {
         auto args = std::deque<std::unique_ptr<ast::Expression>>();
         auto token = shift_token();
-        if (token.getType() != lexer::TokenType::BracketRoundBegin) {
-            fmt::println("!!! Parser error: Expected call for {}", get_prev_token());
-            throw;
-        }
+        if (token.getType() != lexer::TokenType::BracketRoundBegin)
+            throw fmt::format("!!! Parser error: Expected call for {}", get_prev_token());
 
-        while (get_token().getType() != lexer::TokenType::BracketRoundEnd) {
+        while (get_token().getType() != lexer::TokenType::BracketRoundEnd)
             args.emplace_back(parse_expression_ptr());
-        }
+
         shift_token();
         return args;
     }
