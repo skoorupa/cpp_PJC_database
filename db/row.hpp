@@ -6,7 +6,7 @@
 namespace db {
     class Row {
         int id;
-        std::unordered_map<std::string, db::Value> values; // int - column_id, string - value
+        std::unordered_map<std::string, db::Value> values; // https://www.geeksforgeeks.org/map-vs-unordered_map-c/
 
     public:
         Row(int id, const std::unordered_map<std::string, db::Value> &values);
