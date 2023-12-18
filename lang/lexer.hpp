@@ -23,9 +23,10 @@ namespace lexer {
         KFCreateTable,
         KFGetTable,
         KMAddColumn,
+        KMGetColumn,
         KMAddRow,
-        KMSelect,
         KMPrint,
+        KMSelect,
         KMWhere,
         Identifier,
         EndOfFile

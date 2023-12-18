@@ -12,6 +12,7 @@ auto Interpreter::quit() -> void{
 
 auto Interpreter::runAST(ast::Program& program) -> void {
     db::Table* curr_table = nullptr;
+    std::string curr_column;
 
     for (auto& node : program.getBody()) {
         auto node_kind = node->getKind();
@@ -35,14 +36,15 @@ auto Interpreter::runAST(ast::Program& program) -> void {
             }
             case ast::NodeType::KFGetTable: {
                 auto command = (ast::KFGetTable*) node.get();
-                if (connected_to_db) {
-                    try {
-                        curr_table = &database.get_table(command->getTableName().getValue());
-                    } catch (std::string& name) {
-                        fmt::println("!!! Interpreter error: cannot find table {}",name);
-                    }
-                } else
+                if (!connected_to_db) {
                     fmt::println("!!! Interpreter error: not connected to database in {}", node_kind);
+                    break;
+                }
+                try {
+                    curr_table = &database.get_table(command->getTableName().getValue());
+                } catch (std::string& name) {
+                    fmt::println("!!! Interpreter error: cannot find table {}",name);
+                }
                 break;
             }
             case ast::NodeType::KMAddColumn: {
@@ -60,6 +62,24 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                         command->getName(),
                         column_type
                         );
+                break;
+            }
+            case ast::NodeType::KMGetColumn: {
+                auto command = (ast::KMGetColumn*) node.get();
+                if (!connected_to_db) {
+                    fmt::println("!!! Interpreter error: not connected to database in {}", node_kind);
+                    break;
+                }
+                if (!curr_table) {
+                    fmt::println("!!! Interpreter error: get_column used without chosen table");
+                    break;
+                }
+                auto column_name = command->getColumnName().getValue();
+                if (!curr_table->has_column(column_name)) {
+                    fmt::println("!!! Interpreter error: table {} does not have column {}", curr_table->getName(), column_name);
+                    break;
+                }
+                curr_column = column_name;
                 break;
             }
             case ast::NodeType::KMAddRow: {

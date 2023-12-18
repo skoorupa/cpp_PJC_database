@@ -16,6 +16,7 @@ namespace ast {
             {ast::NodeType::KFCreateTable,"KFCreateTable"},
             {ast::NodeType::KFGetTable,"KFGetTable"},
             {ast::NodeType::KMAddColumn,"KMAddColumn"},
+            {ast::NodeType::KMGetColumn,"KMGetColumn"},
             {ast::NodeType::KMAddRow,"KMAddRow"},
             {ast::NodeType::KMPrint,"KMPrint"},
 
@@ -79,13 +80,8 @@ namespace ast {
     const std::string &KMAddColumn::getName() const {return name;}
     const std::string &KMAddColumn::getType() const {return type;}
 
-    const std::string &KMAddColumn::getName() const {
-        return name;
-    }
-
-    const std::string &KMAddColumn::getType() const {
-        return type;
-    }
+    KMGetColumn::KMGetColumn(const StringLiteral &column_name) : Node(NodeType::KMGetColumn), column_name(column_name) {}
+    const StringLiteral &KMGetColumn::getColumnName() const {return column_name;}
 
     KMAddRow::KMAddRow(const std::vector<db::Value> &values) : Node(NodeType::KMAddRow), values(values) {}
     const std::vector<db::Value> &KMAddRow::getValues() const {return values;}

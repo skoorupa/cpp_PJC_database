@@ -6,7 +6,7 @@ namespace db {
         name(name),
         columns(std::deque<Column>()),
         curr_row_id(1) {}
-        
+
     const std::string &Table::getName() const {
         return name;
     }

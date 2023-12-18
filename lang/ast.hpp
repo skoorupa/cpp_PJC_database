@@ -21,6 +21,7 @@ namespace ast {
         KFCreateTable,
         KFGetTable,
         KMAddColumn,
+        KMGetColumn,
         KMAddRow,
         KMPrint,
 
@@ -153,6 +154,15 @@ namespace ast {
         const std::string &getName() const;
 
         const std::string &getType() const;
+    };
+
+    class KMGetColumn : public Node {
+        StringLiteral column_name;
+
+    public:
+        KMGetColumn(const StringLiteral &column_name);
+
+        const StringLiteral &getColumnName() const;
     };
 
     class KMAddRow : public Node {

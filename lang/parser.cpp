@@ -45,6 +45,11 @@ namespace parser {
                 );
                 break;
             }
+            case lexer::TokenType::KMGetColumn: {
+                auto arg = parse_call_single_arg();
+                return std::make_unique<ast::KMGetColumn>(((ast::StringLiteral*)arg.get())->getValue());
+                break;
+            }
             case lexer::TokenType::KMAddRow: {
                 auto args = parse_call_multiple_args();
                 auto values = std::vector<db::Value>();
