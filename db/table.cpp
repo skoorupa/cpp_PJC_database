@@ -6,6 +6,10 @@ namespace db {
         name(name),
         columns(std::deque<Column>()),
         curr_row_id(1) {}
+        
+    const std::string &Table::getName() const {
+        return name;
+    }
 
     auto Table::add_column(std::string columnname, ColumnType type) -> void {
         columns.push_back(Column(columnname, type));
