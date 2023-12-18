@@ -25,6 +25,7 @@ namespace lexer {
         KMAddColumn,
         KMGetColumn,
         KMRename,
+        KMRemove,
         KMAddRow,
         KMPrint,
         KMSelect,

@@ -107,6 +107,31 @@ auto Interpreter::runAST(ast::Program& program) -> void {
 
                 break;
             }
+            case ast::NodeType::KMRemove: {
+                auto command = (ast::KMRemove*) node.get();
+
+                if (!connected_to_db)
+                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
+
+                if (!curr_table)
+                    throw fmt::format("!!! Interpreter error: remove used without chosen table");
+
+                if (!curr_column.empty()) {
+                    // removing column
+
+                    try {
+                        curr_table->remove_column(curr_column);
+                        curr_column = "";
+                    } catch (std::string& message) {
+                        fmt::println("[DB ERROR] {}", message);
+                    }
+                } else {
+                    // removing table
+                    // TODO
+                }
+
+                break;
+            }
             case ast::NodeType::KMAddRow: {
                 auto command = (ast::KMAddRow*)node.get();
                 if (!connected_to_db)

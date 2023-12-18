@@ -52,6 +52,11 @@ namespace parser {
                 );
                 break;
             }
+            case lexer::TokenType::KMRemove: {
+                parse_call_no_args();
+                return std::make_unique<ast::KMRemove>();
+                break;
+            }
             case lexer::TokenType::KMGetColumn: {
                 auto arg = parse_call_single_arg();
                 return std::make_unique<ast::KMGetColumn>(((ast::StringLiteral*)arg.get())->getValue());
@@ -135,12 +140,13 @@ namespace parser {
     }
 
     auto Parser::parse_call_no_args() -> void {
+        auto caller = get_prev_token();
         auto token = shift_token();
         if (token.getType() != lexer::TokenType::BracketRoundBegin)
-            throw fmt::format("!!! Parser error: Expected call for {}", get_prev_token());
+            throw fmt::format("!!! Parser error: Expected call for {}", caller);
 
         if (shift_token().getType() != lexer::TokenType::BracketRoundEnd)
-            throw fmt::format("!!! Parser error: Expected no arguments for {}", get_prev_token());
+            throw fmt::format("!!! Parser error: Expected no arguments for {}", caller);
     }
 
     auto Parser::parse_call_single_arg() -> std::unique_ptr<ast::Expression> {

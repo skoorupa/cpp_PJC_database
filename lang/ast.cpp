@@ -18,6 +18,7 @@ namespace ast {
             {ast::NodeType::KMAddColumn,      "KMAddColumn"},
             {ast::NodeType::KMGetColumn,      "KMGetColumn"},
             {ast::NodeType::KMRename,         "KMRename"},
+            {ast::NodeType::KMRemove,         "KMRemove"},
             {ast::NodeType::KMAddRow,         "KMAddRow"},
             {ast::NodeType::KMPrint,          "KMPrint"},
 
@@ -87,6 +88,8 @@ namespace ast {
     KMRename::KMRename(const StringLiteral &newName)
             : Node(NodeType::KMRename), new_name(newName) {}
     const StringLiteral &KMRename::getNewName() const {return new_name;}
+
+    KMRemove::KMRemove() : Node(NodeType::KMRemove) {}
 
     KMAddRow::KMAddRow(const std::vector<db::Value> &values) : Node(NodeType::KMAddRow), values(values) {}
     const std::vector<db::Value> &KMAddRow::getValues() const {return values;}

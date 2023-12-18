@@ -23,6 +23,7 @@ namespace ast {
         KMAddColumn,
         KMGetColumn,
         KMRename,
+        KMRemove,
         KMAddRow,
         KMPrint,
 
@@ -173,6 +174,11 @@ namespace ast {
         KMRename(const StringLiteral &newName);
 
         const StringLiteral &getNewName() const;
+    };
+
+    class KMRemove : public Node {
+    public:
+        KMRemove();
     };
 
     class KMAddRow : public Node {
