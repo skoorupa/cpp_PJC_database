@@ -24,23 +24,23 @@ namespace parser {
             }
             case lexer::TokenType::DBCreate: {
                 auto arg = parse_call_single_arg();
-                return std::make_unique<ast::DBCreate>(((ast::StringLiteral*)arg.get())->getValue());
+                return std::make_unique<ast::DBCreate>(((ast::Identifier*)arg.get())->getSymbol());
                 break;
             }
             case lexer::TokenType::KFCreateTable: {
                 auto arg = parse_call_single_arg();
-                return std::make_unique<ast::KFCreateTable>(((ast::StringLiteral*)arg.get())->getValue());
+                return std::make_unique<ast::KFCreateTable>(((ast::Identifier*)arg.get())->getSymbol());
                 break;
             }
             case lexer::TokenType::KFGetTable: {
                 auto arg = parse_call_single_arg();
-                return std::make_unique<ast::KFGetTable>(((ast::StringLiteral*)arg.get())->getValue());
+                return std::make_unique<ast::KFGetTable>(((ast::Identifier*)arg.get())->getSymbol());
                 break;
             }
             case lexer::TokenType::KMAddColumn: {
                 auto args = parse_call_multiple_args();
                 return std::make_unique<ast::KMAddColumn>(
-                        ((ast::StringLiteral*)args.at(0).get())->getValue(),
+                        ((ast::Identifier*)args.at(0).get())->getSymbol(),
                         ((ast::Identifier*)args.at(1).get())->getSymbol()
                 );
                 break;
@@ -48,7 +48,7 @@ namespace parser {
             case lexer::TokenType::KMRename: {
                 auto arg = parse_call_single_arg();
                 return std::make_unique<ast::KMRename>(
-                        ((ast::StringLiteral*)arg.get())->getValue()
+                        ((ast::Identifier*)arg.get())->getSymbol()
                 );
                 break;
             }
@@ -59,7 +59,7 @@ namespace parser {
             }
             case lexer::TokenType::KMGetColumn: {
                 auto arg = parse_call_single_arg();
-                return std::make_unique<ast::KMGetColumn>(((ast::StringLiteral*)arg.get())->getValue());
+                return std::make_unique<ast::KMGetColumn>(((ast::Identifier*)arg.get())->getSymbol());
                 break;
             }
             case lexer::TokenType::KMAddRow: {

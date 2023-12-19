@@ -17,18 +17,18 @@ auto main() -> int {
 
     for (std::string devcmd : {
         "create_db('baza')",
-        "create_table('tablica')",
-        "get_table('tablica') add_column('id','int')",
-        "get_table('tablica') add_column('nazwisko','string')",
-        "get_table('tablica') add_row(1,'skorupski')",
-        "get_table('tablica') add_row(2,'kacperowski')",
-        "get_table('tablica') print()",
-        "get_table('tablica') add_column('test',string)",
-        "get_table('tablica') print()",
-        "get_table('tablica') get_column('id') rename('identyfikator') remove() print()",
-        "get_table('tablica') rename('tabliczka') print()",
-        "get_table('tabliczka') remove() print()",
-        "get_table('tabliczka') print()"
+        "create_table(tablica)",
+        "get_table(tablica) add_column(id,int)",
+        "get_table(tablica) add_column(nazwisko,string)",
+        "get_table(tablica) add_row(1,'skorupski')",
+        "get_table(tablica) add_row(2,'kacperowski')",
+        "get_table(tablica) print()",
+        "get_table(tablica) add_column(test,string)",
+        "get_table(tablica) print()",
+        "get_table(tablica) get_column(id) rename(identyfikator) remove() print()",
+        "get_table(tablica) rename(tabliczka) print()",
+        "get_table(tabliczka) remove() print()",
+        "get_table(tabliczka) print()"
     }) {
         try {
             auto parser = parser::Parser(devcmd);
