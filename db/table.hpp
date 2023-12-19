@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <deque>
 #include <map>
 #include <algorithm>
 #include <vector>
@@ -10,8 +9,8 @@
 namespace db {
     class Table {
         std::string name;
-        std::deque<Column> columns;
-        std::deque<Row> rows;
+        std::vector<Column> columns;
+        std::vector<Row> rows;
         int curr_row_id;  // wewnetrzne id dla programu
 
     public:

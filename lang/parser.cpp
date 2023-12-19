@@ -161,8 +161,8 @@ namespace parser {
         return expression;
     }
 
-    auto Parser::parse_call_multiple_args() -> std::deque<std::unique_ptr<ast::Expression>> {
-        auto args = std::deque<std::unique_ptr<ast::Expression>>();
+    auto Parser::parse_call_multiple_args() -> std::vector<std::unique_ptr<ast::Expression>> {
+        auto args = std::vector<std::unique_ptr<ast::Expression>>();
         auto token = shift_token();
         if (token.getType() != lexer::TokenType::BracketRoundBegin)
             throw fmt::format("!!! Parser error: Expected call for {}", get_prev_token());

@@ -35,8 +35,8 @@ namespace ast {
     const NodeType Node::getKind() const {return kind;}
 
     // PROGRAM
-    Program::Program() : Node(NodeType::Program), body(std::deque<std::unique_ptr<Node>>()) {}
-    std::deque<std::unique_ptr<Node>> &Program::getBody() {return body;}
+    Program::Program() : Node(NodeType::Program), body(std::vector<std::unique_ptr<Node>>()) {}
+    std::vector<std::unique_ptr<Node>> &Program::getBody() {return body;}
 
     // EXPRESSION
     Expression::Expression(const NodeType& kind) : Node(kind) {}

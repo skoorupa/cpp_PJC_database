@@ -1,5 +1,4 @@
 #pragma once
-#include <deque>
 #include <vector>
 #include <string>
 #include <memory>
@@ -43,7 +42,7 @@ namespace ast {
     };
 
     class Program : public Node {
-        std::deque<std::unique_ptr<Node>> body;
+        std::vector<std::unique_ptr<Node>> body;
     public:
         Program();
 
@@ -52,7 +51,7 @@ namespace ast {
 //            body.emplace_back(std::make_unique<T>(node));
 //        };
 
-        std::deque<std::unique_ptr<Node>> &getBody();
+        std::vector<std::unique_ptr<Node>> &getBody();
     };
 
     class Expression : public Node {

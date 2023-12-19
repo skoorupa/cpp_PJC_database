@@ -34,7 +34,7 @@ namespace lexer {
             {lexer::TokenType::EndOfFile,     "EndOfFile"}
     };
 
-    auto tokenize(std::string input) -> std::deque<Token> {
+    auto tokenize(std::string input) -> std::vector<Token> {
 //        fmt::println("starting to tokenize");
         // HELPFUL VARIABLES
         auto one_char_tokens = std::map<char, lexer::TokenType>{
@@ -66,7 +66,7 @@ namespace lexer {
         };
 
         // TOKENIZER
-        auto tokens = std::deque<Token>();
+        auto tokens = std::vector<Token>();
 
         auto pop_front_str = [](std::string& input) {
             input.erase(0,1);

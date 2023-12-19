@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include <deque>
+#include <vector>
 #include <map>
 #include <set>
 
@@ -51,7 +51,7 @@ namespace lexer {
         const std::string &getValue() const;
     };
 
-    auto tokenize(std::string input) -> std::deque<Token>;
+    auto tokenize(std::string input) -> std::vector<Token>;
     auto format_as (Token token) -> std::string;
     auto format_as (TokenType tokentype) -> std::string;
 }

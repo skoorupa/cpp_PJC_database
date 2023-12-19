@@ -4,7 +4,8 @@
 namespace db {
     Table::Table(const std::string &name) :
         name(name),
-        columns(std::deque<Column>()),
+        columns(std::vector<Column>()),
+        rows(std::vector<Row>()),
         curr_row_id(1) {}
 
     const std::string &Table::getName() const {

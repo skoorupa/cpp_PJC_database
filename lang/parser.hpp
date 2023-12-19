@@ -7,8 +7,8 @@
 
 namespace parser {
     class Parser {
-        std::deque<lexer::Token> tokens;
-        std::deque<lexer::Token>::iterator point; // o tym sposobie trzymania iteratora dowiedzialem sie z GPT
+        std::vector<lexer::Token> tokens;
+        std::vector<lexer::Token>::iterator point; // o tym sposobie trzymania iteratora dowiedzialem sie z GPT
 
         auto get_point (int i = 0) {
             return point+i;
@@ -24,7 +24,7 @@ namespace parser {
 
         auto parse_call_no_args() -> void;
         auto parse_call_single_arg() -> std::unique_ptr<ast::Expression>;
-        auto parse_call_multiple_args() -> std::deque<std::unique_ptr<ast::Expression>>;
+        auto parse_call_multiple_args() -> std::vector<std::unique_ptr<ast::Expression>>;
 
     public:
         Parser(std::string code);
