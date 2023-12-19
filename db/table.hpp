@@ -26,4 +26,6 @@ namespace db {
         auto add_row(std::vector<Value> values) -> void;
         auto print() -> void;
     };
+
+    auto format_as(const Table &table) -> std::string;
 };

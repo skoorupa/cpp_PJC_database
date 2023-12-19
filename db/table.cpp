@@ -1,5 +1,6 @@
 #include "table.hpp"
 #include <fmt/core.h>
+#include <fmt/format.h>
 
 namespace db {
     Table::Table(const std::string &name) :
@@ -120,5 +121,9 @@ namespace db {
 
             fmt::println("|");
         }
+    }
+
+    auto format_as(const Table& table) -> std::string {
+        return table.getName();
     }
 };
