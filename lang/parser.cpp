@@ -93,6 +93,11 @@ namespace parser {
                 return std::make_unique<ast::KMPrint>();
                 break;
             }
+            case lexer::TokenType::KMSelect: {
+                auto args = parse_call_multiple_args();
+                return std::make_unique<ast::KMSelect>(std::move(args));
+                break;
+            }
             default:
                 throw fmt::format("!!! Parser error: Unexpected tokentype while parsing node: {}",lexer::format_as(token_type));
         }

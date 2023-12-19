@@ -197,10 +197,14 @@ namespace ast {
     };
 
     class KMSelect : public Node {
-        std::vector<Expression> args;
+        std::vector<std::unique_ptr<Expression>> expressions;
 
     public:
-        KMSelect(const std::vector<Expression> &args);
+        KMSelect();
+        KMSelect(std::vector<std::unique_ptr<Expression>> expressions);
+
+        const std::vector<std::unique_ptr<Expression>>& getExpressions() const;
+        auto add_expression(std::unique_ptr<ast::Expression>& expression) -> void;
     };
 
     class KMWhere : public Node {

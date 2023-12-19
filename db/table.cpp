@@ -13,6 +13,10 @@ namespace db {
         return name;
     }
 
+    const std::vector<Row> &Table::getRows() const {
+        return rows;
+    }
+
     auto Table::rename(const std::string& new_name) -> void {
         name = new_name;
     }
@@ -30,6 +34,13 @@ namespace db {
                 columns.end(),
                 [columnname](const Column& column)->bool{return column.getName() == columnname;}
         );
+    }
+
+    auto Table::get_column(std::string columnname) -> Column {
+        if (!has_column(columnname))
+            throw fmt::format("< cannot find column {} in table {}", columnname, name);
+
+        return *get_column_iterator(columnname);
     }
 
     auto Table::has_column(const std::string& columnname) -> bool {

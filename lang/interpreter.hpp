@@ -2,6 +2,7 @@
 #include "ast.hpp"
 #include "../db/db.hpp"
 #include "../db/table.hpp"
+#include "../db/result.hpp"
 #include <fmt/core.h>
 #include <fmt/format.h>
 #include <fmt/ranges.h>

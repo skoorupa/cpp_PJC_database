@@ -3,27 +3,27 @@
 
 namespace ast {
     auto nodetype_map = std::map<ast::NodeType, std::string>{
-            {ast::NodeType::Program,"Program"},
-            {ast::NodeType::NumericLiteral,"NumericLiteral"},
-            {ast::NodeType::StringLiteral,"StringLiteral"},
-            {ast::NodeType::Identifier,"Identifier"},
-            {ast::NodeType::BinaryExpression, "BinaryExpression"},
+            {ast::NodeType::Program,          "ast::Program"},
+            {ast::NodeType::NumericLiteral,   "ast::NumericLiteral"},
+            {ast::NodeType::StringLiteral,    "ast::StringLiteral"},
+            {ast::NodeType::Identifier,       "ast::Identifier"},
+            {ast::NodeType::BinaryExpression, "ast::BinaryExpression"},
 
-            {ast::NodeType::Quit,             "Quit"},
-            {ast::NodeType::DBConnect,        "DBConnect"},
-            {ast::NodeType::DBCreate,         "DBCreate"},
+            {ast::NodeType::Quit,             "ast::Quit"},
+            {ast::NodeType::DBConnect,        "ast::DBConnect"},
+            {ast::NodeType::DBCreate,         "ast::DBCreate"},
 
-            {ast::NodeType::KFCreateTable,    "KFCreateTable"},
-            {ast::NodeType::KFGetTable,       "KFGetTable"},
-            {ast::NodeType::KMAddColumn,      "KMAddColumn"},
-            {ast::NodeType::KMGetColumn,      "KMGetColumn"},
-            {ast::NodeType::KMRename,         "KMRename"},
-            {ast::NodeType::KMRemove,         "KMRemove"},
-            {ast::NodeType::KMAddRow,         "KMAddRow"},
-            {ast::NodeType::KMPrint,          "KMPrint"},
+            {ast::NodeType::KFCreateTable,    "ast::KFCreateTable"},
+            {ast::NodeType::KFGetTable,       "ast::KFGetTable"},
+            {ast::NodeType::KMAddColumn,      "ast::KMAddColumn"},
+            {ast::NodeType::KMGetColumn,      "ast::KMGetColumn"},
+            {ast::NodeType::KMRename,         "ast::KMRename"},
+            {ast::NodeType::KMRemove,         "ast::KMRemove"},
+            {ast::NodeType::KMAddRow,         "ast::KMAddRow"},
+            {ast::NodeType::KMPrint,          "ast::KMPrint"},
 
-            {ast::NodeType::KMSelect,         "KMSelect"},
-            {ast::NodeType::KMWhere,          "KMWhere"}
+            {ast::NodeType::KMSelect,         "ast::KMSelect"},
+            {ast::NodeType::KMWhere,          "ast::KMWhere"}
     };
 
     auto format_as(NodeType nodeType) -> std::string {
@@ -96,7 +96,13 @@ namespace ast {
 
     KMPrint::KMPrint() : Node(NodeType::KMPrint) {}
 
-    KMSelect::KMSelect(const std::vector<Expression> &args) : Node(NodeType::KMSelect), args(args) {}
+    KMSelect::KMSelect() : Node(NodeType::KMSelect), expressions(std::vector<std::unique_ptr<Expression>>()) {}
+    KMSelect::KMSelect(std::vector<std::unique_ptr<Expression>> expressions)
+    : Node(NodeType::KMSelect), expressions(std::move(expressions)) {}
+    const std::vector<std::unique_ptr<Expression>> &KMSelect::getExpressions() const {return expressions;};
+    auto KMSelect::add_expression(std::unique_ptr<ast::Expression>& expression) -> void {
+        expressions.push_back(std::move(expression));
+    }
 
     KMWhere::KMWhere(const Expression &expression) : Node(NodeType::KMWhere), expression(expression) {}
 }

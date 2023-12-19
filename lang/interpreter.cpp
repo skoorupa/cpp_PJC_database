@@ -12,6 +12,7 @@ auto Interpreter::quit() -> void{
 
 auto Interpreter::runAST(ast::Program& program) -> void {
     db::Table* curr_table = nullptr;
+    auto curr_result = db::Result();
     std::string curr_column;
 
     for (auto& node : program.getBody()) {
@@ -42,6 +43,7 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 try {
                     curr_table = &curr_database.get_table(command->getTableName().getValue());
                     curr_column = "";
+                    curr_result.add_table(curr_database.get_table(command->getTableName().getValue()));
                 } catch (std::string& message) {
                     throw fmt::format("[DB ERROR] {}",message);
                 }
@@ -159,7 +161,33 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 if (!curr_table)
                     throw fmt::format("!!! Interpreter error: print used without chosen table");
 
-                curr_table->print();
+                if (curr_result.is_blank())
+                    curr_table->print();
+                else
+                    curr_result.print();
+
+                break;
+            }
+            case ast::NodeType::KMSelect: {
+                if (!connected_to_db)
+                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
+
+                if (!curr_table)
+                    throw fmt::format("!!! Interpreter error: print used without chosen table");
+
+                auto command = (ast::KMSelect*)node.get();
+
+                for (auto& expression : command->getExpressions()) {
+                    switch (expression->getKind()) {
+                        case ast::NodeType::Identifier: {
+                            auto identifier = (ast::Identifier*) expression.get();
+                            curr_result.add_column(curr_table->get_column(identifier->getSymbol()));
+                            break;
+                        }
+                        default:
+                            throw fmt::format("!!! Interpreter error: select did not expect following type {}", expression->getKind());
+                    }
+                }
                 break;
             }
             default:
