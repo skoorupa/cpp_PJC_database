@@ -111,7 +111,7 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 break;
             }
             case ast::NodeType::KMRemove: {
-                auto command = (ast::KMRemove*) node.get();
+//                auto command = (ast::KMRemove*) node.get();
 
                 if (!connected_to_db)
                     throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
@@ -133,6 +133,7 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                     try {
                         curr_database.remove_table(curr_table->getName());
                         curr_column = "";
+                        curr_table = nullptr;
                     } catch (std::string& message) {
                         fmt::println("[DB ERROR] {}", message);
                     }

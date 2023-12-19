@@ -27,7 +27,7 @@ auto main() -> int {
         "get_table('tablica') print()",
         "get_table('tablica') get_column('id') rename('identyfikator') remove() print()",
         "get_table('tablica') rename('tabliczka') print()",
-        "get_table('tabliczka') remove()",
+        "get_table('tabliczka') remove() print()",
         "get_table('tabliczka') print()"
     }) {
         try {
