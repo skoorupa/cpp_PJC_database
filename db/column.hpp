@@ -27,8 +27,9 @@ namespace db {
     class Column {
         std::string name;
         ColumnType type;
+        std::string table;
     public:
-        Column(const std::string &name, ColumnType type);
+        Column(const std::string &table, const std::string &name, ColumnType type);
 
         int getId() const;
         const std::string &getName() const;

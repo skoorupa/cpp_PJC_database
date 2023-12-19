@@ -19,7 +19,7 @@ namespace db {
         return type;
     }
 
-    Column::Column(const std::string &name, ColumnType type) : name(name), type(type) {}
+    Column::Column(const std::string &table, const std::string &name, ColumnType type) : table(table), name(name), type(type) {}
 
     const std::string &Column::getName() const {return name;}
     ColumnType Column::getType() const {return type;}

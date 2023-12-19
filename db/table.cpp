@@ -17,7 +17,7 @@ namespace db {
     }
 
     auto Table::add_column(std::string columnname, ColumnType type) -> void {
-        columns.push_back(Column(columnname, type));
+        columns.push_back(Column(name, columnname, type));
         fmt::println("< added new column to {} - {}",name,columnname);
         for (Row& row : rows)
             row.set_value(columnname, Value("null", ColumnType::Null));
