@@ -89,12 +89,13 @@ namespace ast {
     };
 
     class StringLiteral : public Expression {
-        const std::string value;
+        std::string value;
 
     public:
         StringLiteral(const std::string& value);
 
         std::string getValue() const;
+        void setValue(const std::string &value);
     };
 
     class NullLiteral : public Expression {

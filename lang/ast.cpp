@@ -59,6 +59,7 @@ namespace ast {
     // STRING LITERAL
     StringLiteral::StringLiteral(const std::string& value) : Expression(NodeType::StringLiteral), value(value) {}
     std::string StringLiteral::getValue() const {return value;}
+    void StringLiteral::setValue(const std::string &value) {StringLiteral::value = value;}
 
     NullLiteral::NullLiteral() : Expression(NodeType::NullLiteral) {}
 

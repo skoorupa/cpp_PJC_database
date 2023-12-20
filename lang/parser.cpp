@@ -112,7 +112,7 @@ namespace parser {
 
     auto Parser::parse_expression_ptr() -> std::unique_ptr<ast::Expression> {
         auto token_type = get_token().getType();
-        auto expr = std::unique_ptr<ast::Expression>();
+        std::unique_ptr<ast::Expression> expr = nullptr;
 
         while (token_type != lexer::TokenType::CommaOperator && token_type != lexer::TokenType::BracketRoundEnd) {
             switch (token_type) {
@@ -126,6 +126,15 @@ namespace parser {
                 }
                 case lexer::TokenType::String: {
                     expr = std::make_unique<ast::StringLiteral>(shift_token().getValue());
+
+                    // TESTS - connecting literals
+//                    auto new_expr = std::make_unique<ast::StringLiteral>(shift_token().getValue());
+//                    if (expr == nullptr) {
+//                        expr = std::move(new_expr);
+//                    } else if (expr->getKind() == ast::NodeType::StringLiteral) {
+//                        auto string_expr = (ast::StringLiteral*)expr.get();
+//                        expr = std::make_unique<ast::StringLiteral>(string_expr->getValue()+new_expr->getValue());
+//                    }
                     break;
                 }
                 case lexer::TokenType::Null: {
