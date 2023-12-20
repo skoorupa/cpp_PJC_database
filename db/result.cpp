@@ -10,7 +10,7 @@
 namespace db {
     db::Result::Result() : tables(std::vector<Table>()), rows(std::vector<Row>()), columns(std::vector<Column>()) {}
 
-    // TODO: change to unique_ptrs
+    // TODO: maybe change to pointers? we will see
     const std::vector<Table> &Result::getTables() const {return tables;}
     const std::vector<Row> &Result::getRows() const {return rows;}
     const std::vector<Column> &Result::getColumns() const {return columns;}
