@@ -14,11 +14,23 @@ namespace lexer {
             {lexer::TokenType::DotOperator,       "lexer::DotOperator"},
             {lexer::TokenType::CommaOperator,     "lexer::CommaOperator"},
             {lexer::TokenType::AsteriskOperator,  "lexer::AsteriskOperator"},
+
+            {lexer::TokenType::Less,              "lexer::Less"},
+            {lexer::TokenType::LessThan,          "lexer::LessThan"},
+            {lexer::TokenType::More,              "lexer::More"},
+            {lexer::TokenType::MoreThan,          "lexer::MoreThan"},
+            {lexer::TokenType::Equal,             "lexer::Equal"},
+            {lexer::TokenType::NotEqual,          "lexer::NotEqual"},
+            {lexer::TokenType::And,               "lexer::And"},
+            {lexer::TokenType::Or,                "lexer::Or"},
+
             {lexer::TokenType::Number,            "lexer::Number"},
             {lexer::TokenType::String,            "lexer::String"},
             {lexer::TokenType::Null,              "lexer::Null"},
+
             {lexer::TokenType::Quit,              "lexer::Quit"},
             {lexer::TokenType::DBConnect,         "lexer::DBConnect"},
+
             {lexer::TokenType::DBCreate,          "lexer::DBCreate"},
             {lexer::TokenType::KFGetTable,        "lexer::KFGetTable"},
             {lexer::TokenType::KFCreateTable,     "lexer::KFCreateTable"},
@@ -63,6 +75,20 @@ namespace lexer {
         auto skip = std::set<char>{' ','\n','\t',';'};
         auto isskip = [skip](char c) {
             return skip.contains(c);
+        };
+        auto multi_operators = std::map<std::string, lexer::TokenType>{
+                {"<",  TokenType::Less},
+                {"<=", TokenType::LessThan},
+                {">",  TokenType::More},
+                {">=", TokenType::MoreThan},
+                {"==", TokenType::Equal},
+                {"!=", TokenType::NotEqual},
+                {"&&", TokenType::And},
+                {"||", TokenType::Or}
+        };
+        auto operator_chars = std::set<char>{'<','=','>','!','&','|'};
+        auto is_multi_operator = [operator_chars](char c) {
+            return operator_chars.contains(c);
         };
 
         // TOKENIZER
@@ -126,12 +152,28 @@ namespace lexer {
                     // look for keywords
                     auto iskeyword = keywords.contains(txt);
 
-                    if (iskeyword) {
+                    if (iskeyword)
                         tokens.push_back(Token(keywords.at(txt), txt));
-                    } else {
+                    else
                         tokens.push_back(Token(TokenType::Identifier, txt));
+                }
+                // OPERATORS
+                else if (is_multi_operator(*c)) {
+                    auto txt = std::string();
+
+                    while (!input.empty() && is_multi_operator(*c)) {
+                        txt += *c;
+                        pop_front_str(input);
                     }
-                } else if (isskip(*c)) {
+
+                    auto isoperator = multi_operators.contains(txt);
+                    if (isoperator)
+                        tokens.push_back(Token(multi_operators.at(txt), txt));
+                    else
+                        throw fmt::format("!!! Lexer error: cannot recognize operator: {}",txt);
+                }
+                // SKIP
+                else if (isskip(*c)) {
                     pop_front_str(input);
                 } else {
                     throw fmt::format("!!! Lexer error: cannot recognize character: {}",*c);

@@ -12,6 +12,15 @@ namespace lexer {
         CommaOperator,
         AsteriskOperator,
 
+        Less,
+        LessThan,
+        More,
+        MoreThan,
+        Equal,
+        NotEqual,
+        And,
+        Or,
+
         Number,
         String,
         Null,
@@ -51,7 +60,7 @@ namespace lexer {
         const std::string &getValue() const;
     };
 
-    auto tokenize(std::string input) -> std::vector<Token>;
+    auto tokenize(std::string s) -> std::vector<Token>;
     auto format_as (Token token) -> std::string;
     auto format_as (TokenType tokentype) -> std::string;
 }

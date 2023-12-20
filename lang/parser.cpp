@@ -195,9 +195,10 @@ namespace parser {
     auto Parser::produceAST() -> ast::Program {
         auto program = ast::Program();
 
-//            for (lexer::Token token : tokens) {
-//                fmt::println("{}",token);
-//            }
+        // DEV: print tokens
+//        for (lexer::Token token : tokens) {
+//            fmt::println("{}",token);
+//        }
 
         while (get_token().getType() != lexer::TokenType::EndOfFile) {
             program.getBody().emplace_back(parse_node());
