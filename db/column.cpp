@@ -29,4 +29,12 @@ namespace db {
     auto Column::toColumnType(const std::string& str) -> ColumnType {
         return columntype_map.at(str);
     }
+
+    auto format_as(ColumnType columnType) -> std::string {
+        for (auto& pair : columntype_map)
+            if (pair.second == columnType)
+                return pair.first;
+        
+        return "unknown";
+    }
 }

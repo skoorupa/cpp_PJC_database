@@ -77,6 +77,9 @@ namespace db {
         auto i = 0;
         for (const auto& column : columns) {
             auto column_id = column.getName();
+            if (values[i].getType() != column.getType())
+                throw fmt::format("< incorrect type provided for column {} - expected {}, got {}", column_id, column.getType(), values[i].getType());
+
             column_id_values.insert(std::pair<std::string, db::Value>(column_id,values[i]));
             i++;
         }

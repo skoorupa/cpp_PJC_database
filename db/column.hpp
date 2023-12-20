@@ -39,4 +39,6 @@ namespace db {
 
         static auto toColumnType(const std::string& str) -> ColumnType;
     };
+
+    auto format_as(ColumnType columnType) -> std::string;
 }
