@@ -72,8 +72,10 @@ namespace db {
     }
 
     auto Table::add_row(std::vector<Value> values) -> void {
+        if (values.size() != columns.size())
+            throw fmt::format("< missing values to add new row: expected {} values, got {}", columns.size(), values.size());
+
         std::unordered_map<std::string, db::Value> column_id_values = std::unordered_map<std::string, db::Value>();
-        // TODO: co jesli values jest wiecej/mniej niz columns
         auto i = 0;
         for (const auto& column : columns) {
             auto column_id = column.getName();
