@@ -18,7 +18,8 @@ namespace db {
     public:
         Value(const std::string &value, ColumnType type);
 
-        const std::string &getValue() const;
+        virtual const std::string &getValue() const;
+        void setValue(const std::string &value);
         ColumnType getType() const;
     };
 

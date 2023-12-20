@@ -15,6 +15,10 @@ namespace db {
         return value;
     }
 
+    void Value::setValue(const std::string &value) {
+        Value::value = value;
+    }
+
     ColumnType Value::getType() const {
         return type;
     }

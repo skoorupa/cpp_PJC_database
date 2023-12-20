@@ -44,9 +44,8 @@ namespace ast {
     //////// EXPRESSIONS
 
     // BINARY EXPRESSION
-    BinaryExpression::BinaryExpression
-    (const Expression &left, const Expression &right, const std::string &expOperator)
-            : Expression(NodeType::BinaryExpression), left(left), right(right), exp_operator(expOperator) {}
+    BinaryExpression::BinaryExpression()
+            : Expression(NodeType::BinaryExpression), left(nullptr), right(nullptr), exp_operator("") {}
 
             // IDENTIFIER
     Identifier::Identifier(const std::string &symbol) : Expression(NodeType::Identifier), symbol(symbol) {}

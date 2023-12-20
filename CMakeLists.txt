@@ -31,7 +31,9 @@ add_executable(cpp_based main.cpp
         lang/interpreter.cpp
         lang/interpreter.hpp
         db/result.hpp
-        db/result.cpp)
+        db/result.cpp
+        db/logic.cpp
+        db/logic.hpp)
 target_link_libraries(cpp_based fmt)
 
 add_executable(cpp_based_db_test db_test.cpp
@@ -44,7 +46,9 @@ add_executable(cpp_based_db_test db_test.cpp
         db/row.cpp
         db/row.hpp
         db/result.hpp
-        db/result.cpp)
+        db/result.cpp
+        db/logic.cpp
+        db/logic.hpp)
 target_link_libraries(cpp_based_db_test fmt)
 
 

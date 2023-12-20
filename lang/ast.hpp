@@ -62,12 +62,12 @@ namespace ast {
     //////// EXPRESSIONS
 
     class BinaryExpression : public Expression {
-        Expression left;
-        Expression right;
+        std::unique_ptr<Expression> left;
+        std::unique_ptr<Expression> right;
         std::string exp_operator;
 
     public:
-        BinaryExpression(const Expression &left, const Expression &right, const std::string &expOperator);
+        BinaryExpression();
     };
 
     class Identifier : public Expression {
@@ -102,8 +102,6 @@ namespace ast {
     public:
         NullLiteral();
     };
-
-    auto get_expression_value(StringLiteral s) -> std::string;
 
     //////// NODES
 
