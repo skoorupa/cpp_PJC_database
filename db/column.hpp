@@ -6,7 +6,8 @@ namespace db {
     /////////////////////////////////////
     // DBTYPES
     enum class ColumnType {
-        Integer, String, Null
+        Integer, String, Null,
+        Boolean, Identifier // for logic
     };
 
     /////////////////////////////////////
@@ -37,9 +38,7 @@ namespace db {
         ColumnType getType() const;
         void setName(const std::string &name);
         void setType(ColumnType type);
-
-        static auto toColumnType(const std::string& str) -> ColumnType;
     };
-
+    auto toColumnType(const std::string& str) -> ColumnType;
     auto format_as(ColumnType columnType) -> std::string;
 }

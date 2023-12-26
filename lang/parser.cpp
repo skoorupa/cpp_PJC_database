@@ -98,58 +98,57 @@ namespace parser {
                 return std::make_unique<ast::KMSelect>(std::move(args));
                 break;
             }
+            case lexer::TokenType::KMWhere: {
+                auto chain = parse_call_token_chain();
+                auto logic_chain = ast::LogicalChainExpression(chain);
+                return std::make_unique<ast::KMWhere>(logic_chain);
+                break;
+            }
             default:
                 throw fmt::format("!!! Parser error: Unexpected tokentype while parsing node: {}",lexer::format_as(token_type));
         }
     }
 
-    auto Parser::parse_expression() -> std::unique_ptr<ast::Expression> {
-        return parse_primary_expression();
-    }
-    auto Parser::parse_primary_expression() -> std::unique_ptr<ast::Expression> {
-        return parse_expression_ptr();
+    auto Parser::parse_primary_expression_ptr() -> std::unique_ptr<ast::Expression> {
+        auto token_type = get_token().getType();
+        std::unique_ptr<ast::Expression> expr = nullptr;
+
+        while (token_type != lexer::TokenType::CommaOperator && token_type != lexer::TokenType::BracketRoundEnd) {
+            expr = parse_expression_ptr();
+            token_type = get_token().getType();
+        }
+        if (token_type == lexer::TokenType::CommaOperator)
+            shift_token();
+
+        return expr;
     }
 
     auto Parser::parse_expression_ptr() -> std::unique_ptr<ast::Expression> {
         auto token_type = get_token().getType();
         std::unique_ptr<ast::Expression> expr = nullptr;
 
-        while (token_type != lexer::TokenType::CommaOperator && token_type != lexer::TokenType::BracketRoundEnd) {
-            switch (token_type) {
-                case lexer::TokenType::Number: {
-                    expr = std::make_unique<ast::NumericLiteral>(std::stoi(shift_token().getValue()));
-                    break;
-                }
-                case lexer::TokenType::Identifier: {
-                    expr = std::make_unique<ast::Identifier>(shift_token().getValue());
-                    break;
-                }
-                case lexer::TokenType::String: {
-                    expr = std::make_unique<ast::StringLiteral>(shift_token().getValue());
-
-                    // TESTS - connecting literals
-//                    auto new_expr = std::make_unique<ast::StringLiteral>(shift_token().getValue());
-//                    if (expr == nullptr) {
-//                        expr = std::move(new_expr);
-//                    } else if (expr->getKind() == ast::NodeType::StringLiteral) {
-//                        auto string_expr = (ast::StringLiteral*)expr.get();
-//                        expr = std::make_unique<ast::StringLiteral>(string_expr->getValue()+new_expr->getValue());
-//                    }
-                    break;
-                }
-                case lexer::TokenType::Null: {
-                    shift_token();
-                    expr = std::make_unique<ast::NullLiteral>();
-                    break;
-                }
-                default:
-                    throw fmt::format("!!! Parser error: Unexpected tokentype while parsing expression ptr: {}", token_type);
+        switch (token_type) {
+            case lexer::TokenType::Number: {
+                expr = std::make_unique<ast::NumericLiteral>(std::stoi(shift_token().getValue()));
+                break;
             }
-            token_type = get_token().getType();
+            case lexer::TokenType::Identifier: {
+                expr = std::make_unique<ast::Identifier>(shift_token().getValue());
+                break;
+            }
+            case lexer::TokenType::String: {
+                expr = std::make_unique<ast::StringLiteral>(shift_token().getValue());
+                break;
+            }
+            case lexer::TokenType::Null: {
+                shift_token();
+                expr = std::make_unique<ast::NullLiteral>();
+                break;
+            }
+            default:
+                throw fmt::format("!!! Parser error: Unexpected tokentype while parsing expression ptr: {}", token_type);
         }
-        if (token_type == lexer::TokenType::CommaOperator)
-            shift_token();
-
+        token_type = get_token().getType();
         return expr;
     }
 
@@ -168,7 +167,7 @@ namespace parser {
         if (token.getType() != lexer::TokenType::BracketRoundBegin)
             throw fmt::format("!!! Parser error: Expected call for {}, got {}", get_prev_token(), token);
 
-        auto expression = parse_expression();
+        auto expression = parse_primary_expression_ptr();
         if (shift_token().getType() != lexer::TokenType::BracketRoundEnd)
             throw fmt::format("!!! Parser error: Expected one argument for {}", get_prev_token());
 
@@ -182,10 +181,23 @@ namespace parser {
             throw fmt::format("!!! Parser error: Expected call for {}", get_prev_token());
 
         while (get_token().getType() != lexer::TokenType::BracketRoundEnd)
-            args.emplace_back(parse_expression_ptr());
+            args.emplace_back(parse_primary_expression_ptr());
 
         shift_token();
         return args;
+    }
+
+    auto Parser::parse_call_token_chain() -> std::vector<lexer::Token> {
+        shift_token();
+        auto token_type = get_token().getType();
+        std::vector<lexer::Token> chain = std::vector<lexer::Token>();
+
+        while (token_type != lexer::TokenType::BracketRoundEnd) {
+            chain.push_back(shift_token());
+            token_type = get_token().getType();
+        }
+        shift_token();
+        return chain;
     }
 
     // PUBLIC
@@ -194,7 +206,6 @@ namespace parser {
 
     auto Parser::produceAST() -> ast::Program {
         auto program = ast::Program();
-
         // DEV: print tokens
 //        for (lexer::Token token : tokens) {
 //            fmt::println("{}",token);

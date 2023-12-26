@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include "lexer.hpp"
 #include "../db/column.hpp"
 
 namespace ast {
@@ -12,6 +13,7 @@ namespace ast {
         NullLiteral,
         Identifier,
         BinaryExpression,
+        LogicalChainExpression,
 
         Quit,
         DBConnect,
@@ -61,13 +63,27 @@ namespace ast {
 
     //////// EXPRESSIONS
 
-    class BinaryExpression : public Expression {
-        std::unique_ptr<Expression> left;
-        std::unique_ptr<Expression> right;
-        std::string exp_operator;
+//    class BinaryExpression : public Expression {
+//        std::unique_ptr<Expression> left;
+//        std::unique_ptr<Expression> right;
+//        std::string exp_operator;
+//
+//    public:
+//        BinaryExpression();
+//
+//        const std::unique_ptr<Expression> &getLeft() const;
+//        const std::unique_ptr<Expression> &getRight() const;
+//        const std::string &getExpOperator() const;
+//    };
+
+    class LogicalChainExpression : public Expression {
+        std::vector<lexer::Token> tokens;
 
     public:
-        BinaryExpression();
+        LogicalChainExpression();
+        LogicalChainExpression(const std::vector<lexer::Token> &tokens);
+        const std::vector<lexer::Token> &getTokens() const;
+        auto add_token(const lexer::Token& token) -> void;
     };
 
     class Identifier : public Expression {
@@ -207,9 +223,10 @@ namespace ast {
     };
 
     class KMWhere : public Node {
-        Expression expression;
+        LogicalChainExpression expression;
 
     public:
-        KMWhere(const Expression &expression);
+        KMWhere(const LogicalChainExpression &expression);
+        const LogicalChainExpression &getExpression() const;
     };
 }

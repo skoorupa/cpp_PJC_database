@@ -1,6 +1,6 @@
 #include <fmt/core.h>
 #include "db/db.hpp"
-#include "db/table.hpp"
+#include "db/result.hpp"
 
 auto main() -> int {
     auto test_db = db::create("test.db");
@@ -9,32 +9,31 @@ auto main() -> int {
     emp.add_column("id",db::ColumnType::Integer);
     emp.add_column("imie",db::ColumnType::String);
     emp.add_row(
-            std::vector<db::Value>{
-                db::Value("1",db::ColumnType::Integer),
-                db::Value("Adam",db::ColumnType::String)
-            }
-            );
+        std::vector<db::Value>{
+            db::Value("1",db::ColumnType::Integer),
+            db::Value("Adam",db::ColumnType::String)
+        }
+    );
     emp.add_row(
-            std::vector<db::Value>{
-                db::Value("2",db::ColumnType::Integer),
-                db::Value("Martyna",db::ColumnType::String)
-            }
-            );
+        std::vector<db::Value>{
+            db::Value("2",db::ColumnType::Integer),
+            db::Value("Martyna",db::ColumnType::String)
+        }
+    );
     emp.add_row(
-            std::vector<db::Value>{
-                db::Value("3",db::ColumnType::Integer),
-                db::Value("Mikolaj",db::ColumnType::String)
-            }
-            );
+        std::vector<db::Value>{
+            db::Value("3",db::ColumnType::Integer),
+            db::Value("Mikolaj",db::ColumnType::String)
+        }
+    );
     emp.add_row(
-            std::vector<db::Value>{
-                db::Value("4",db::ColumnType::Integer),
-                db::Value("Ola",db::ColumnType::String)
-            }
-            );
+        std::vector<db::Value>{
+            db::Value("4",db::ColumnType::Integer),
+            db::Value("Ola",db::ColumnType::String)
+        }
+    );
 
-    emp.print();
-    emp.rename_column("id","zzz");
-//    emp.remove_column("zzz");
+    db::Result result = db::Result();
+    result.add_table(test_db.get_table("emp"));
     emp.print();
 }

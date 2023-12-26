@@ -81,4 +81,11 @@ namespace db {
             }
         }
     }
+
+    auto Result::where(db::BinaryExpression binaryExpression) -> void {
+        fmt::println("{}, {}, {}",
+                     binaryExpression.getLeft().getValue(),
+                     binaryExpression.getExpOperator(),
+                     binaryExpression.getRight().getValue());
+    }
 }

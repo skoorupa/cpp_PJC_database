@@ -3,27 +3,28 @@
 
 namespace ast {
     auto nodetype_map = std::map<ast::NodeType, std::string>{
-            {ast::NodeType::Program,          "ast::Program"},
-            {ast::NodeType::NumericLiteral,   "ast::NumericLiteral"},
-            {ast::NodeType::StringLiteral,    "ast::StringLiteral"},
-            {ast::NodeType::Identifier,       "ast::Identifier"},
-            {ast::NodeType::BinaryExpression, "ast::BinaryExpression"},
+            {ast::NodeType::Program,                "ast::Program"},
+            {ast::NodeType::NumericLiteral,         "ast::NumericLiteral"},
+            {ast::NodeType::StringLiteral,          "ast::StringLiteral"},
+            {ast::NodeType::Identifier,             "ast::Identifier"},
+            {ast::NodeType::BinaryExpression,       "ast::BinaryExpression"},
+            {ast::NodeType::LogicalChainExpression, "ast::LogicalChainExpression"},
 
-            {ast::NodeType::Quit,             "ast::Quit"},
-            {ast::NodeType::DBConnect,        "ast::DBConnect"},
-            {ast::NodeType::DBCreate,         "ast::DBCreate"},
+            {ast::NodeType::Quit,                   "ast::Quit"},
+            {ast::NodeType::DBConnect,              "ast::DBConnect"},
+            {ast::NodeType::DBCreate,               "ast::DBCreate"},
 
-            {ast::NodeType::KFCreateTable,    "ast::KFCreateTable"},
-            {ast::NodeType::KFGetTable,       "ast::KFGetTable"},
-            {ast::NodeType::KMAddColumn,      "ast::KMAddColumn"},
-            {ast::NodeType::KMGetColumn,      "ast::KMGetColumn"},
-            {ast::NodeType::KMRename,         "ast::KMRename"},
-            {ast::NodeType::KMRemove,         "ast::KMRemove"},
-            {ast::NodeType::KMAddRow,         "ast::KMAddRow"},
-            {ast::NodeType::KMPrint,          "ast::KMPrint"},
+            {ast::NodeType::KFCreateTable,          "ast::KFCreateTable"},
+            {ast::NodeType::KFGetTable,             "ast::KFGetTable"},
+            {ast::NodeType::KMAddColumn,            "ast::KMAddColumn"},
+            {ast::NodeType::KMGetColumn,            "ast::KMGetColumn"},
+            {ast::NodeType::KMRename,               "ast::KMRename"},
+            {ast::NodeType::KMRemove,               "ast::KMRemove"},
+            {ast::NodeType::KMAddRow,               "ast::KMAddRow"},
+            {ast::NodeType::KMPrint,                "ast::KMPrint"},
 
-            {ast::NodeType::KMSelect,         "ast::KMSelect"},
-            {ast::NodeType::KMWhere,          "ast::KMWhere"}
+            {ast::NodeType::KMSelect,               "ast::KMSelect"},
+            {ast::NodeType::KMWhere,                "ast::KMWhere"}
     };
 
     auto format_as(NodeType nodeType) -> std::string {
@@ -44,10 +45,24 @@ namespace ast {
     //////// EXPRESSIONS
 
     // BINARY EXPRESSION
-    BinaryExpression::BinaryExpression()
-            : Expression(NodeType::BinaryExpression), left(nullptr), right(nullptr), exp_operator("") {}
+//    BinaryExpression::BinaryExpression()
+//            : Expression(NodeType::BinaryExpression), left(), right(), exp_operator("") {}
+//
+//    const std::unique_ptr<Expression> &BinaryExpression::getLeft() const {return left;}
+//    const std::unique_ptr<Expression> &BinaryExpression::getRight() const {return right;}
+//    const std::string &BinaryExpression::getExpOperator() const {return exp_operator;}
+    // LOGICAL EXPRESSION
+    LogicalChainExpression::LogicalChainExpression()
+            : Expression(NodeType::LogicalChainExpression), tokens() {}
+    LogicalChainExpression::LogicalChainExpression(const std::vector<lexer::Token> &tokens)
+            : Expression(NodeType::LogicalChainExpression), tokens(tokens) {}
+    const std::vector<lexer::Token> &LogicalChainExpression::getTokens() const {return tokens;}
 
-            // IDENTIFIER
+    auto LogicalChainExpression::add_token(const lexer::Token& token) -> void {
+        tokens.push_back(token);
+    }
+
+    // IDENTIFIER
     Identifier::Identifier(const std::string &symbol) : Expression(NodeType::Identifier), symbol(symbol) {}
     const std::string &Identifier::getSymbol() const {return symbol;}
 
@@ -104,5 +119,6 @@ namespace ast {
         expressions.push_back(std::move(expression));
     }
 
-    KMWhere::KMWhere(const Expression &expression) : Node(NodeType::KMWhere), expression(expression) {}
+    KMWhere::KMWhere(const LogicalChainExpression &expression) : Node(NodeType::KMWhere), expression(expression) {}
+    const LogicalChainExpression &KMWhere::getExpression() const {return expression;}
 }

@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "table.hpp"
+#include "logic.hpp"
 
 namespace db {
 
@@ -21,6 +22,7 @@ namespace db {
         auto add_column(Column column) -> void;
         auto is_blank() -> bool;
         auto print() -> void;
+        auto where(BinaryExpression binaryExpression) -> void;
     };
 
 }

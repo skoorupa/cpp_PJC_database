@@ -57,7 +57,7 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 if (!curr_table)
                     throw fmt::format("!!! Interpreter error: add_column used without chosen table");
 
-                auto column_type = db::Column::toColumnType(command->getType());
+                auto column_type = db::toColumnType(command->getType());
                 try {
                     curr_table->add_column(
                     command->getName(),
@@ -173,7 +173,7 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                     throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
 
                 if (!curr_table)
-                    throw fmt::format("!!! Interpreter error: print used without chosen table");
+                    throw fmt::format("!!! Interpreter error: select used without chosen table");
 
                 auto command = (ast::KMSelect*)node.get();
 
@@ -187,6 +187,26 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                         default:
                             throw fmt::format("!!! Interpreter error: select did not expect following type {}", expression->getKind());
                     }
+                }
+                break;
+            }
+            case ast::NodeType::KMWhere: {
+                if (!connected_to_db)
+                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
+
+                if (!curr_table)
+                    throw fmt::format("!!! Interpreter error: where used without chosen table");
+
+                if (curr_result.is_blank())
+                    throw fmt::format("!!! Interpreter error: where used without select statement");
+
+                auto command = (ast::KMWhere*)node.get();
+                auto logicparser = db::LogicParser(command->getExpression().getTokens());
+                try {
+                    auto binary = logicparser.produce_logic_AST();
+                    curr_result.where(binary);
+                } catch (std::string s) {
+                    throw s;
                 }
                 break;
             }

@@ -3,6 +3,7 @@
 #include "../db/db.hpp"
 #include "../db/table.hpp"
 #include "../db/result.hpp"
+#include "../db/logic.hpp"
 #include <fmt/core.h>
 #include <fmt/format.h>
 #include <fmt/ranges.h>

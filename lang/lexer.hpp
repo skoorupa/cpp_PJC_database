@@ -13,9 +13,9 @@ namespace lexer {
         AsteriskOperator,
 
         Less,
-        LessThan,
+        LessEqual,
         More,
-        MoreThan,
+        MoreEqual,
         Equal,
         NotEqual,
         And,

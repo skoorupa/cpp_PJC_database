@@ -16,9 +16,9 @@ namespace lexer {
             {lexer::TokenType::AsteriskOperator,  "lexer::AsteriskOperator"},
 
             {lexer::TokenType::Less,              "lexer::Less"},
-            {lexer::TokenType::LessThan,          "lexer::LessThan"},
+            {lexer::TokenType::LessEqual,         "lexer::LessEqual"},
             {lexer::TokenType::More,              "lexer::More"},
-            {lexer::TokenType::MoreThan,          "lexer::MoreThan"},
+            {lexer::TokenType::MoreEqual,         "lexer::MoreEqual"},
             {lexer::TokenType::Equal,             "lexer::Equal"},
             {lexer::TokenType::NotEqual,          "lexer::NotEqual"},
             {lexer::TokenType::And,               "lexer::And"},
@@ -78,9 +78,9 @@ namespace lexer {
         };
         auto multi_operators = std::map<std::string, lexer::TokenType>{
                 {"<",  TokenType::Less},
-                {"<=", TokenType::LessThan},
+                {"<=", TokenType::LessEqual},
                 {">",  TokenType::More},
-                {">=", TokenType::MoreThan},
+                {">=", TokenType::MoreEqual},
                 {"==", TokenType::Equal},
                 {"!=", TokenType::NotEqual},
                 {"&&", TokenType::And},

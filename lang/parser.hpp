@@ -1,3 +1,5 @@
+#pragma once
+
 #include "ast.hpp"
 #include "lexer.hpp"
 #include "fmt/core.h"
@@ -18,13 +20,13 @@ namespace parser {
         auto shift_token() -> lexer::Token;
 
         auto parse_node() -> std::unique_ptr<ast::Node>;
-        auto parse_expression() -> std::unique_ptr<ast::Expression>;
-        auto parse_primary_expression() -> std::unique_ptr<ast::Expression>;
+        auto parse_primary_expression_ptr() -> std::unique_ptr<ast::Expression>;
         auto parse_expression_ptr() -> std::unique_ptr<ast::Expression>;
 
         auto parse_call_no_args() -> void;
         auto parse_call_single_arg() -> std::unique_ptr<ast::Expression>;
         auto parse_call_multiple_args() -> std::vector<std::unique_ptr<ast::Expression>>;
+        auto parse_call_token_chain() -> std::vector<lexer::Token>;
 
     public:
         Parser(std::string code);

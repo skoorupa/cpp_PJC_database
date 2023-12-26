@@ -30,7 +30,7 @@ namespace db {
     void Column::setName(const std::string &name) {Column::name = name;}
     void Column::setType(ColumnType type) {Column::type = type;}
 
-    auto Column::toColumnType(const std::string& str) -> ColumnType {
+    auto toColumnType(const std::string& str) -> ColumnType {
         return columntype_map.at(str);
     }
 
