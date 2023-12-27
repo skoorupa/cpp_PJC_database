@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include <map>
+#include <fmt/core.h>
+#include <fmt/format.h>
 
 namespace db {
     /////////////////////////////////////
@@ -11,7 +13,7 @@ namespace db {
     };
 
     /////////////////////////////////////
-    // COLUMN CLASS
+    // VALUE CLASS
     class Value {
         std::string value;
         ColumnType type;
@@ -22,7 +24,10 @@ namespace db {
         virtual const std::string &getValue() const;
         void setValue(const std::string &value);
         ColumnType getType() const;
+        void setType(ColumnType type);
     };
+
+    auto format_as(Value value) -> std::string;
 
     /////////////////////////////////////
     // COLUMN CLASS

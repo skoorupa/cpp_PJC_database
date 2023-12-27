@@ -9,20 +9,21 @@ namespace db {
             {"String", ColumnType::String}
     };
 
+    /////////////////////////////////////
+    // VALUE CLASS
+
     Value::Value(const std::string &value, ColumnType type) : value(value), type(type) {}
+    const std::string &Value::getValue() const {return value;}
+    void Value::setValue(const std::string &value) {Value::value = value;}
+    ColumnType Value::getType() const {return type;}
+    void Value::setType(ColumnType type) {Value::type = type;}
 
-    const std::string &Value::getValue() const {
-        return value;
+    auto format_as(Value value) -> std::string {
+        return fmt::format("Value(type: {}, value: {})", value.getType(), value.getValue());
     }
 
-    void Value::setValue(const std::string &value) {
-        Value::value = value;
-    }
-
-    ColumnType Value::getType() const {
-        return type;
-    }
-
+    /////////////////////////////////////
+    // COLUMN CLASS
     Column::Column(const std::string &table, const std::string &name, ColumnType type) : table(table), name(name), type(type) {}
 
     const std::string &Column::getName() const {return name;}

@@ -2,11 +2,11 @@
 
 namespace db {
     Row::Row(int id, const std::unordered_map<std::string, db::Value> &values) : id(id), values(values) {}
-    auto Row::get_value(const std::string& column_id) -> db::Value {
+    auto Row::get_value(const std::string& column_id) const -> db::Value {
         return values.at(column_id);
     }
 
-    auto Row::get_value_as_string(const std::string& column_id) -> std::string {
+    auto Row::get_value_as_string(const std::string& column_id) const -> std::string {
         return values.at(column_id).getValue();
     }
 
@@ -18,7 +18,7 @@ namespace db {
         values.erase(column_id);
     }
 
-    auto Row::has_column(const std::string &column_id) -> bool {
+    auto Row::has_column(const std::string &column_id) const -> bool {
         return values.contains(column_id);
     }
 

@@ -43,8 +43,12 @@ namespace db {
         return *get_column_iterator(columnname);
     }
 
-    auto Table::has_column(const std::string& columnname) -> bool {
-        return get_column_iterator(columnname) != columns.end();
+    auto Table::has_column(const std::string& columnname) const -> bool {
+        return std::ranges::find_if(
+                columns.begin(),
+                columns.end(),
+                [columnname](const Column& column)->bool{return column.getName() == columnname;}
+        ) != columns.end();
     }
 
     auto Table::remove_column(const std::string& columnname) -> void {

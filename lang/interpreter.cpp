@@ -204,7 +204,7 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 auto logicparser = db::LogicParser(command->getExpression().getTokens());
                 try {
                     auto binary = logicparser.produce_logic_AST();
-                    curr_result.where(binary);
+                    curr_result.add_where(binary);
                 } catch (std::string s) {
                     throw s;
                 }

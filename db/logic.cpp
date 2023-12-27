@@ -44,6 +44,40 @@ namespace db {
     const Value &BinaryExpression::getLeft() const {return left;}
     const Value &BinaryExpression::getRight() const {return right;}
     Operator BinaryExpression::getExpOperator() const {return exp_operator;}
+    void BinaryExpression::setLeft(const Value &left) {BinaryExpression::left = left;}
+    void BinaryExpression::setRight(const Value &right) {BinaryExpression::right = right;}
+    void BinaryExpression::setExpOperator(Operator expOperator) {exp_operator = expOperator;}
+
+    auto BinaryExpression::evaluate() -> bool {
+        if (left.getType() != right.getType()) return false;
+        switch (exp_operator) {
+            case Operator::Equal: {
+                return left.getValue() == right.getValue();
+            }
+            case Operator::NotEqual: {
+                return left.getValue() != right.getValue();
+            }
+        }
+        if (left.getType() == ColumnType::Integer) {
+            auto l = std::stoi(left.getValue());
+            auto r = std::stoi(right.getValue());
+            switch (exp_operator) {
+                case Operator::Less: {
+                    return l < r;
+                }
+                case Operator::LessEqual: {
+                    return l <= r;
+                }
+                case Operator::More: {
+                    return l > r;
+                }
+                case Operator::MoreEqual: {
+                    return l >= r;
+                }
+            }
+        }
+        return false;
+    }
 
     // LOGICPARSER
 

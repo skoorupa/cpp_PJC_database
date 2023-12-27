@@ -22,7 +22,7 @@ namespace db {
         auto add_column(std::string name, ColumnType type) -> void;
         auto get_column_iterator(const std::string& columnname);
         auto get_column(std::string columnname) -> Column;
-        auto has_column(const std::string& columnname) -> bool;
+        auto has_column(const std::string& columnname) const -> bool;
         auto remove_column(const std::string& columnname) -> void;
         auto rename_column(const std::string& old_name, const std::string& new_name) -> void;
         auto add_row(std::vector<Value> values) -> void;

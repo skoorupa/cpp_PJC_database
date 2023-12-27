@@ -8,21 +8,24 @@ namespace db {
 
     class Result {
         std::vector<Table> tables;
-        std::vector<Row> rows;
         std::vector<Column> columns;
+        std::vector<BinaryExpression> wheres;
 
     public:
         Result();
 
         const std::vector<Table> &getTables() const;
-        const std::vector<Row> &getRows() const;
         const std::vector<Column> &getColumns() const;
+        const std::vector<BinaryExpression> &getWheres() const;
         auto add_table(Table table) -> void;
-        auto add_row(Row row) -> void;
         auto add_column(Column column) -> void;
+        auto add_where(db::BinaryExpression binaryExpression) -> void;
         auto is_blank() -> bool;
+        static auto update_value(const Value& value, const Row& row) -> Value;
+        auto update_where(db::BinaryExpression binaryExpression, const Row& row) -> BinaryExpression;
+        auto test_row(const Row& row) -> bool;
+        auto getRows() -> std::vector<Row>;
         auto print() -> void;
-        auto where(BinaryExpression binaryExpression) -> void;
     };
 
 }
