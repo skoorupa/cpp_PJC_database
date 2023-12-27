@@ -82,11 +82,12 @@ namespace db {
         fmt::println("< Tables: {}", tables);
         std::unordered_map<std::string, int> col_widths = std::unordered_map<std::string, int>();
         auto full_width = 0;
+        auto rows = getRows();
         for (const auto &column: columns) {
             auto column_id = column.getName();
             auto column_name_length = column_id.length();
             auto max_length = column_name_length;
-            for (Row &row: getRows()) {
+            for (Row& row: rows) {
                 if (row.has_column(column_id)) {
                     std::string value = row.get_value_as_string(column_id);
                     if (max_length < value.length()) max_length = value.length();
@@ -106,7 +107,7 @@ namespace db {
         fmt::println("");
 
 
-        for (Row row: getRows()) {
+        for (Row& row: rows) {
             for (const auto &column: columns) {
                 fmt::print("|");
                 auto column_id = column.getName();
