@@ -10,6 +10,7 @@ namespace db {
         std::vector<Table> tables;
         std::vector<Column> columns;
         std::vector<BinaryExpression> wheres;
+        bool blank;
 
     public:
         Result();

@@ -9,7 +9,7 @@
 
 namespace db {
     db::Result::Result()
-    : tables(std::vector<Table>()), columns(std::vector<Column>()), wheres(std::vector<BinaryExpression>()) {}
+    : tables(std::vector<Table>()), columns(std::vector<Column>()), wheres(std::vector<BinaryExpression>()), blank(true) {}
 
     // TODO: maybe change to pointers? we will see
     const std::vector<Table> &Result::getTables() const {return tables;}
@@ -83,7 +83,12 @@ namespace db {
         std::unordered_map<std::string, int> col_widths = std::unordered_map<std::string, int>();
         auto full_width = 0;
         auto rows = getRows();
-        for (const auto &column: columns) {
+        auto print_columns = columns;
+        if (print_columns.empty())
+            for (Table& t : tables)
+                for (const Column& c : t.getColumns())
+                    print_columns.push_back(c);
+        for (const auto &column: print_columns) {
             auto column_id = column.getName();
             auto column_name_length = column_id.length();
             auto max_length = column_name_length;
@@ -108,7 +113,7 @@ namespace db {
 
 
         for (Row& row: rows) {
-            for (const auto &column: columns) {
+            for (const auto &column: print_columns) {
                 fmt::print("|");
                 auto column_id = column.getName();
                 auto letters = 0;

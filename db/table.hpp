@@ -18,6 +18,7 @@ namespace db {
 
         const std::string &getName() const;
         const std::vector<Row> &getRows() const;
+        const std::vector<Column> &getColumns() const;
         auto rename(const std::string& new_name) -> void;
         auto add_column(std::string name, ColumnType type) -> void;
         auto get_column_iterator(const std::string& columnname);

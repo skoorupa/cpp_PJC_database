@@ -9,13 +9,9 @@ namespace db {
         rows(std::vector<Row>()),
         curr_row_id(1) {}
 
-    const std::string &Table::getName() const {
-        return name;
-    }
-
-    const std::vector<Row> &Table::getRows() const {
-        return rows;
-    }
+    const std::string &Table::getName() const {return name;}
+    const std::vector<Row> &Table::getRows() const {return rows;}
+    const std::vector<Column> &Table::getColumns() const {return columns;}
 
     auto Table::rename(const std::string& new_name) -> void {
         name = new_name;

@@ -161,11 +161,7 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 if (!curr_table)
                     throw fmt::format("!!! Interpreter error: print used without chosen table");
 
-                if (curr_result.is_blank())
-                    curr_table->print();
-                else
-                    curr_result.print();
-
+                curr_result.print();
                 break;
             }
             case ast::NodeType::KMSelect: {
@@ -196,9 +192,6 @@ auto Interpreter::runAST(ast::Program& program) -> void {
 
                 if (!curr_table)
                     throw fmt::format("!!! Interpreter error: where used without chosen table");
-
-                if (curr_result.is_blank())
-                    throw fmt::format("!!! Interpreter error: where used without select statement");
 
                 auto command = (ast::KMWhere*)node.get();
                 auto logicparser = db::LogicParser(command->getExpression().getTokens());
