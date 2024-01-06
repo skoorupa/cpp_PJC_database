@@ -24,7 +24,8 @@ namespace ast {
             {ast::NodeType::KMPrint,                "ast::KMPrint"},
 
             {ast::NodeType::KMSelect,               "ast::KMSelect"},
-            {ast::NodeType::KMWhere,                "ast::KMWhere"}
+            {ast::NodeType::KMWhere,                "ast::KMWhere"},
+            {ast::NodeType::KMUpdate,               "ast::KMUpdate"}
     };
 
     auto format_as(NodeType nodeType) -> std::string {
@@ -108,6 +109,11 @@ namespace ast {
 
     KMAddRow::KMAddRow(const std::vector<db::Value> &values) : Node(NodeType::KMAddRow), values(values) {}
     const std::vector<db::Value> &KMAddRow::getValues() const {return values;}
+
+    KMUpdate::KMUpdate(const StringLiteral &columnName, const db::Value &value)
+    : Node(NodeType::KMUpdate), column_name(columnName), value(value) {}
+    const StringLiteral &KMUpdate::getColumnName() const {return column_name;}
+    const db::Value &KMUpdate::getValue() const {return value;}
 
     KMPrint::KMPrint() : Node(NodeType::KMPrint) {}
 

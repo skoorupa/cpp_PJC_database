@@ -39,6 +39,7 @@ namespace lexer {
             {lexer::TokenType::KMRename,          "lexer::KMRename"},
             {lexer::TokenType::KMRemove,          "lexer::KMRemove"},
             {lexer::TokenType::KMAddRow,          "lexer::KMAddRow"},
+            {lexer::TokenType::KMUpdate,          "lexer::KMUpdate"},
             {lexer::TokenType::KMPrint,           "lexer::KMPrint"},
             {lexer::TokenType::KMSelect,          "lexer::KMSelect"},
             {lexer::TokenType::KMWhere,           "lexer::KMWhere"},
@@ -72,6 +73,7 @@ namespace lexer {
                 {"drop", TokenType::KMRemove},
                 {"add_row", TokenType::KMAddRow},
                 {"insert", TokenType::KMAddRow},
+                {"update", TokenType::KMUpdate},
                 {"print", TokenType::KMPrint},
                 {"select", TokenType::KMSelect},
                 {"where", TokenType::KMWhere}

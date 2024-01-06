@@ -161,6 +161,21 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 curr_table->add_row(command->getValues());
                 break;
             }
+            case ast::NodeType::KMUpdate: {
+                auto command = (ast::KMUpdate*) node.get();
+
+                if (!connected_to_db)
+                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
+                if (!curr_table)
+                    throw fmt::format("!!! Interpreter error: select used without chosen table");
+
+                try {
+                    curr_result.update_rows(curr_table, command->getColumnName().getValue(), command->getValue());
+                } catch (std::string& message) {
+                    fmt::println("[DB ERROR] {}", message);
+                }
+                break;
+            }
             case ast::NodeType::KMPrint: {
                 if (!connected_to_db)
                     throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);

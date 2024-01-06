@@ -88,6 +88,32 @@ namespace parser {
                 );
                 break;
             }
+            case lexer::TokenType::KMUpdate: {
+                auto args = parse_call_multiple_args();
+
+                auto value = db::Value("", db::ColumnType::Null);
+                if (args[1]->getKind() == ast::NodeType::StringLiteral) {
+                    value = db::Value(
+                            ((ast::StringLiteral*)args[1].get())->getValue(),
+                            db::ColumnType::String
+                    );
+                } else if (args[1]->getKind() == ast::NodeType::NumericLiteral) {
+                    value = db::Value(
+                            std::to_string(((ast::NumericLiteral*)args[1].get())->getValue()),
+                            db::ColumnType::Integer
+                    );
+                } else if (args[1]->getKind() == ast::NodeType::NullLiteral) {
+                    value = db::Value(
+                            "null",
+                            db::ColumnType::Null
+                    );
+                }
+                return std::make_unique<ast::KMUpdate>(
+                        ((ast::Identifier*)args.at(0).get())->getSymbol(),
+                        value
+                );
+                break;
+            }
             case lexer::TokenType::KMPrint: {
                 parse_call_no_args();
                 return std::make_unique<ast::KMPrint>();

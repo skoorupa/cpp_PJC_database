@@ -29,7 +29,8 @@ namespace ast {
         KMPrint,
 
         KMSelect,
-        KMWhere
+        KMWhere,
+        KMUpdate
     };
 
     auto format_as(NodeType nodeType) -> std::string;
@@ -202,6 +203,17 @@ namespace ast {
         KMAddRow(const std::vector<db::Value> &values);
 
         const std::vector<db::Value> &getValues() const;
+    };
+
+    class KMUpdate : public Node {
+        StringLiteral column_name;
+        db::Value value;
+
+    public:
+        KMUpdate(const StringLiteral &columnName, const db::Value &value);
+
+        const StringLiteral &getColumnName() const;
+        const db::Value &getValue() const;
     };
 
     // DQL

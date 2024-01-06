@@ -90,6 +90,14 @@ namespace db {
         }
     }
 
+    auto Result::update_rows(db::Table *table, std::string column_name, Value value) -> void {
+        auto rows = getRows();
+        for (Row r : rows) {
+            auto id = r.getId();
+            table->update_row(id, column_name, value);
+        }
+    }
+
     auto Result::print() -> void {
         fmt::println("< Result");
         fmt::println("< Tables: {}", tables);

@@ -36,6 +36,7 @@ namespace lexer {
         KMRename,
         KMRemove,
         KMAddRow,
+        KMUpdate,
         KMPrint,
         KMSelect,
         KMWhere,
