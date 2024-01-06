@@ -28,6 +28,7 @@ auto main() -> int {
         "get_table(tablica) get_column(id) rename(identyfikator) print()",
         "get_table(tablica) where(identyfikator==2) update(nazwisko, 'migdalska')",
         "get_table(tablica) print()",
+        "info()"
     }) {
         try {
             auto parser = parser::Parser(devcmd);

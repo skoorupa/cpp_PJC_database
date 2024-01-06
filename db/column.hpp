@@ -39,7 +39,6 @@ namespace db {
     public:
         Column(const std::string &table, const std::string &name, ColumnType type, bool nullable);
 
-        int getId() const;
         const std::string &getName() const;
         ColumnType getType() const;
         bool isNullable() const;
@@ -48,5 +47,6 @@ namespace db {
         void setNullable(bool nullable);
     };
     auto toColumnType(const std::string& str) -> ColumnType;
+    auto format_as(Column column) -> std::string;
     auto format_as(ColumnType columnType) -> std::string;
 }

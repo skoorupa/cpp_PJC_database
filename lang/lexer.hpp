@@ -31,6 +31,7 @@ namespace lexer {
 
         KFCreateTable,
         KFGetTable,
+        KMInfo,
         KMAddColumn,
         KMGetColumn,
         KMRename,

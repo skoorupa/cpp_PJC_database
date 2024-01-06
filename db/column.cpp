@@ -40,11 +40,18 @@ namespace db {
         return columntype_map.at(str);
     }
 
+    auto format_as(Column column) -> std::string {
+        auto result = fmt::format("{}(type: {}", column.getName(), column.getType());
+        if (column.isNullable())
+            result += ", nullable";
+        return result+")";
+    }
+
     auto format_as(ColumnType columnType) -> std::string {
         for (auto& pair : columntype_map)
             if (pair.second == columnType)
                 return pair.first;
         
-        return "unknown";
+        return "UNKNOWN";
     }
 }

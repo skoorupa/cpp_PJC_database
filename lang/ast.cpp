@@ -17,6 +17,7 @@ namespace ast {
 
             {ast::NodeType::KFCreateTable,          "ast::KFCreateTable"},
             {ast::NodeType::KFGetTable,             "ast::KFGetTable"},
+            {ast::NodeType::KMInfo,                 "ast::KMInfo"},
             {ast::NodeType::KMAddColumn,            "ast::KMAddColumn"},
             {ast::NodeType::KMGetColumn,            "ast::KMGetColumn"},
             {ast::NodeType::KMRename,               "ast::KMRename"},
@@ -93,6 +94,8 @@ namespace ast {
 
     KFGetTable::KFGetTable(const StringLiteral &tableName) : Node(NodeType::KFGetTable), table_name(tableName) {}
     const StringLiteral &KFGetTable::getTableName() const {return table_name;}
+
+    KMInfo::KMInfo() : Node(NodeType::KMInfo) {}
 
     KMAddColumn::KMAddColumn(const std::string &name, const std::string &type, const bool &nullable)
     : Node(NodeType::KMAddColumn),  name(name), type(type), nullable(nullable) {}

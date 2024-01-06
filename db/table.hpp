@@ -31,6 +31,7 @@ namespace db {
         auto remove_row(int id) -> void;
         auto update_row(int id, std::string columnname, const Value& value) -> void;
         auto print() -> void;
+        auto info() -> void;
     };
 
     auto format_as(const Table &table) -> std::string;

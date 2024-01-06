@@ -37,6 +37,11 @@ namespace parser {
                 return std::make_unique<ast::KFGetTable>(((ast::Identifier*)arg.get())->getSymbol());
                 break;
             }
+            case lexer::TokenType::KMInfo: {
+                parse_call_no_args();
+                return std::make_unique<ast::KMInfo>();
+                break;
+            }
             case lexer::TokenType::KMAddColumn: {
                 auto args = parse_call_multiple_args();
                 auto identifiers = std::vector<ast::Identifier*>();

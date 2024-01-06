@@ -30,6 +30,7 @@ namespace db {
         auto remove_rows(db::Table* table) -> void;
         auto update_rows(db::Table* table, std::string column_name, Value value) -> void;
         auto print() -> void;
+        auto info() -> void;
     };
 
 }

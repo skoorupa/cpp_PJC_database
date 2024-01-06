@@ -1,5 +1,6 @@
 #include "table.hpp"
 #include <fmt/core.h>
+#include <fmt/ranges.h>
 #include <fmt/format.h>
 
 namespace db {
@@ -177,6 +178,13 @@ namespace db {
 
             fmt::println("|");
         }
+    }
+
+    auto Table::info() -> void {
+        fmt::println("< table info");
+        fmt::println("table name: {}", name);
+        fmt::println("columns ({}): {}", columns.size(), columns);
+        fmt::println("row amount: {}", rows.size());
     }
 
     auto format_as(const Table& table) -> std::string {

@@ -48,6 +48,16 @@ namespace db {
         fmt::println("< removed table {}", name);
     }
 
+    auto Database::info() -> void {
+        fmt::println("< database info");
+        fmt::println("file path: {}", filepath);
+
+        auto table_names = std::vector<std::string>();
+        for (auto pair : tables)
+            table_names.push_back(pair.first);
+        fmt::println("tables ({}): {}", tables.size(), table_names);
+    };
+
     /////////////////////////////////////
     // DB HANDLING
     auto create(std::string filepath) -> Database {

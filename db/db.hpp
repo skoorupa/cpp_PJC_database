@@ -2,6 +2,7 @@
 #include <string>
 #include <map>
 #include <fmt/core.h>
+#include <fmt/ranges.h>
 #include "table.hpp"
 
 namespace db {
@@ -21,6 +22,7 @@ namespace db {
         auto get_table(const std::string& name) -> Table&;
         auto rename_table(std::string old_name, std::string new_name) -> void;
         auto remove_table(const std::string& name) -> void;
+        auto info() -> void;
     };
 
     /////////////////////////////////////

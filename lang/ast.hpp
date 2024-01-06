@@ -21,6 +21,7 @@ namespace ast {
 
         KFCreateTable,
         KFGetTable,
+        KMInfo,
         KMAddColumn,
         KMGetColumn,
         KMRename,
@@ -159,6 +160,11 @@ namespace ast {
         KFCreateTable(const StringLiteral &tableName);
 
         const StringLiteral &getTableName() const;
+    };
+
+    class KMInfo : public Node {
+    public:
+        KMInfo();
     };
 
     class KMAddColumn : public Node {

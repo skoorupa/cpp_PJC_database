@@ -153,4 +153,11 @@ namespace db {
             fmt::println("|");
         }
     }
+
+    auto Result::info() -> void {
+        fmt::println("< result info");
+        fmt::println("tables ({}): {}", tables.size(), tables);
+        fmt::println("columns selected ({}): {}", columns.size(), columns);
+        fmt::println("rows amount: {}", getRows().size());
+    }
 }

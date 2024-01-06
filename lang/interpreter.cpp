@@ -49,6 +49,19 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 }
                 break;
             }
+            case ast::NodeType::KMInfo: {
+                if (!connected_to_db)
+                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
+
+                if (!curr_table) // DB INFO
+                    curr_database.info();
+                else if (curr_result.are_wheres_blank())
+                    curr_table->info();
+                else
+                    curr_result.info();
+
+                break;
+            }
             case ast::NodeType::KMAddColumn: {
                 auto command = (ast::KMAddColumn*) node.get();
                 if (!connected_to_db)

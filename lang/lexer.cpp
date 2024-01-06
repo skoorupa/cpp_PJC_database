@@ -66,6 +66,7 @@ namespace lexer {
                 {"get_table", TokenType::KFGetTable},
                 {"from", TokenType::KFGetTable},
                 {"create_table", TokenType::KFCreateTable},
+                {"info", TokenType::KMInfo},
                 {"add_column", TokenType::KMAddColumn},
                 {"get_column", TokenType::KMGetColumn},
                 {"rename", TokenType::KMRename},
