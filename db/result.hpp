@@ -27,6 +27,7 @@ namespace db {
         auto update_where(db::BinaryExpression binaryExpression, const Row& row) -> BinaryExpression;
         auto test_row(const Row& row) -> bool;
         auto getRows() -> std::vector<Row>;
+        auto remove_rows(db::Table* table) -> void;
         auto print() -> void;
     };
 

@@ -81,6 +81,15 @@ namespace db {
         return rows;
     }
 
+    auto Result::remove_rows(db::Table* table) -> void {
+        // TODO: implement multiple tables
+        auto rows = getRows();
+        for (Row r : rows) {
+            auto id = r.getId();
+            table->remove_row(id);
+        }
+    }
+
     auto Result::print() -> void {
         fmt::println("< Result");
         fmt::println("< Tables: {}", tables);

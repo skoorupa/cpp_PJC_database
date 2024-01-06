@@ -142,7 +142,7 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 } else if (curr_result.are_columns_blank()) {
                     // removing rows
                     try {
-                        curr_table;
+                        curr_result.remove_rows(curr_table);
                     } catch (std::string& message) {
                         fmt::println("[DB ERROR] {}", message);
                     }
