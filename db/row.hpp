@@ -15,7 +15,8 @@ namespace db {
         int getId() const;
         auto get_value(const std::string& column_id) const -> db::Value;
         auto get_value_as_string(const std::string& column_id) const -> std::string;
-        auto set_value(const std::string& column_id, const db::Value& value) -> void;
+        auto add_value(const std::string& column_id, const db::Value& value) -> void;
+        auto update_value(const std::string& column_id, const db::Value& value) -> void;
         auto remove_value(const std::string& column_id) -> void;
         auto has_column(const std::string& column_id) const -> bool;
         auto rename_column(const std::string& old_name, const std::string& new_name) -> void;

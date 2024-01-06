@@ -21,14 +21,22 @@ namespace db {
         columns.push_back(Column(name, columnname, type));
         fmt::println("< added new column to {} - {}",name,columnname);
         for (Row& row : rows)
-            row.set_value(columnname, Value("null", ColumnType::Null));
+            row.add_value(columnname, Value("null", ColumnType::Null));
     }
 
     auto Table::get_column_iterator(const std::string& columnname) {
         return std::ranges::find_if(
-                columns.begin(),
-                columns.end(),
-                [columnname](const Column& column)->bool{return column.getName() == columnname;}
+            columns.begin(),
+            columns.end(),
+            [columnname](const Column& column)->bool{return column.getName() == columnname;}
+        );
+    }
+
+    auto Table::get_row_iterator(int id) {
+        return std::find_if(
+            rows.begin(),
+            rows.end(),
+            [id](auto r){return r.getId() == id;}
         );
     }
 
@@ -40,6 +48,7 @@ namespace db {
     }
 
     auto Table::has_column(const std::string& columnname) const -> bool {
+        // nie mozna skorzystac z get_column_iterator, bo get_column_iterator nie jest const
         return std::ranges::find_if(
                 columns.begin(),
                 columns.end(),
@@ -92,13 +101,29 @@ namespace db {
     }
 
     auto Table::remove_row(int id) -> void {
-        auto row_iterator = std::find_if(rows.begin(), rows.end(), [id](auto r){return r.getId() == id;});
+        auto row_iterator = get_row_iterator(id);
 
         if (row_iterator == rows.end())
             throw fmt::format("< cannot find this row in table {}", name);
 
         rows.erase(row_iterator);
         fmt::println("< removed row from table {}", name);
+    }
+
+    auto Table::update_row(int id, std::string columnname, Value value) -> void {
+        auto row_iterator = get_row_iterator(id);
+        auto column_iterator = get_column_iterator(columnname);
+
+        if (row_iterator == rows.end())
+            throw fmt::format("< cannot find this row in table {}", name);
+        if (column_iterator == columns.end())
+            throw fmt::format("< cannot find column {} in table {}",columnname,name);
+
+        if (column_iterator->getType() != value.getType())
+            throw fmt::format("< wrong provided for column {}: expected {}, got {}", columnname, column_iterator->getType(), value.getType());
+
+        row_iterator->update_value(columnname, value);
+        fmt::println("< updated value {} in row", columnname);
     }
 
     auto Table::print() -> void {

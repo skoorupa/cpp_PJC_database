@@ -13,8 +13,12 @@ namespace db {
         return values.at(column_id).getValue();
     }
 
-    auto Row::set_value(const std::string& column_id, const db::Value& value) -> void {
+    auto Row::add_value(const std::string& column_id, const db::Value& value) -> void {
         values.insert(std::pair<std::string, db::Value>(column_id, value));
+    }
+
+    auto Row::update_value(const std::string& column_id, const db::Value& value) -> void {
+        values.at(column_id) = value;
     }
 
     auto Row::remove_value(const std::string &column_id) -> void {

@@ -36,6 +36,6 @@ auto main() -> int {
     db::Result result = db::Result();
     result.add_table(test_db.get_table("emp"));
 
-    emp.remove_row(3);
+    emp.update_row(3, "imie", db::Value("Tomasz", db::ColumnType::String));
     emp.print();
 }
