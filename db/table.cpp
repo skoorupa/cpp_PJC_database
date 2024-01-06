@@ -110,7 +110,7 @@ namespace db {
         fmt::println("< removed row from table {}", name);
     }
 
-    auto Table::update_row(int id, std::string columnname, Value value) -> void {
+    auto Table::update_row(int id, std::string columnname, const Value& value) -> void {
         auto row_iterator = get_row_iterator(id);
         auto column_iterator = get_column_iterator(columnname);
 
