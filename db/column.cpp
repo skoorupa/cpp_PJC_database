@@ -6,13 +6,15 @@ namespace db {
             {"int", ColumnType::Integer},
             {"Integer", ColumnType::Integer},
             {"string", ColumnType::String},
-            {"String", ColumnType::String}
+            {"String", ColumnType::String},
+            {"null", ColumnType::Null},
+            {"Null", ColumnType::Null},
     };
 
     /////////////////////////////////////
     // VALUE CLASS
 
-    Value::Value(const std::string &value, ColumnType type) : value(value), type(type) {}
+    Value::Value(const std::string &value, ColumnType type) : value(type==ColumnType::Null?"null":value), type(type) {}
     const std::string &Value::getValue() const {return value;}
     void Value::setValue(const std::string &value) {Value::value = value;}
     ColumnType Value::getType() const {return type;}
@@ -24,12 +26,15 @@ namespace db {
 
     /////////////////////////////////////
     // COLUMN CLASS
-    Column::Column(const std::string &table, const std::string &name, ColumnType type) : table(table), name(name), type(type) {}
+    Column::Column(const std::string &table, const std::string &name, ColumnType type, bool nullable)
+    : table(table), name(name), type(type), nullable(nullable || type == ColumnType::Null) {}
 
     const std::string &Column::getName() const {return name;}
     ColumnType Column::getType() const {return type;}
     void Column::setName(const std::string &name) {Column::name = name;}
     void Column::setType(ColumnType type) {Column::type = type;}
+    bool Column::isNullable() const {return nullable;}
+    void Column::setNullable(bool nullable) {Column::nullable = nullable;}
 
     auto toColumnType(const std::string& str) -> ColumnType {
         return columntype_map.at(str);

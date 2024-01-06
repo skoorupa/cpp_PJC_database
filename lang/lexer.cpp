@@ -58,7 +58,7 @@ namespace lexer {
                 {'*',TokenType::AsteriskOperator}
         };
         auto keywords = std::map<std::string, lexer::TokenType>{
-                {"~null", TokenType::Null},
+                {"NULL", TokenType::Null},
                 {"quit", TokenType::Quit},
                 {"exit", TokenType::Quit},
                 {"connect_db", TokenType::DBConnect},

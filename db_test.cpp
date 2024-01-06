@@ -6,8 +6,8 @@ auto main() -> int {
     auto test_db = db::create("test.db");
     test_db.create_table("emp");
     db::Table& emp = test_db.get_table("emp");
-    emp.add_column("id",db::ColumnType::Integer);
-    emp.add_column("imie",db::ColumnType::String);
+    emp.add_column("id",db::ColumnType::Integer, false);
+    emp.add_column("imie",db::ColumnType::String, false);
     emp.add_row(
         std::vector<db::Value>{
             db::Value("1",db::ColumnType::Integer),

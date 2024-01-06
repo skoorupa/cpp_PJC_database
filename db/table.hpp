@@ -20,7 +20,7 @@ namespace db {
         const std::vector<Row> &getRows() const;
         const std::vector<Column> &getColumns() const;
         auto rename(const std::string& new_name) -> void;
-        auto add_column(std::string name, ColumnType type) -> void;
+        auto add_column(std::string name, ColumnType type, bool nullable) -> void;
         auto get_column_iterator(const std::string& columnname);
         auto get_row_iterator(int id);
         auto get_column(std::string columnname) -> Column;

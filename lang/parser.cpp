@@ -39,9 +39,22 @@ namespace parser {
             }
             case lexer::TokenType::KMAddColumn: {
                 auto args = parse_call_multiple_args();
+                auto identifiers = std::vector<ast::Identifier*>();
+
+                for (auto& arg : args) {
+                    identifiers.push_back((ast::Identifier*)arg.get());
+                }
+
+                auto nullable = std::ranges::find_if(
+                        identifiers.begin()+2,
+                        identifiers.end(),
+                        [](auto item){return item->getSymbol() == "nullable";})
+                                != identifiers.end();
+
                 return std::make_unique<ast::KMAddColumn>(
-                        ((ast::Identifier*)args.at(0).get())->getSymbol(),
-                        ((ast::Identifier*)args.at(1).get())->getSymbol()
+                        identifiers[0]->getSymbol(),
+                        identifiers[1]->getSymbol(),
+                        nullable
                 );
                 break;
             }
@@ -91,7 +104,7 @@ namespace parser {
             case lexer::TokenType::KMUpdate: {
                 auto args = parse_call_multiple_args();
 
-                auto value = db::Value("", db::ColumnType::Null);
+                auto value = db::Value("null", db::ColumnType::Null);
                 if (args[1]->getKind() == ast::NodeType::StringLiteral) {
                     value = db::Value(
                             ((ast::StringLiteral*)args[1].get())->getValue(),

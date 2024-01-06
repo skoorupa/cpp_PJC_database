@@ -35,14 +35,17 @@ namespace db {
         std::string name;
         ColumnType type;
         std::string table;
+        bool nullable;
     public:
-        Column(const std::string &table, const std::string &name, ColumnType type);
+        Column(const std::string &table, const std::string &name, ColumnType type, bool nullable);
 
         int getId() const;
         const std::string &getName() const;
         ColumnType getType() const;
+        bool isNullable() const;
         void setName(const std::string &name);
         void setType(ColumnType type);
+        void setNullable(bool nullable);
     };
     auto toColumnType(const std::string& str) -> ColumnType;
     auto format_as(ColumnType columnType) -> std::string;

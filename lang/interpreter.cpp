@@ -61,7 +61,8 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 try {
                     curr_table->add_column(
                     command->getName(),
-                    column_type
+                    column_type,
+                    command->isNullable()
                     );
                 } catch (std::string& message) {
                     fmt::println("[DB ERROR] {}", message);

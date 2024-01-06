@@ -164,13 +164,14 @@ namespace ast {
     class KMAddColumn : public Node {
         std::string name;
         std::string type;
+        bool nullable;
 
     public:
-        KMAddColumn(const std::string &name, const std::string &type);
+        KMAddColumn(const std::string &name, const std::string &type, const bool &nullable);
 
         const std::string &getName() const;
-
         const std::string &getType() const;
+        bool isNullable() const;
     };
 
     class KMGetColumn : public Node {

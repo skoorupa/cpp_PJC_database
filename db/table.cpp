@@ -17,8 +17,8 @@ namespace db {
         name = new_name;
     }
 
-    auto Table::add_column(std::string columnname, ColumnType type) -> void {
-        columns.push_back(Column(name, columnname, type));
+    auto Table::add_column(std::string columnname, ColumnType type, bool nullable) -> void {
+        columns.push_back(Column(name, columnname, type, nullable));
         fmt::println("< added new column to {} - {}",name,columnname);
         for (Row& row : rows)
             row.add_value(columnname, Value("null", ColumnType::Null));
@@ -88,7 +88,10 @@ namespace db {
         auto i = 0;
         for (const auto& column : columns) {
             auto column_id = column.getName();
-            if (values[i].getType() != column.getType())
+            if (values[i].getType() == ColumnType::Null && !column.isNullable())
+                throw fmt::format("< column {} is not nullable", column_id);
+
+            if (values[i].getType() != column.getType() && values[i].getType() != ColumnType::Null)
                 throw fmt::format("< incorrect type provided for column {} - expected {}, got {}", column_id, column.getType(), values[i].getType());
 
             column_id_values.insert(std::pair<std::string, db::Value>(column_id,values[i]));
@@ -119,7 +122,9 @@ namespace db {
         if (column_iterator == columns.end())
             throw fmt::format("< cannot find column {} in table {}",columnname,name);
 
-        if (column_iterator->getType() != value.getType())
+        if (value.getType() == ColumnType::Null && !column_iterator->isNullable())
+            throw fmt::format("< column {} is not nullable", columnname);
+        if (column_iterator->getType() != value.getType() && value.getType() != ColumnType::Null)
             throw fmt::format("< wrong provided for column {}: expected {}, got {}", columnname, column_iterator->getType(), value.getType());
 
         row_iterator->update_value(columnname, value);

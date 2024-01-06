@@ -6,6 +6,7 @@ namespace ast {
             {ast::NodeType::Program,                "ast::Program"},
             {ast::NodeType::NumericLiteral,         "ast::NumericLiteral"},
             {ast::NodeType::StringLiteral,          "ast::StringLiteral"},
+            {ast::NodeType::NullLiteral,            "ast::NullLiteral"},
             {ast::NodeType::Identifier,             "ast::Identifier"},
             {ast::NodeType::BinaryExpression,       "ast::BinaryExpression"},
             {ast::NodeType::LogicalChainExpression, "ast::LogicalChainExpression"},
@@ -93,10 +94,11 @@ namespace ast {
     KFGetTable::KFGetTable(const StringLiteral &tableName) : Node(NodeType::KFGetTable), table_name(tableName) {}
     const StringLiteral &KFGetTable::getTableName() const {return table_name;}
 
-    KMAddColumn::KMAddColumn(const std::string &name, const std::string &type)
-    : Node(NodeType::KMAddColumn),  name(name), type(type) {}
+    KMAddColumn::KMAddColumn(const std::string &name, const std::string &type, const bool &nullable)
+    : Node(NodeType::KMAddColumn),  name(name), type(type), nullable(nullable) {}
     const std::string &KMAddColumn::getName() const {return name;}
     const std::string &KMAddColumn::getType() const {return type;}
+    bool KMAddColumn::isNullable() const {return nullable;}
 
     KMGetColumn::KMGetColumn(const StringLiteral &column_name) : Node(NodeType::KMGetColumn), column_name(column_name) {}
     const StringLiteral &KMGetColumn::getColumnName() const {return column_name;}

@@ -19,7 +19,7 @@ auto main() -> int {
         "create_db('baza')",
         "create_table(tablica)",
         "get_table(tablica) add_column(id,int)",
-        "get_table(tablica) add_column(nazwisko,string)",
+        "get_table(tablica) add_column(nazwisko,string,nullable)",
         "get_table(tablica) add_row(1,'skorupski')",
         "get_table(tablica) add_row(2,'kacperowski')",
         "get_table(tablica) print()",
