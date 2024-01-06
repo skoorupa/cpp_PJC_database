@@ -28,8 +28,12 @@ namespace db {
         wheres.push_back(binaryExpression);
     }
 
-    auto Result::is_blank() -> bool {
+    auto Result::are_columns_blank() -> bool {
         return columns.empty();
+    }
+
+    auto Result::are_wheres_blank() -> bool {
+        return wheres.empty();
     }
 
     auto Result::update_value(const Value& v, const Row& row) -> Value {

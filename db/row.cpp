@@ -2,6 +2,9 @@
 
 namespace db {
     Row::Row(int id, const std::unordered_map<std::string, db::Value> &values) : id(id), values(values) {}
+
+    int Row::getId() const {return id;}
+
     auto Row::get_value(const std::string& column_id) const -> db::Value {
         return values.at(column_id);
     }

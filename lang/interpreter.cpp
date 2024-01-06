@@ -130,12 +130,19 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                     } catch (std::string& message) {
                         fmt::println("[DB ERROR] {}", message);
                     }
-                } else {
+                } else if (curr_result.are_wheres_blank()) {
                     // removing table
                     try {
                         curr_database.remove_table(curr_table->getName());
                         curr_column = "";
                         curr_table = nullptr;
+                    } catch (std::string& message) {
+                        fmt::println("[DB ERROR] {}", message);
+                    }
+                } else if (curr_result.are_columns_blank()) {
+                    // removing rows
+                    try {
+                        curr_table;
                     } catch (std::string& message) {
                         fmt::println("[DB ERROR] {}", message);
                     }

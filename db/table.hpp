@@ -27,6 +27,7 @@ namespace db {
         auto remove_column(const std::string& columnname) -> void;
         auto rename_column(const std::string& old_name, const std::string& new_name) -> void;
         auto add_row(std::vector<Value> values) -> void;
+        auto remove_row(int id) -> void;
         auto print() -> void;
     };
 

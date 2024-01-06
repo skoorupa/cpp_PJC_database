@@ -91,6 +91,16 @@ namespace db {
         fmt::println("< added new row to {}",name);
     }
 
+    auto Table::remove_row(int id) -> void {
+        auto row_iterator = std::find_if(rows.begin(), rows.end(), [id](auto r){return r.getId() == id;});
+
+        if (row_iterator == rows.end())
+            throw fmt::format("< cannot find this row in table {}", name);
+
+        rows.erase(row_iterator);
+        fmt::println("< removed row from table {}", name);
+    }
+
     auto Table::print() -> void {
         fmt::println("< Table {}:", name);
         std::unordered_map<std::string, int> col_widths = std::unordered_map<std::string,int>();
