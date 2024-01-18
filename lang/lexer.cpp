@@ -139,12 +139,12 @@ namespace lexer {
                     tokens.push_back(Token(TokenType::String, str));
                 }
                 // number token
-                else if (isdigit(*c)) {
+                else if (isdigit(*c) || *c == '-') {
                     auto num = std::string();
-                    while (!input.empty() && isdigit(*c)) {
+                    do {
                         num += *c;
                         pop_front_str(input);
-                    }
+                    } while (!input.empty() && isdigit(*c));
 
                     tokens.push_back(Token(TokenType::Number, num));
                 }
@@ -188,7 +188,6 @@ namespace lexer {
             }
         }
 
-//        fmt::println("stopped tokenizing");
         tokens.push_back(Token(TokenType::EndOfFile,"EndOfFile"));
         return tokens;
     }
