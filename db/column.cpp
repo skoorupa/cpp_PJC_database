@@ -35,6 +35,13 @@ namespace db {
     void Column::setType(ColumnType type) {Column::type = type;}
     bool Column::isNullable() const {return nullable;}
     void Column::setNullable(bool nullable) {Column::nullable = nullable;}
+    const std::string &Column::getTable() const {return table;}
+
+    bool Column::operator==(const Column &other) const {
+        return name == other.name && type == other.type && table == other.table;
+    }
+
+    /////////////////////////////////////
 
     auto toColumnType(const std::string& str) -> ColumnType {
         return columntype_map.at(str);

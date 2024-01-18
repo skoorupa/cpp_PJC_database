@@ -23,7 +23,7 @@ namespace db {
         auto add_where(db::BinaryExpression binaryExpression) -> void;
         auto are_columns_blank() -> bool;
         auto are_wheres_blank() -> bool;
-        static auto update_value(const Value& value, const Row& row) -> Value;
+        auto update_value(const Value& value, const Row& row) -> Value;
         auto update_where(db::BinaryExpression binaryExpression, const Row& row) -> BinaryExpression;
         auto test_row(const Row& row) -> bool;
         auto getRows() -> std::vector<Row>;

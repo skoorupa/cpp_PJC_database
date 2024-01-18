@@ -36,7 +36,7 @@ auto main() -> int {
         "get_table(tablica2) add_row(2,20)",
         "get_table(tablica,tablica2) print()",
         "create_table(tablica3)",
-        "get_table(tablica3) add_column(ida,int)",
+        "get_table(tablica3) add_column(id,int)",
         "get_table(tablica3) add_column(bbbbb,string)",
         "get_table(tablica3) add_row(111,'10')",
         "get_table(tablica3) add_row(222,'20')",

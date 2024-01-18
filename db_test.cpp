@@ -37,5 +37,5 @@ auto main() -> int {
     result.add_table(test_db.get_table("emp"));
 
     emp.update_row(3, "imie", db::Value("Tomasz", db::ColumnType::String));
-    emp.print();
+//    emp.print();
 }

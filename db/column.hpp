@@ -45,8 +45,34 @@ namespace db {
         void setName(const std::string &name);
         void setType(ColumnType type);
         void setNullable(bool nullable);
+        const std::string &getTable() const;
+
+        bool operator==(const Column& other) const;
     };
+
     auto toColumnType(const std::string& str) -> ColumnType;
     auto format_as(Column column) -> std::string;
     auto format_as(ColumnType columnType) -> std::string;
 }
+
+// https://stackoverflow.com/questions/17016175/c-unordered-map-using-a-custom-class-type-as-the-key
+// https://en.cppreference.com/w/cpp/utility/hash
+// potrzebne w Row
+template <>
+struct std::hash<db::Column>
+{
+    std::size_t operator()(const db::Column& c) const
+    {
+        using std::size_t;
+        using std::hash;
+        using std::string;
+
+        // Compute individual hash values for first,
+        // second and third and combine them using XOR
+        // and bit shifting:
+
+        std::size_t h1 = std::hash<std::string>{}(c.getTable());
+        std::size_t h2 = std::hash<std::string>{}(c.getName());
+        return h1 ^ (h2 << 1); // or use boost::hash_combine
+    }
+};

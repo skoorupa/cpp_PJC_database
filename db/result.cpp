@@ -36,18 +36,63 @@ namespace db {
         return wheres.empty();
     }
 
-    auto Result::update_value(const Value& v, const Row& row) -> Value {
+    auto Result::update_value(const Value& v, const Row& row) -> Value { // static
         if (v.getType() != ColumnType::Identifier) return v;
         auto value = v;
-        auto column_need = value.getValue();
-        if (!row.has_column(column_need))
-            throw fmt::format("< result does not have column {}", column_need);
+        auto arg = value.getValue();
+        auto column_need = std::string();
+
+        Column column = Column("","",ColumnType::Null, false);
+
+        // czy kolumna jest sprecyzowana? (tabela.kolumna)
+        auto dot = arg.find('.');
+        if (arg.find('.')<arg.length()) {
+            // tak
+            column_need = arg.substr(dot+1, arg.length());
+            auto table_need = arg.substr(0, dot);
+
+            // czy istnieje?
+            auto table = std::ranges::find_if(
+                    tables,
+                    [table_need](Table& t)->bool{
+                        return table_need == t.getName();
+                    });
+            if (table == tables.end())
+                throw fmt::format("< result does not have table {}", table_need);
+            if (!table->has_column(column_need))
+                throw fmt::format("< table {} does not have column {}", table_need, column_need);
+
+            column = table->get_column(column_need);
+        } else {
+            // nie
+            auto occurences = std::ranges::count_if(
+                    tables,
+                    [column_need](db::Table& table)->bool {
+                        return table.has_column(column_need);
+                    });
+
+            if (occurences == 0)
+                throw fmt::format("< cannot find column {} in result", column_need);
+            else if (occurences > 1)
+                throw fmt::format("< there are many columns named {} in result, please use <table>.<column> syntax", column_need);
+
+            auto table = std::ranges::find_if(
+                    tables,
+                    [column_need](db::Table& table)->bool {
+                        return table.has_column(column_need);
+                    }
+            );
+
+            column = table->get_column(column_need);
+        }
+
+
 //        for (const db::Table& t : tables) {
 //            if (t.has_column(column_need)) {
 //                value.setValue()
 //            }
 //        }
-        auto data = row.get_value(column_need);
+        auto data = row.get_value(column);
         value.setValue(data.getValue());
         value.setType(data.getType());
         return value;
@@ -118,7 +163,7 @@ namespace db {
     auto Result::print() -> void {
         fmt::println("< Result");
         fmt::println("< Tables: {}", tables);
-        std::unordered_map<std::string, int> col_widths = std::unordered_map<std::string, int>();
+        auto col_widths = std::unordered_map<Column, int>();
         auto full_width = 0;
         auto rows = getRows();
         auto print_columns = columns;
@@ -130,13 +175,13 @@ namespace db {
             auto column_id = column.getName();
             auto column_name_length = column_id.length();
             auto max_length = column_name_length;
-            for (Row& row: rows) {
-                if (row.has_column(column_id)) {
-                    std::string value = row.get_value_as_string(column_id);
+            for (Row& row : rows) {
+                if (row.has_column(column)) {
+                    std::string value = row.get_value_as_string(column);
                     if (max_length < value.length()) max_length = value.length();
                 }
             }
-            col_widths[column_id] = max_length;
+            col_widths[column] = max_length;
             full_width += max_length + 1;
 
             fmt::print("|");
@@ -153,16 +198,15 @@ namespace db {
         for (Row& row: rows) {
             for (const auto &column: print_columns) {
                 fmt::print("|");
-                auto column_id = column.getName();
                 auto letters = 0;
 
-                if (row.has_column(column_id)) {
-                    auto value = row.get_value_as_string(column_id);
+                if (row.has_column(column)) {
+                    auto value = row.get_value_as_string(column);
                     letters = value.length();
                     fmt::print("{}", value);
                 }
 
-                auto max_length = col_widths.at(column_id);
+                auto max_length = col_widths[column];
                 for (int i = 0; i < max_length - letters; ++i)
                     fmt::print(" ");
             }
