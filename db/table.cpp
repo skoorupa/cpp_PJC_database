@@ -134,53 +134,53 @@ namespace db {
         fmt::println("< updated value {} in row", columnname);
     }
 
-//    auto Table::print() -> void {
-//        fmt::println("< Table {}:", name);
-//        std::unordered_map<std::string, int> col_widths = std::unordered_map<std::string,int>();
-//        auto full_width = 0;
-//        for (const auto& column : columns) {
-//            auto column_id = column.getName();
-//            auto column_name_length = column_id.length();
-//            auto max_length = column_name_length;
-//            for (Row& row : rows) {
-//                if (row.has_column(column_id)) {
-//                    std::string value = row.get_value_as_string(column_id);
-//                    if (max_length < value.length()) max_length = value.length();
-//                }
-//            }
-//            col_widths[column_id] = max_length;
-//            full_width += max_length+1;
-//
-//            fmt::print("|");
-//            fmt::print("{}",column_id);
-//            for (int i = 0; i < max_length - column_name_length; ++i)
-//                fmt::print(" ");
-//        }
-//        fmt::println("|");
-//        for (int i = 0; i <= full_width; ++i)
-//            fmt::print("=");
-//        fmt::println("");
-//
-//        for (Row row : rows) {
-//            for (const auto& column : columns) {
-//                fmt::print("|");
-//                auto column_id = column.getName();
-//                auto letters = 0;
-//
-//                if (row.has_column(column_id)) {
-//                    auto value = row.get_value_as_string(column_id);
-//                    letters = value.length();
-//                    fmt::print("{}", value);
-//                }
-//
-//                auto max_length = col_widths.at(column_id);
-//                for (int i = 0; i < max_length - letters; ++i)
-//                    fmt::print(" ");
-//            }
-//
-//            fmt::println("|");
-//        }
-//    }
+    auto Table::print() -> void {
+        fmt::println("< Table {}:", name);
+        std::unordered_map<std::string, int> col_widths = std::unordered_map<std::string,int>();
+        auto full_width = 0;
+        for (const auto& column : columns) {
+            auto column_id = column.getName();
+            auto column_name_length = column_id.length();
+            auto max_length = column_name_length;
+            for (Row& row : rows) {
+                if (row.has_column(column)) {
+                    std::string value = row.get_value_as_string(column);
+                    if (max_length < value.length()) max_length = value.length();
+                }
+            }
+            col_widths[column_id] = max_length;
+            full_width += max_length+1;
+
+            fmt::print("|");
+            fmt::print("{}",column_id);
+            for (int i = 0; i < max_length - column_name_length; ++i)
+                fmt::print(" ");
+        }
+        fmt::println("|");
+        for (int i = 0; i <= full_width; ++i)
+            fmt::print("=");
+        fmt::println("");
+
+        for (Row row : rows) {
+            for (const auto& column : columns) {
+                fmt::print("|");
+                auto column_id = column.getName();
+                auto letters = 0;
+
+                if (row.has_column(column)) {
+                    auto value = row.get_value_as_string(column);
+                    letters = value.length();
+                    fmt::print("{}", value);
+                }
+
+                auto max_length = col_widths.at(column_id);
+                for (int i = 0; i < max_length - letters; ++i)
+                    fmt::print(" ");
+            }
+
+            fmt::println("|");
+        }
+    }
 
     auto Table::info() -> void {
         fmt::println("< table info");
