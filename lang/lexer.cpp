@@ -152,7 +152,7 @@ namespace lexer {
                 // keyword token
                 else if (isalpha(*c) || identifier_chars.contains(*c)) {
                     auto txt = std::string();
-                    while (!input.empty() && (isalpha(*c) || identifier_chars.contains(*c))) {
+                    while (!input.empty() && (isalpha(*c) || identifier_chars.contains(*c) || isdigit(*c))) {
                         txt += *c;
                         pop_front_str(input);
                     }
