@@ -15,7 +15,7 @@ auto main() -> int {
 
     // DEV
 
-    for (std::string devcmd : {
+    for (const std::string& devcmd : {
         "create_db('baza')",
         "create_table(tablica)",
         "get_table(tablica) add_column(id,int)",
@@ -27,7 +27,7 @@ auto main() -> int {
         "get_table(tablica) print()",
         "get_table(tablica) get_column(id) rename(identyfikator) print()",
         "get_table(tablica) where(identyfikator==2) update(identyfikator, -1)",
-        "get_table(tablica) print()",
+        "get_table(tablica) select(tablica.nazwisko, identyfikator) print()",
         "info()"
     }) {
         try {

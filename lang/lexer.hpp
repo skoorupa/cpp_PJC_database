@@ -8,7 +8,7 @@ namespace lexer {
     enum class TokenType {
         BracketRoundBegin,
         BracketRoundEnd,
-        DotOperator,
+//        DotOperator,
         CommaOperator,
         AsteriskOperator,
 

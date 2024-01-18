@@ -11,7 +11,7 @@ namespace lexer {
     auto tokentype_map = std::map<lexer::TokenType, std::string>{
             {lexer::TokenType::BracketRoundBegin, "lexer::BracketRoundBegin"},
             {lexer::TokenType::BracketRoundEnd,   "lexer::BracketRoundEnd"},
-            {lexer::TokenType::DotOperator,       "lexer::DotOperator"},
+//            {lexer::TokenType::DotOperator,       "lexer::DotOperator"},
             {lexer::TokenType::CommaOperator,     "lexer::CommaOperator"},
             {lexer::TokenType::AsteriskOperator,  "lexer::AsteriskOperator"},
 
@@ -53,7 +53,7 @@ namespace lexer {
         auto one_char_tokens = std::map<char, lexer::TokenType>{
                 {'(',TokenType::BracketRoundBegin},
                 {')',TokenType::BracketRoundEnd},
-                {'.',TokenType::DotOperator},
+//                {'.',TokenType::DotOperator},
                 {',',TokenType::CommaOperator},
                 {'*',TokenType::AsteriskOperator}
         };
@@ -93,6 +93,7 @@ namespace lexer {
                 {"&&", TokenType::And},
                 {"||", TokenType::Or}
         };
+        auto identifier_chars = std::set<char>{'_','~','.'};
         auto operator_chars = std::set<char>{'<','=','>','!','&','|'};
         auto is_multi_operator = [operator_chars](char c) {
             return operator_chars.contains(c);
@@ -149,9 +150,9 @@ namespace lexer {
                     tokens.push_back(Token(TokenType::Number, num));
                 }
                 // keyword token
-                else if (isalpha(*c) || *c == '_' || *c == '~') {
+                else if (isalpha(*c) || identifier_chars.contains(*c)) {
                     auto txt = std::string();
-                    while (!input.empty() && (isalpha(*c) || *c == '_' || *c == '~')) {
+                    while (!input.empty() && (isalpha(*c) || identifier_chars.contains(*c))) {
                         txt += *c;
                         pop_front_str(input);
                     }
