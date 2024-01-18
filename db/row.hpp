@@ -13,6 +13,8 @@ namespace db {
     public:
         Row(int id, const std::unordered_map<std::string, db::Value> &values);
         int getId() const;
+        const std::unordered_map<std::string, db::Value> &getValuesMap() const;
+
         auto get_value(const std::string& column_id) const -> db::Value;
         auto get_value_as_string(const std::string& column_id) const -> std::string;
         auto add_value(const std::string& column_id, const db::Value& value) -> void;
@@ -20,5 +22,7 @@ namespace db {
         auto remove_value(const std::string& column_id) -> void;
         auto has_column(const std::string& column_id) const -> bool;
         auto rename_column(const std::string& old_name, const std::string& new_name) -> void;
+
+        auto operator+(const Row&) -> Row;
     };
 }

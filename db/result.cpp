@@ -74,11 +74,28 @@ namespace db {
     }
 
     auto Result::getRows() -> std::vector<Row> {
-        auto rows = std::vector<Row>();
-        for (const Table& t : tables)
-            for (const Row r : t.getRows())
-                if (test_row(r)) rows.push_back(r);
-        return rows;
+        auto result = std::vector<Row>();
+
+        if (tables.empty()) return result;
+
+        auto rows = tables[0].getRows();
+
+        for (int i = 1; i < tables.size(); ++i) {
+            auto temprows = std::vector<Row>();
+            for (const auto& tablerow : tables[i].getRows()) {
+                for (auto& existingrow : rows) {
+                    auto newrow = existingrow;
+                    newrow = newrow + tablerow;
+                    temprows.push_back(newrow);
+                }
+            }
+            rows = temprows;
+        }
+
+        for (const Row& r : rows)
+            if (test_row(r)) result.push_back(r);
+
+        return result;
     }
 
     auto Result::remove_rows(db::Table* table) -> void {
