@@ -95,6 +95,7 @@ namespace ast {
         Identifier(const std::string &symbol);
 
         const std::string &getSymbol() const;
+        std::strong_ordering operator<=>(const Identifier& other) const;
     };
 
     class NumericLiteral : public Expression {
@@ -145,12 +146,12 @@ namespace ast {
     };
 
     class KFGetTable : public Node {
-        StringLiteral table_name;
+        std::set<Identifier> table_names;
 
     public:
-        KFGetTable(const StringLiteral &tableName);
+        KFGetTable(const std::set<Identifier>&);
 
-        const StringLiteral &getTableName() const;
+        const std::set<Identifier> &getTableNames() const;
     };
 
     class KFCreateTable : public Node {

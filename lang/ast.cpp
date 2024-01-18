@@ -68,6 +68,9 @@ namespace ast {
     // IDENTIFIER
     Identifier::Identifier(const std::string &symbol) : Expression(NodeType::Identifier), symbol(symbol) {}
     const std::string &Identifier::getSymbol() const {return symbol;}
+    std::strong_ordering Identifier::operator<=>(const Identifier& other) const {
+        return symbol<=>other.symbol;
+    };
 
     // NUMERIC LITERAL
     NumericLiteral::NumericLiteral(int const& value) : Expression(NodeType::NumericLiteral), value(value) {}
@@ -92,8 +95,8 @@ namespace ast {
     KFCreateTable::KFCreateTable(const ast::StringLiteral &tableName) : Node(NodeType::KFCreateTable), table_name(tableName) {}
     const StringLiteral &KFCreateTable::getTableName() const {return table_name;}
 
-    KFGetTable::KFGetTable(const StringLiteral &tableName) : Node(NodeType::KFGetTable), table_name(tableName) {}
-    const StringLiteral &KFGetTable::getTableName() const {return table_name;}
+    KFGetTable::KFGetTable(const std::set<Identifier> &tableNames) : Node(NodeType::KFGetTable), table_names(tableNames) {}
+    const std::set<Identifier> &KFGetTable::getTableNames() const {return table_names;}
 
     KMInfo::KMInfo() : Node(NodeType::KMInfo) {}
 

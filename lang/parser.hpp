@@ -10,7 +10,7 @@
 namespace parser {
     class Parser {
         std::vector<lexer::Token> tokens;
-        std::vector<lexer::Token>::iterator point; // o tym sposobie trzymania iteratora dowiedzialem sie z GPT
+        std::vector<lexer::Token>::iterator point;
 
         auto get_point (int i = 0) {
             return point+i;

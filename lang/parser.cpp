@@ -33,8 +33,16 @@ namespace parser {
                 break;
             }
             case lexer::TokenType::KFGetTable: {
-                auto arg = parse_call_single_arg();
-                return std::make_unique<ast::KFGetTable>(((ast::Identifier*)arg.get())->getSymbol());
+                auto args = parse_call_multiple_args();
+                auto tables = std::set<ast::Identifier>();
+                auto result = std::make_unique<ast::KFGetTable>(tables);
+
+                for (auto& arg : args)
+                    tables.insert(
+                            ((ast::Identifier*)arg.get())->getSymbol()
+                        );
+
+                return std::make_unique<ast::KFGetTable>(tables);
                 break;
             }
             case lexer::TokenType::KMInfo: {

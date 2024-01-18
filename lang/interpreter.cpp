@@ -37,16 +37,24 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 break;
             }
             case ast::NodeType::KFGetTable: {
-                auto command = (ast::KFGetTable*) node.get();
                 if (!connected_to_db)
                     throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
 
-                try {
-                    curr_tables.push_back(&curr_database.get_table(command->getTableName().getValue()));
-                    curr_column = "";
-                    curr_result.add_table(curr_database.get_table(command->getTableName().getValue()));
-                } catch (std::string& message) {
-                    throw fmt::format("[DB ERROR] {}",message);
+                auto command = (ast::KFGetTable*) node.get();
+                auto args = command->getTableNames();
+                auto tablenames = std::set<std::string>();
+
+                for (auto& arg : args)
+                    tablenames.insert(arg.getSymbol());
+
+                for (auto& tablename : tablenames) {
+                    try {
+                        curr_tables.push_back(&curr_database.get_table(tablename));
+                        curr_column = "";
+                        curr_result.add_table(curr_database.get_table(tablename));
+                    } catch (std::string& message) {
+                        throw fmt::format("[DB ERROR] {}",message);
+                    }
                 }
                 break;
             }
