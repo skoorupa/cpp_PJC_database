@@ -35,7 +35,7 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 if (fs::exists(filepath))
                     throw fmt::format("< database at path {} already exists, please use connect_db", filepath);
 
-                auto dbstream = std::fstream(filepath, std::ios::out | std::ios::app);
+//                auto dbstream = std::fstream(filepath, std::ios::out | std::ios::app);
                 curr_database = db::create(filepath);
                 connected_to_db = true;
                 break;
@@ -69,11 +69,16 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 if (!connected_to_db)
                     throw fmt::format("< not connected to database in {}", node_kind);
 
+                namespace fs = std::filesystem;
                 auto filepath = curr_database.getFilepath();
-                auto dbstream = std::fstream(filepath, std::ios::out | std::ios::trunc);
+
+                auto dbstream = std::fstream(filepath, std::ios::out | std::ios::app);
+
+                if (fs::exists(filepath))
+                    dbstream = std::fstream(filepath, std::ios::out | std::ios::trunc);
 
                 dbstream << curr_database.saver();
-
+                fmt::println("< database saved in {}", fs::absolute(filepath).string());
                 break;
             }
             case ast::NodeType::KFCreateTable: {

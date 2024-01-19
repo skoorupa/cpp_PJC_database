@@ -62,12 +62,12 @@ namespace db {
     }
 
     auto Database::saver() -> std::string {
+        fmt::println("< saving database {}",filepath);
         auto result = std::string();
 
         for (auto& [tablename, table] : tables) {
             result += table.saver()+"\n";
         }
-
         return result;
     }
 
