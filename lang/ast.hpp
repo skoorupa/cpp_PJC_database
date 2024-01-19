@@ -65,19 +65,6 @@ namespace ast {
 
     //////// EXPRESSIONS
 
-//    class BinaryExpression : public Expression {
-//        std::unique_ptr<Expression> left;
-//        std::unique_ptr<Expression> right;
-//        std::string exp_operator;
-//
-//    public:
-//        BinaryExpression();
-//
-//        const std::unique_ptr<Expression> &getLeft() const;
-//        const std::unique_ptr<Expression> &getRight() const;
-//        const std::string &getExpOperator() const;
-//    };
-
     class LogicalChainExpression : public Expression {
         std::vector<lexer::Token> tokens;
 

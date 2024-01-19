@@ -50,7 +50,7 @@ auto Interpreter::runAST(ast::Program& program) -> void {
             }
             case ast::NodeType::KFGetTable: {
                 if (!connected_to_db)
-                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
+                    throw fmt::format("< not connected to database in {}", node_kind);
 
                 auto command = (ast::KFGetTable*) node.get();
                 auto args = command->getTableNames();
@@ -65,14 +65,14 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                         curr_column = "";
                         curr_result.add_table(curr_database.get_table(tablename));
                     } catch (std::string& message) {
-                        throw fmt::format("[DB ERROR] {}",message);
+                        throw fmt::format("{}",message);
                     }
                 }
                 break;
             }
             case ast::NodeType::KMInfo: {
                 if (!connected_to_db)
-                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
+                    throw fmt::format("< not connected to database in {}", node_kind);
 
                 if (curr_tables.empty()) // DB INFO
                     curr_database.info();
@@ -87,10 +87,10 @@ auto Interpreter::runAST(ast::Program& program) -> void {
             case ast::NodeType::KMAddColumn: {
                 auto command = (ast::KMAddColumn*) node.get();
                 if (!connected_to_db)
-                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
+                    throw fmt::format("< not connected to database in {}", node_kind);
 
                 if (curr_tables.empty())
-                    throw fmt::format("!!! Interpreter error: add_column used without chosen table");
+                    throw fmt::format("< add_column used without chosen table");
 
                 auto column_type = db::toColumnType(command->getType());
                 try {
@@ -101,22 +101,22 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                             command->isNullable()
                         );
                 } catch (std::string& message) {
-                    fmt::println("[DB ERROR] {}", message);
+                    fmt::println("{}", message);
                 }
                 break;
             }
             case ast::NodeType::KMGetColumn: {
                 auto command = (ast::KMGetColumn*) node.get();
                 if (!connected_to_db)
-                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
+                    throw fmt::format("< not connected to database in {}", node_kind);
 
                 if (curr_tables.empty())
-                    throw fmt::format("!!! Interpreter error: get_column used without chosen table");
+                    throw fmt::format("< get_column used without chosen table");
 
                 auto column_name = command->getColumnName().getValue();
                 for (auto& table : curr_tables)
                     if (!table->has_column(column_name))
-                        throw fmt::format("!!! Interpreter error: table {} does not have column {}", table->getName(), column_name);
+                        throw fmt::format("< table {} does not have column {}", table->getName(), column_name);
 
                 curr_column = column_name;
                 break;
@@ -126,10 +126,10 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 auto new_name = command->getNewName().getValue();
 
                 if (!connected_to_db)
-                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
+                    throw fmt::format("< not connected to database in {}", node_kind);
 
                 if (curr_tables.empty())
-                   throw fmt::format("!!! Interpreter error: rename used without chosen table");
+                   throw fmt::format("< rename used without chosen table");
 
                 if (!curr_column.empty()) {
                     // renaming column
@@ -138,17 +138,17 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                             table->rename_column(curr_column, new_name);
                         curr_column = new_name;
                     } catch (std::string& message) {
-                        fmt::println("[DB ERROR] {}", message);
+                        fmt::println("{}", message);
                     }
                 } else {
                     // renaming table
                     if (curr_tables.size() != 1)
-                        throw fmt::format("!!! Interpreter error: cannot rename multiple tables at once");
+                        throw fmt::format("< cannot rename multiple tables at once");
 
                     try {
                         curr_database.rename_table(curr_tables.at(0)->getName(), new_name);
                     } catch (std::string& message) {
-                        fmt::println("[DB ERROR] {}", message);
+                        fmt::println("{}", message);
                     }
                 }
 
@@ -158,10 +158,10 @@ auto Interpreter::runAST(ast::Program& program) -> void {
 //                auto command = (ast::KMRemove*) node.get();
 
                 if (!connected_to_db)
-                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
+                    throw fmt::format("< not connected to database in {}", node_kind);
 
                 if (curr_tables.empty())
-                    throw fmt::format("!!! Interpreter error: remove used without chosen table");
+                    throw fmt::format("< remove used without chosen table");
 
                 if (!curr_column.empty()) {
                     // removing column
@@ -171,7 +171,7 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                             table->remove_column(curr_column);
                         curr_column = "";
                     } catch (std::string& message) {
-                        fmt::println("[DB ERROR] {}", message);
+                        fmt::println("{}", message);
                     }
                 } else if (curr_result.are_wheres_blank()) {
                     // removing table
@@ -182,17 +182,17 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                         }
                         curr_column = "";
                     } catch (std::string& message) {
-                        fmt::println("[DB ERROR] {}", message);
+                        fmt::println("{}", message);
                     }
                 } else if (curr_result.are_columns_blank()) {
                     // removing rows
                     if (curr_tables.size() != 1)
-                        throw fmt::format("!!! Interpreter error: cannot remove rows from multiple tables");
+                        throw fmt::format("< cannot remove rows from multiple tables");
 
                     try {
                         curr_result.remove_rows(curr_tables.at(0));
                     } catch (std::string& message) {
-                        fmt::println("[DB ERROR] {}", message);
+                        fmt::println("{}", message);
                     }
                 }
 
@@ -201,10 +201,10 @@ auto Interpreter::runAST(ast::Program& program) -> void {
             case ast::NodeType::KMAddRow: {
                 auto command = (ast::KMAddRow*)node.get();
                 if (!connected_to_db)
-                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
+                    throw fmt::format("< not connected to database in {}", node_kind);
 
                 if (curr_tables.empty())
-                    throw fmt::format("!!! Interpreter error: add_row used without chosen table");
+                    throw fmt::format("< add_row used without chosen table");
 
                 for (auto& table : curr_tables)
                     table->add_row(command->getValues());
@@ -214,34 +214,34 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 auto command = (ast::KMUpdate*) node.get();
 
                 if (!connected_to_db)
-                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
+                    throw fmt::format("< not connected to database in {}", node_kind);
                 if (curr_tables.empty())
-                    throw fmt::format("!!! Interpreter error: select used without chosen table");
+                    throw fmt::format("< select used without chosen table");
 
                 try {
                     for (auto& table : curr_tables)
                         curr_result.update_rows(table, command->getColumnName().getValue(), command->getValue());
                 } catch (std::string& message) {
-                    fmt::println("[DB ERROR] {}", message);
+                    fmt::println("{}", message);
                 }
                 break;
             }
             case ast::NodeType::KMPrint: {
                 if (!connected_to_db)
-                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
+                    throw fmt::format("< not connected to database in {}", node_kind);
 
                 if (curr_tables.empty())
-                    throw fmt::format("!!! Interpreter error: print used without chosen table");
+                    throw fmt::format("< print used without chosen table");
 
                 curr_result.print();
                 break;
             }
             case ast::NodeType::KMSelect: {
                 if (!connected_to_db)
-                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
+                    throw fmt::format("< not connected to database in {}", node_kind);
 
                 if (curr_tables.empty())
-                    throw fmt::format("!!! Interpreter error: select used without chosen table");
+                    throw fmt::format("< select used without chosen table");
 
                 auto command = (ast::KMSelect*)node.get();
 
@@ -265,7 +265,7 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                                 if (table != curr_tables.end())
                                     curr_result.add_column((*table)->get_column(columnname));
                                 else
-                                    throw fmt::format("!!! Interpreter error: cannot find column {} in table {}",columnname, tablename);
+                                    throw fmt::format("< cannot find column {} in table {}",columnname, tablename);
                             } else {
                                 columnname = arg;
                                 auto occurences = std::ranges::count_if(
@@ -275,9 +275,9 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                                     });
 
                                 if (occurences == 0)
-                                    throw fmt::format("!!! Interpreter error: cannot find column {} in query", columnname);
+                                    throw fmt::format("< cannot find column {} in query", columnname);
                                 else if (occurences > 1)
-                                    throw fmt::format("!!! Interpreter error: there are many columns named {} in query, please use <table>.<column> syntax", columnname);
+                                    throw fmt::format("< there are many columns named {} in query, please use <table>.<column> syntax", columnname);
 
                                 auto table = std::ranges::find_if(
                                     curr_tables,
@@ -298,10 +298,10 @@ auto Interpreter::runAST(ast::Program& program) -> void {
             }
             case ast::NodeType::KMWhere: {
                 if (!connected_to_db)
-                    throw fmt::format("!!! Interpreter error: not connected to database in {}", node_kind);
+                    throw fmt::format("< not connected to database in {}", node_kind);
 
                 if (curr_tables.empty())
-                    throw fmt::format("!!! Interpreter error: where used without chosen table");
+                    throw fmt::format("< where used without chosen table");
 
                 auto command = (ast::KMWhere*)node.get();
                 auto logicparser = db::LogicParser(command->getExpression().getTokens());
