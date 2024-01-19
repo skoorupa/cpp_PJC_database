@@ -1,6 +1,7 @@
 #include <fstream>
 #include <filesystem>
 #include "interpreter.hpp"
+#include "parser.hpp"
 
 Interpreter::Interpreter() : running(true), connected_to_db(false), curr_database() {}
 
@@ -39,12 +40,37 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 connected_to_db = true;
                 break;
             }
+            case ast::NodeType::DBConnect: {
+                auto command = (ast::DBConnect *) node.get();
+
+                namespace fs = std::filesystem;
+                auto filepath = command->getDbName().getValue();
+                if (!fs::exists(filepath))
+                    throw fmt::format("< database at path {} does not exist, please use create_db", filepath);
+
+                curr_database = db::create(filepath);
+                connected_to_db = true;
+
+                auto dbstream = std::fstream(filepath, std::ios::in);
+                for (auto line = std::string(); std::getline(dbstream, line); ) {
+                    try {
+                        auto parser = parser::Parser(line);
+                        auto result = parser.produceAST();
+
+                        runAST(result);
+                    } catch (std::string& message) {
+                        fmt::println("{}", message);
+                    }
+                }
+
+                break;
+            }
             case ast::NodeType::DBSave: {
                 if (!connected_to_db)
                     throw fmt::format("< not connected to database in {}", node_kind);
 
                 auto filepath = curr_database.getFilepath();
-                auto dbstream = std::fstream(filepath, std::ios::out | std::ios::app);
+                auto dbstream = std::fstream(filepath, std::ios::out | std::ios::trunc);
 
                 dbstream << curr_database.saver();
 

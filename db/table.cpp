@@ -4,6 +4,12 @@
 #include <fmt/format.h>
 
 namespace db {
+    auto default_values = std::map<ColumnType, Value>{
+            {ColumnType::String, Value("",ColumnType::String)},
+            {ColumnType::Integer, Value("0",ColumnType::Integer)},
+            {ColumnType::Null, Value("null",ColumnType::Null)},
+    };
+
     Table::Table(const std::string &name) :
         name(name),
         columns(std::vector<Column>()),
@@ -23,7 +29,7 @@ namespace db {
         columns.push_back(column);
         fmt::println("< added new column to {} - {}",name,columnname);
         for (Row& row : rows)
-            row.add_value(column, Value("null", ColumnType::Null));
+            row.add_value(column, default_values.at(column.getType()));
     }
 
     auto Table::get_column_iterator(const std::string& columnname) {

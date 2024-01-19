@@ -126,7 +126,7 @@ namespace lexer {
 
                     pop_front_str(input); // remove first "
 
-                     do {
+                    while(!input.empty() && (*c!=string_char || backslash_flag)) {
 //                        fmt::println("{}",*c);
                         str += *c;
 
@@ -136,7 +136,7 @@ namespace lexer {
                             backslash_flag = false;
 
                         pop_front_str(input);
-                    } while(!input.empty() && (*c!=string_char || backslash_flag));
+                    }
 
                     pop_front_str(input); // remove last "
 

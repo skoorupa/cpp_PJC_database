@@ -269,7 +269,7 @@ namespace parser {
     auto Parser::produceAST() -> ast::Program {
         auto program = ast::Program();
         // DEV: print tokens
-//        for (lexer::Token token : tokens) {
+//        for (lexer::Token& token : tokens) {
 //            fmt::println("{}",token);
 //        }
 
