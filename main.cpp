@@ -16,7 +16,7 @@ auto main() -> int {
     // DEV
 
     for (const std::string& devcmd : {
-        "create_db('baza')",
+        "create_db('baza.txt')",
         "create_table(tablica)",
         "get_table(tablica) add_column(id,int)",
         "get_table(tablica) add_column(nazwisko,string,nullable)",

@@ -24,7 +24,7 @@ namespace parser {
             }
             case lexer::TokenType::DBCreate: {
                 auto arg = parse_call_single_arg();
-                return std::make_unique<ast::DBCreate>(((ast::Identifier*)arg.get())->getSymbol());
+                return std::make_unique<ast::DBCreate>(((ast::StringLiteral*)arg.get())->getValue());
                 break;
             }
             case lexer::TokenType::KFCreateTable: {

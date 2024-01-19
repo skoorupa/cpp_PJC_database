@@ -1,3 +1,5 @@
+#include <fstream>
+#include <filesystem>
 #include "interpreter.hpp"
 
 Interpreter::Interpreter() : running(true), connected_to_db(false), curr_database() {}
@@ -26,7 +28,14 @@ auto Interpreter::runAST(ast::Program& program) -> void {
             }
             case ast::NodeType::DBCreate: {
                 auto command = (ast::DBCreate *) node.get();
-                curr_database = db::create(command->getDbName().getValue());
+
+                namespace fs = std::filesystem;
+                auto filepath = command->getDbName().getValue();
+                if (fs::exists(filepath))
+                    throw fmt::format("< database at path {} already exists, please use connect_db", filepath);
+
+                auto dbstream = std::fstream(filepath, std::ios::out | std::ios::app);
+                curr_database = db::create(filepath);
                 connected_to_db = true;
                 break;
             }
