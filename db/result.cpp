@@ -171,8 +171,14 @@ namespace db {
             for (Table& t : tables)
                 for (const Column& c : t.getColumns())
                     print_columns.push_back(c);
+        auto multi_table_columns = std::map<std::string, int>();
+        for (const auto& column : print_columns)
+            multi_table_columns[column.getName()]++;
+
         for (const auto &column: print_columns) {
             auto column_id = column.getName();
+            if (multi_table_columns[column_id] > 1)
+                column_id = column.getTable()+"."+column_id;
             auto column_name_length = column_id.length();
             auto max_length = column_name_length;
             for (Row& row : rows) {
