@@ -50,6 +50,7 @@ namespace db {
         auto getRows() -> std::vector<Row>;
         auto remove_rows(db::Table* table) -> void;
         auto update_rows(db::Table* table, const std::string& column_name, Value value) -> void;
+        auto clear_tables() -> void;
         auto print() -> void;
         auto info() -> void;
     };

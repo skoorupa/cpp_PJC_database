@@ -1,3 +1,5 @@
+// napisane z pomocą kursu https://www.youtube.com/watch?v=8VB5TY1sIRo
+
 #include "parser.hpp"
 #include "../db/column.hpp"
 

@@ -19,6 +19,17 @@ auto Interpreter::runAST(ast::Program& program) -> void {
     auto curr_result = db::Result();
     std::string curr_column;
 
+    auto refresh_result_tables = [&curr_result, &curr_tables](db::Database& db) mutable {
+        curr_result.clear_tables();
+        for (auto table : curr_tables) {
+            try {
+                curr_result.add_table(db.get_table(table->getName()));
+            } catch (std::string& message) {
+                throw fmt::format("{}",message);
+            }
+        }
+    };
+
     for (auto& node : program.getBody()) {
         auto node_kind = node->getKind();
 
@@ -162,6 +173,8 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 } catch (std::string& message) {
                     fmt::println("{}", message);
                 }
+
+                refresh_result_tables(curr_database);
                 break;
             }
             case ast::NodeType::KMGetColumn: {
@@ -211,6 +224,8 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                     }
                 }
 
+                refresh_result_tables(curr_database);
+
                 break;
             }
             case ast::NodeType::KMRemove: {
@@ -255,6 +270,8 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                     }
                 }
 
+                refresh_result_tables(curr_database);
+
                 break;
             }
             case ast::NodeType::KMAddRow: {
@@ -267,6 +284,8 @@ auto Interpreter::runAST(ast::Program& program) -> void {
 
                 for (auto& table : curr_tables)
                     table->add_row(command->getValues());
+
+                refresh_result_tables(curr_database);
                 break;
             }
             case ast::NodeType::KMUpdate: {
@@ -283,6 +302,8 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 } catch (std::string& message) {
                     fmt::println("{}", message);
                 }
+
+                refresh_result_tables(curr_database);
                 break;
             }
             case ast::NodeType::KMPrint: {

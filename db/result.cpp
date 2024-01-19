@@ -187,6 +187,10 @@ namespace db {
         }
     }
 
+    auto Result::clear_tables() -> void {
+        tables.clear();
+    }
+
     auto Result::print() -> void {
         fmt::println("< Result");
         fmt::println("< Tables: {}", tables);
