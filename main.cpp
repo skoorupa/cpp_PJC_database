@@ -10,7 +10,8 @@
 #include "db/db.hpp"
 
 auto main() -> int {
-    fmt::println("Welcome to Based - database in C++");
+    fmt::println("Welcome to database project in C++");
+    fmt::println("Author: Adam Skorupski s29441");
     auto interpreter = Interpreter();
 
     // DEV
