@@ -88,6 +88,7 @@ namespace db {
             column = table->get_column(column_need);
         } else {
             // nie
+            column_need = arg;
             auto occurences = std::ranges::count_if(
                     tables,
                     [column_need](db::Table& table)->bool {
