@@ -133,7 +133,11 @@ namespace db {
         for (BinaryExpression where : wheres) {
             // parsing where
             auto updated_where = update_where(where, row);
-            if (updated_where.getLeft().getType() != updated_where.getRight().getType())
+            if (
+                updated_where.getLeft().getType() != updated_where.getRight().getType() &&
+                updated_where.getLeft().getType() != ColumnType::Null &&
+                updated_where.getRight().getType() != ColumnType::Null
+            )
                 throw fmt::format("< cannot compare {} with {}", where.getLeft(), where.getRight());
 
             // compare values here

@@ -42,7 +42,9 @@ auto main() -> int {
         "get_table(tablica3) add_row(111,'10')",
         "get_table(tablica3) add_row(222,'20')",
         "get_table(tablica,tablica2,tablica3) print()",
-        "get_table(tablica) sort_by(nazwisko,desc) print()"
+        "get_table(tablica) sort_by(nazwisko,desc) print()",
+        "get_table(tablica) add_row(3,NULL,\"\")",
+        "get_table(tablica) where(nazwisko==NULL) print()",
     }) {
         try {
             auto parser = parser::Parser(devcmd);

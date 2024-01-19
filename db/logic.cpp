@@ -27,13 +27,14 @@ namespace db {
     auto token_column_type = std::map<lexer::TokenType, db::ColumnType>{
             {lexer::TokenType::Number, db::ColumnType::Integer},
             {lexer::TokenType::String, db::ColumnType::String},
+            {lexer::TokenType::Null, db::ColumnType::Null},
             {lexer::TokenType::Identifier, db::ColumnType::Identifier}
     };
 
     auto pick_column_type(const lexer::Token& token) -> ColumnType {
         if (token_column_type.find(token.getType()) != token_column_type.end())
             return token_column_type.at(token.getType());
-        else throw fmt::format("< cannot find tokentype ",token.getType());
+        else throw fmt::format("< cannot find tokentype {}",token.getType());
     }
 
     // BINARYEXPRESSION
@@ -49,6 +50,16 @@ namespace db {
     void BinaryExpression::setExpOperator(Operator expOperator) {exp_operator = expOperator;}
 
     auto BinaryExpression::evaluate() -> bool {
+        if (left.getType() == ColumnType::Null || right.getType() == ColumnType::Null) {
+            switch (exp_operator) {
+                case Operator::Equal: {
+                    return left.getValue() == right.getValue() && left.getType() == right.getType();
+                }
+                case Operator::NotEqual: {
+                    return left.getValue() != right.getValue() && left.getType() != right.getType();
+                }
+            }
+        }
         if (left.getType() != right.getType()) return false;
         switch (exp_operator) {
             case Operator::Equal: {
