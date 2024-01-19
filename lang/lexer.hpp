@@ -8,7 +8,6 @@ namespace lexer {
     enum class TokenType {
         BracketRoundBegin,
         BracketRoundEnd,
-//        DotOperator,
         CommaOperator,
         AsteriskOperator,
 
@@ -29,6 +28,7 @@ namespace lexer {
         DBConnect,
         DBCreate,
         DBSave,
+        DBExport,
 
         KFCreateTable,
         KFGetTable,

@@ -66,6 +66,7 @@ namespace lexer {
                 {"connect_db", TokenType::DBConnect},
                 {"create_db", TokenType::DBCreate},
                 {"save_db", TokenType::DBSave},
+                {"export_db", TokenType::DBExport},
                 {"get_table", TokenType::KFGetTable},
                 {"from", TokenType::KFGetTable},
                 {"create_table", TokenType::KFCreateTable},

@@ -14,6 +14,8 @@ namespace ast {
             {ast::NodeType::Quit,                   "ast::Quit"},
             {ast::NodeType::DBConnect,              "ast::DBConnect"},
             {ast::NodeType::DBCreate,               "ast::DBCreate"},
+            {ast::NodeType::DBSave,                 "ast::DBSave"},
+            {ast::NodeType::DBExport,               "ast::DBExport"},
 
             {ast::NodeType::KFCreateTable,          "ast::KFCreateTable"},
             {ast::NodeType::KFGetTable,             "ast::KFGetTable"},
@@ -94,6 +96,9 @@ namespace ast {
 
     DBConnect::DBConnect(const StringLiteral &dbName) : Node(NodeType::DBConnect), db_name(dbName) {}
     const StringLiteral &DBConnect::getDbName() const {return db_name;}
+
+    DBExport::DBExport(const StringLiteral &dbName) : Node(NodeType::DBExport), db_name(dbName) {}
+    const StringLiteral &DBExport::getDbName() const {return db_name;}
 
     KFCreateTable::KFCreateTable(const ast::StringLiteral &tableName) : Node(NodeType::KFCreateTable), table_name(tableName) {}
     const StringLiteral &KFCreateTable::getTableName() const {return table_name;}

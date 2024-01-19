@@ -78,7 +78,24 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                     dbstream = std::fstream(filepath, std::ios::out | std::ios::trunc);
 
                 dbstream << curr_database.saver();
-                fmt::println("< database saved in {}", fs::absolute(filepath).string());
+                fmt::println("< database saved in to {}", fs::absolute(filepath).string());
+                break;
+            }
+            case ast::NodeType::DBExport: {
+                auto command = (ast::DBExport*) node.get();
+                if (!connected_to_db)
+                    throw fmt::format("< not connected to database in {}", node_kind);
+
+                namespace fs = std::filesystem;
+                auto filepath = command->getDbName().getValue();
+
+                auto dbstream = std::fstream(filepath, std::ios::out | std::ios::app);
+
+                if (fs::exists(filepath))
+                    dbstream = std::fstream(filepath, std::ios::out | std::ios::trunc);
+
+                dbstream << curr_database.saver();
+                fmt::println("< database exported to {}", fs::absolute(filepath).string());
                 break;
             }
             case ast::NodeType::KFCreateTable: {
