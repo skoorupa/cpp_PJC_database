@@ -8,10 +8,29 @@
 #include "result.hpp"
 
 namespace db {
-    db::Result::Result()
-    : tables(std::vector<Table>()), columns(std::vector<Column>()), wheres(std::vector<BinaryExpression>()), blank(true) {}
+    ////////////////////////////////////////
+    // SORTER
 
-    // TODO: maybe change to pointers? we will see
+    Sorter::Sorter(const Column &column, SortingMethod sortingMethod) : column(column), sortingMethod(sortingMethod) {}
+
+    const Column &Sorter::getColumn() const {return column;}
+    SortingMethod Sorter::getSortingMethod() const {return sortingMethod;}
+
+    auto Sorter::toSortingMethod(const std::string& methodname) -> SortingMethod {
+        if (methodname == "asc")
+            return SortingMethod::Ascending;
+        else if (methodname == "desc")
+            return SortingMethod::Descending;
+        else
+            throw fmt::format("< unknown sorting method: {}",methodname);
+    }
+
+    ////////////////////////////////////////
+    // RESULT
+
+    db::Result::Result()
+    : tables(std::vector<Table>()), columns(std::vector<Column>()), wheres(std::vector<BinaryExpression>()) {}
+
     const std::vector<Table> &Result::getTables() const {return tables;}
     const std::vector<Column> &Result::getColumns() const {return columns;}
     const std::vector<BinaryExpression> &Result::getWheres() const {return wheres;}
@@ -26,6 +45,10 @@ namespace db {
 
     auto Result::add_where(db::BinaryExpression binaryExpression) -> void {
         wheres.push_back(binaryExpression);
+    }
+
+    auto Result::add_sorter(Sorter sorter) -> void {
+        sorters.push_back(sorter);
     }
 
     auto Result::are_columns_blank() -> bool {
@@ -200,6 +223,25 @@ namespace db {
             fmt::print("=");
         fmt::println("");
 
+        for (int i=sorters.size()-1;i>=0;i--) {
+            auto sorter = sorters[i];
+            auto proj = [sorter](const Row& r) {
+                auto column = sorter.getColumn();
+                if (r.get_value(column).getType()==ColumnType::Null)
+                    return std::string();
+                return r.get_value_as_string(column);
+            };
+            if (sorter.getSortingMethod() == SortingMethod::Ascending)
+                std::ranges::sort(
+                        rows,
+                        std::ranges::less(),
+                        proj);
+            else if (sorter.getSortingMethod() == SortingMethod::Descending)
+                std::ranges::sort(
+                        rows,
+                        std::ranges::greater(),
+                        proj);
+        }
 
         for (Row& row: rows) {
             for (const auto &column: print_columns) {

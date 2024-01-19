@@ -143,4 +143,9 @@ namespace ast {
 
     KMWhere::KMWhere(const LogicalChainExpression &expression) : Node(NodeType::KMWhere), expression(expression) {}
     const LogicalChainExpression &KMWhere::getExpression() const {return expression;}
+
+    KMSortBy::KMSortBy(const Identifier &columnName, const Identifier &method)
+    : Node(NodeType::KMSortBy), column_name(columnName), method(method) {}
+    const Identifier &KMSortBy::getColumnName() const {return column_name;}
+    const Identifier &KMSortBy::getMethod() const {return method;}
 }

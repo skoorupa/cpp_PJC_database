@@ -372,6 +372,68 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 }
                 break;
             }
+            case ast::NodeType::KMSortBy: {
+                if (!connected_to_db)
+                    throw fmt::format("< not connected to database in {}", node_kind);
+
+                if (curr_tables.empty())
+                    throw fmt::format("< sortby used without chosen table");
+
+                auto command = (ast::KMSortBy*)node.get();
+                auto column_arg = command->getColumnName().getSymbol();
+                auto methodname = command->getMethod().getSymbol();
+
+                if (methodname != "asc" && methodname != "desc")
+                    throw fmt::format("< unknown sorting methodname: {}", methodname);
+
+                auto method = db::Sorter::toSortingMethod(methodname);
+
+                auto columnname = std::string();
+                auto dot = column_arg.find('.');
+                if (column_arg.find('.')<column_arg.length()) {
+                    // kolumna ma określoną tablicę
+                    columnname = column_arg.substr(dot+1, column_arg.length());
+                    auto tablename = column_arg.substr(0, dot);
+
+                    auto table = std::ranges::find_if(
+                            curr_tables,
+                            [tablename](db::Table*& table)->bool{
+                                return table->getName() == tablename;
+                            });
+                    if (table != curr_tables.end())
+                        curr_result.add_sorter(db::Sorter(
+                        (*table)->get_column(columnname),
+                        method
+                        ));
+                    else
+                        throw fmt::format("< cannot find column {} in table {}",columnname, tablename);
+                } else {
+                    columnname = column_arg;
+                    auto occurences = std::ranges::count_if(
+                            curr_tables,
+                            [columnname](db::Table*& table)->bool {
+                                return table->has_column(columnname);
+                            });
+
+                    if (occurences == 0)
+                        throw fmt::format("< cannot find column {} in query", columnname);
+                    else if (occurences > 1)
+                        throw fmt::format("< there are many columns named {} in query, please use <table>.<column> syntax", columnname);
+
+                    auto table = std::ranges::find_if(
+                            curr_tables,
+                            [columnname](db::Table*& table)->bool {
+                                return table->has_column(columnname);
+                            }
+                    );
+                    curr_result.add_sorter(db::Sorter(
+                        (*table)->get_column(columnname),
+                        method
+                    ));
+                }
+
+                break;
+            }
             default:
                 throw fmt::format("!!! Interpreter error: unknown node type: {}", node_kind);
         }

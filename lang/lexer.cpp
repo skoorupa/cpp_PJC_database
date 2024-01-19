@@ -81,7 +81,8 @@ namespace lexer {
                 {"update", TokenType::KMUpdate},
                 {"print", TokenType::KMPrint},
                 {"select", TokenType::KMSelect},
-                {"where", TokenType::KMWhere}
+                {"where", TokenType::KMWhere},
+                {"sort_by", TokenType::KMSortBy}
         };
         auto skip = std::set<char>{' ','\n','\t',';'};
         auto isskip = [skip](char c) {

@@ -33,7 +33,8 @@ namespace ast {
 
         KMSelect,
         KMWhere,
-        KMUpdate
+        KMUpdate,
+        KMSortBy
     };
 
     auto format_as(NodeType nodeType) -> std::string;
@@ -254,5 +255,16 @@ namespace ast {
     public:
         KMWhere(const LogicalChainExpression &expression);
         const LogicalChainExpression &getExpression() const;
+    };
+
+    class KMSortBy : public Node {
+        Identifier column_name;
+        Identifier method;
+
+        public:
+        KMSortBy(const Identifier &columnName, const Identifier &method);
+
+        const Identifier &getColumnName() const;
+        const Identifier &getMethod() const;
     };
 }

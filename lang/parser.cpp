@@ -171,6 +171,22 @@ namespace parser {
                 return std::make_unique<ast::KMWhere>(logic_chain);
                 break;
             }
+            case lexer::TokenType::KMSortBy: {
+                auto args = parse_call_multiple_args();
+
+                if (args.size() == 1) {
+                    return std::make_unique<ast::KMSortBy>(
+                            ((ast::Identifier*)args.at(0).get())->getSymbol(),
+                            ast::Identifier("asc")
+                    );
+                } else if (args.size() > 1) {
+                    return std::make_unique<ast::KMSortBy>(
+                            ((ast::Identifier*)args.at(0).get())->getSymbol(),
+                            ((ast::Identifier*)args.at(1).get())->getSymbol()
+                    );
+                } else throw fmt::format("!!! Parser error: please provide 1 or 2 arguments for sort_by");
+                break;
+            }
             default:
                 throw fmt::format("!!! Parser error: Unexpected tokentype while parsing node: {}",lexer::format_as(token_type));
         }

@@ -42,6 +42,7 @@ namespace lexer {
         KMPrint,
         KMSelect,
         KMWhere,
+        KMSortBy,
         Identifier,
         EndOfFile
     };

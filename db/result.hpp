@@ -5,12 +5,32 @@
 #include "logic.hpp"
 
 namespace db {
+    ////////////////////////////////////////
+    // SORTER
+
+    enum class SortingMethod {
+        Ascending, Descending
+    };
+
+    class Sorter {
+        Column column;
+        SortingMethod sortingMethod;
+    public:
+        Sorter(const Column &column, SortingMethod sortingMethod);
+
+        const Column &getColumn() const;
+        SortingMethod getSortingMethod() const;
+        static auto toSortingMethod(const std::string&) -> SortingMethod;
+    };
+
+    ////////////////////////////////////////
+    // RESULT
 
     class Result {
         std::vector<Table> tables;
         std::vector<Column> columns;
         std::vector<BinaryExpression> wheres;
-        bool blank;
+        std::vector<Sorter> sorters;
 
     public:
         Result();
@@ -21,6 +41,7 @@ namespace db {
         auto add_table(Table table) -> void;
         auto add_column(Column column) -> void;
         auto add_where(db::BinaryExpression binaryExpression) -> void;
+        auto add_sorter(Sorter sorter) -> void;
         auto are_columns_blank() -> bool;
         auto are_wheres_blank() -> bool;
         auto update_value(const Value& value, const Row& row) -> Value;
