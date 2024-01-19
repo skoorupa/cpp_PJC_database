@@ -86,9 +86,9 @@ namespace db {
     }
 
     auto Row::operator+(const Row& other) -> Row {
-        // TODO: copy
+        auto copy = *this;
         for (const auto& [columnname, value] : other.getValuesMap())
-            add_value(columnname, value);
-        return *this;
+            copy.add_value(columnname, value);
+        return copy;
     }
 }
