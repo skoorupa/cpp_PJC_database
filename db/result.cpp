@@ -35,19 +35,19 @@ namespace db {
     const std::vector<Column> &Result::getColumns() const {return columns;}
     const std::vector<BinaryExpression> &Result::getWheres() const {return wheres;}
 
-    auto Result::add_table(Table table) -> void {
+    auto Result::add_table(const Table& table) -> void {
         tables.push_back(table);
     }
 
-    auto Result::add_column(Column column) -> void {
+    auto Result::add_column(const Column& column) -> void {
         columns.push_back(column);
     }
 
-    auto Result::add_where(db::BinaryExpression binaryExpression) -> void {
+    auto Result::add_where(const db::BinaryExpression& binaryExpression) -> void {
         wheres.push_back(binaryExpression);
     }
 
-    auto Result::add_sorter(Sorter sorter) -> void {
+    auto Result::add_sorter(const Sorter& sorter) -> void {
         sorters.push_back(sorter);
     }
 

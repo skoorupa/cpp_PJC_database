@@ -38,10 +38,10 @@ namespace db {
         const std::vector<Table> &getTables() const;
         const std::vector<Column> &getColumns() const;
         const std::vector<BinaryExpression> &getWheres() const;
-        auto add_table(Table table) -> void;
-        auto add_column(Column column) -> void;
-        auto add_where(db::BinaryExpression binaryExpression) -> void;
-        auto add_sorter(Sorter sorter) -> void;
+        auto add_table(const Table& table) -> void;
+        auto add_column(const Column& column) -> void;
+        auto add_where(const db::BinaryExpression& binaryExpression) -> void;
+        auto add_sorter(const Sorter& sorter) -> void;
         auto are_columns_blank() -> bool;
         auto are_wheres_blank() -> bool;
         auto update_value(const Value& value, const Row& row) -> Value;
