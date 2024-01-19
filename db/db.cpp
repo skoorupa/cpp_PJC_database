@@ -56,7 +56,7 @@ namespace db {
         fmt::println("file path: {}", filepath);
 
         auto table_names = std::vector<std::string>();
-        for (auto pair : tables)
+        for (const auto& pair : tables)
             table_names.push_back(pair.first);
         fmt::println("tables ({}): {}", tables.size(), table_names);
     }
@@ -73,13 +73,13 @@ namespace db {
 
     /////////////////////////////////////
     // DB HANDLING
-    auto create(std::string filepath) -> Database {
+    auto create(const std::string& filepath) -> Database {
         auto db_new = Database(filepath);
         db_new.create();
         return db_new;
     }
 
-    auto connect(std::string filepath) -> Database {
+    auto connect(const std::string& filepath) -> Database {
         auto db_new = Database(filepath);
         db_new.connect();
         return db_new;

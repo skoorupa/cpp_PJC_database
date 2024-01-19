@@ -53,11 +53,6 @@ namespace ast {
     public:
         Program();
 
-//        template<typename T>
-//        auto add_node(auto node) -> void {
-//            body.emplace_back(std::make_unique<T>(node));
-//        };
-
         std::vector<std::unique_ptr<Node>> &getBody();
     };
 

@@ -130,7 +130,7 @@ namespace db {
     }
 
     auto Result::test_row(const Row &row) -> bool {
-        for (BinaryExpression where : wheres) {
+        for (const BinaryExpression& where : wheres) {
             // parsing where
             auto updated_where = update_where(where, row);
             if (
@@ -173,15 +173,15 @@ namespace db {
 
     auto Result::remove_rows(db::Table* table) -> void {
         auto rows = getRows();
-        for (Row r : rows) {
+        for (const Row& r : rows) {
             auto id = r.getId();
             table->remove_row(id);
         }
     }
 
-    auto Result::update_rows(db::Table *table, std::string column_name, Value value) -> void {
+    auto Result::update_rows(db::Table *table, const std::string& column_name, Value value) -> void {
         auto rows = getRows();
-        for (Row r : rows) {
+        for (const Row& r : rows) {
             auto id = r.getId();
             table->update_row(id, column_name, value);
         }
@@ -230,7 +230,7 @@ namespace db {
         for (int i=sorters.size()-1;i>=0;i--) {
             auto sorter = sorters[i];
             auto proj = [sorter](const Row& r) {
-                auto column = sorter.getColumn();
+                const auto& column = sorter.getColumn();
                 if (r.get_value(column).getType()==ColumnType::Null)
                     return std::string();
                 return r.get_value_as_string(column);

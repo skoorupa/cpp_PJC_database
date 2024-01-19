@@ -49,13 +49,6 @@ namespace ast {
 
     //////// EXPRESSIONS
 
-    // BINARY EXPRESSION
-//    BinaryExpression::BinaryExpression()
-//            : Expression(NodeType::BinaryExpression), left(), right(), exp_operator("") {}
-//
-//    const std::unique_ptr<Expression> &BinaryExpression::getLeft() const {return left;}
-//    const std::unique_ptr<Expression> &BinaryExpression::getRight() const {return right;}
-//    const std::string &BinaryExpression::getExpOperator() const {return exp_operator;}
     // LOGICAL EXPRESSION
     LogicalChainExpression::LogicalChainExpression()
             : Expression(NodeType::LogicalChainExpression), tokens() {}

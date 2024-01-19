@@ -31,6 +31,6 @@ namespace db {
 
     /////////////////////////////////////
     // DB HANDLING
-    auto create(std::string filepath) -> Database;
-    auto connect(std::string filepath) -> Database;
+    auto create(const std::string& filepath) -> Database;
+    auto connect(const std::string& filepath) -> Database;
 }
