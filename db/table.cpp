@@ -50,7 +50,7 @@ namespace db {
 
     auto Table::get_column(std::string columnname) -> Column {
         if (!has_column(columnname))
-            throw fmt::format("< cannot find column {} in table {}", columnname, name);
+            throw fmt::format("<!!! cannot find column {} in table {}", columnname, name);
 
         return *get_column_iterator(columnname);
     }
@@ -67,7 +67,7 @@ namespace db {
     auto Table::remove_column(const std::string& columnname) -> void {
         auto col = get_column_iterator(columnname);
         if (col == columns.end())
-            throw fmt::format("< cannot find column {} in table {}",columnname,name);
+            throw fmt::format("<!!! cannot find column {} in table {}",columnname,name);
 
         columns.erase(col);
 
@@ -79,9 +79,9 @@ namespace db {
         auto col = get_column_iterator(old_name);
         auto oldcol = *col;
         if (col == columns.end())
-            throw fmt::format("< cannot find column {} in table {}",old_name,name);
+            throw fmt::format("<!!! cannot find column {} in table {}",old_name,name);
         if (has_column(new_name))
-            throw fmt::format("< column {} already exists in table {}",old_name,name);
+            throw fmt::format("<!!! column {} already exists in table {}",old_name,name);
 
         col->setName(new_name);
         for (Row& row : rows)
@@ -91,16 +91,16 @@ namespace db {
 
     auto Table::add_row(std::vector<Value> values) -> void {
         if (values.size() != columns.size())
-            throw fmt::format("< missing values to add new row: expected {} values, got {}", columns.size(), values.size());
+            throw fmt::format("<!!! missing values to add new row: expected {} values, got {}", columns.size(), values.size());
 
         auto column_values = std::unordered_map<Column, db::Value>();
         auto i = 0;
         for (const auto& column : columns) {
             if (values[i].getType() == ColumnType::Null && !column.isNullable())
-                throw fmt::format("< column {} is not nullable", column.getName());
+                throw fmt::format("<!!! column {} is not nullable", column.getName());
 
             if (values[i].getType() != column.getType() && values[i].getType() != ColumnType::Null)
-                throw fmt::format("< incorrect type provided for column {} - expected {}, got {}",
+                throw fmt::format("<!!! incorrect type provided for column {} - expected {}, got {}",
                                   column.getName(), column.getType(), values[i].getType());
 
             column_values.insert(std::pair<Column, db::Value>(column, values[i]));
@@ -116,7 +116,7 @@ namespace db {
         auto row_iterator = get_row_iterator(id);
 
         if (row_iterator == rows.end())
-            throw fmt::format("< cannot find this row in table {}", name);
+            throw fmt::format("<!!! cannot find this row in table {}", name);
 
         rows.erase(row_iterator);
         fmt::println("< removed row from table {}", name);
@@ -127,14 +127,14 @@ namespace db {
         auto column_iterator = get_column_iterator(columnname);
 
         if (row_iterator == rows.end())
-            throw fmt::format("< cannot find this row in table {}", name);
+            throw fmt::format("<!!! cannot find this row in table {}", name);
         if (column_iterator == columns.end())
-            throw fmt::format("< cannot find column {} in table {}",columnname,name);
+            throw fmt::format("<!!! cannot find column {} in table {}",columnname,name);
 
         if (value.getType() == ColumnType::Null && !column_iterator->isNullable())
-            throw fmt::format("< column {} is not nullable", columnname);
+            throw fmt::format("<!!! column {} is not nullable", columnname);
         if (column_iterator->getType() != value.getType() && value.getType() != ColumnType::Null)
-            throw fmt::format("< wrong provided for column {}: expected {}, got {}", columnname, column_iterator->getType(), value.getType());
+            throw fmt::format("<!!! wrong provided for column {}: expected {}, got {}", columnname, column_iterator->getType(), value.getType());
 
         row_iterator->update_value(*column_iterator, value);
         fmt::println("< updated value {} in row", columnname);

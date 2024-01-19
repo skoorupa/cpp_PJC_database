@@ -46,7 +46,7 @@ namespace db {
             if (column == track)
                 return column;
         }
-        throw fmt::format("< cannot get column {} in table {}",column_name, table_name);
+        throw fmt::format("<!!! cannot get column {} in table {}",column_name, table_name);
     }
 
     auto Row::rename_column(const Column& old_column, const Column& new_column) -> void {

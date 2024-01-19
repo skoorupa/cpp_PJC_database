@@ -22,7 +22,7 @@ namespace db {
         else if (methodname == "desc")
             return SortingMethod::Descending;
         else
-            throw fmt::format("< unknown sorting method: {}",methodname);
+            throw fmt::format("<!!! unknown sorting method: {}",methodname);
     }
 
     ////////////////////////////////////////
@@ -81,9 +81,9 @@ namespace db {
                         return table_need == t.getName();
                     });
             if (table == tables.end())
-                throw fmt::format("< result does not have table {}", table_need);
+                throw fmt::format("<!!! result does not have table {}", table_need);
             if (!table->has_column(column_need))
-                throw fmt::format("< table {} does not have column {}", table_need, column_need);
+                throw fmt::format("<!!! table {} does not have column {}", table_need, column_need);
 
             column = table->get_column(column_need);
         } else {
@@ -96,9 +96,9 @@ namespace db {
                     });
 
             if (occurences == 0)
-                throw fmt::format("< cannot find column {} in result", column_need);
+                throw fmt::format("<!!! cannot find column {} in result", column_need);
             else if (occurences > 1)
-                throw fmt::format("< there are many columns named {} in result, please use <table>.<column> syntax", column_need);
+                throw fmt::format("<!!! there are many columns named {} in result, please use <table>.<column> syntax", column_need);
 
             auto table = std::ranges::find_if(
                     tables,
@@ -138,7 +138,7 @@ namespace db {
                 updated_where.getLeft().getType() != ColumnType::Null &&
                 updated_where.getRight().getType() != ColumnType::Null
             )
-                throw fmt::format("< cannot compare {} with {}", where.getLeft(), where.getRight());
+                throw fmt::format("<!!! cannot compare {} with {}", where.getLeft(), where.getRight());
 
             // compare values here
             if (!updated_where.evaluate()) return false;

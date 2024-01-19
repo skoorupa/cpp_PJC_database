@@ -34,7 +34,7 @@ namespace db {
     auto pick_column_type(const lexer::Token& token) -> ColumnType {
         if (token_column_type.find(token.getType()) != token_column_type.end())
             return token_column_type.at(token.getType());
-        else throw fmt::format("< cannot find tokentype {}",token.getType());
+        else throw fmt::format("<!!! cannot find tokentype {}",token.getType());
     }
 
     // BINARYEXPRESSION

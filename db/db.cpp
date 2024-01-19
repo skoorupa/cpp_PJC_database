@@ -31,7 +31,7 @@ namespace db {
         if (pair != tables.end())
             return pair->second;
         else
-            throw fmt::format("< cannot find table {}",name);
+            throw fmt::format("<!!! cannot find table {}",name);
     }
 
     auto Database::rename_table(std::string old_name, std::string new_name) -> void {
@@ -46,7 +46,7 @@ namespace db {
     auto Database::remove_table(const std::string& name) -> void {
         auto table = tables.find(name);
         if (table == tables.end())
-            throw fmt::format("< cannot find table {}", name);
+            throw fmt::format("<!!! cannot find table {}", name);
         tables.erase(name);
         fmt::println("< removed table {}", name);
     }
