@@ -28,6 +28,7 @@ namespace lexer {
         Quit,
         DBConnect,
         DBCreate,
+        DBSave,
 
         KFCreateTable,
         KFGetTable,

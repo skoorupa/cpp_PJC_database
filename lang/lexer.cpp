@@ -29,9 +29,11 @@ namespace lexer {
             {lexer::TokenType::Null,              "lexer::Null"},
 
             {lexer::TokenType::Quit,              "lexer::Quit"},
-            {lexer::TokenType::DBConnect,         "lexer::DBConnect"},
 
+            {lexer::TokenType::DBConnect,         "lexer::DBConnect"},
             {lexer::TokenType::DBCreate,          "lexer::DBCreate"},
+            {lexer::TokenType::DBSave,          "lexer::DBSave"},
+
             {lexer::TokenType::KFGetTable,        "lexer::KFGetTable"},
             {lexer::TokenType::KFCreateTable,     "lexer::KFCreateTable"},
             {lexer::TokenType::KMAddColumn,       "lexer::KMAddColumn"},
@@ -63,6 +65,7 @@ namespace lexer {
                 {"exit", TokenType::Quit},
                 {"connect_db", TokenType::DBConnect},
                 {"create_db", TokenType::DBCreate},
+                {"save_db", TokenType::DBSave},
                 {"get_table", TokenType::KFGetTable},
                 {"from", TokenType::KFGetTable},
                 {"create_table", TokenType::KFCreateTable},

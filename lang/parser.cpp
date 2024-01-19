@@ -27,6 +27,16 @@ namespace parser {
                 return std::make_unique<ast::DBCreate>(((ast::StringLiteral*)arg.get())->getValue());
                 break;
             }
+            case lexer::TokenType::DBSave: {
+                parse_call_no_args();
+                return std::make_unique<ast::DBSave>();
+                break;
+            }
+            case lexer::TokenType::DBConnect: {
+                auto arg = parse_call_single_arg();
+                return std::make_unique<ast::DBConnect>(((ast::StringLiteral*)arg.get())->getValue());
+                break;
+            }
             case lexer::TokenType::KFCreateTable: {
                 auto arg = parse_call_single_arg();
                 return std::make_unique<ast::KFCreateTable>(((ast::Identifier*)arg.get())->getSymbol());

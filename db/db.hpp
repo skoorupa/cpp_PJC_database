@@ -16,6 +16,9 @@ namespace db {
         Database(const std::string &filepath);
         Database();
 
+        const std::string &getFilepath() const;
+        const std::map<std::string, Table> &getTables() const;
+
         auto create() -> bool;
         auto connect() -> bool;
         auto create_table(std::string name) -> Table&;
@@ -23,6 +26,7 @@ namespace db {
         auto rename_table(std::string old_name, std::string new_name) -> void;
         auto remove_table(const std::string& name) -> void;
         auto info() -> void;
+        auto saver() -> std::string;
     };
 
     /////////////////////////////////////

@@ -6,6 +6,9 @@ namespace db {
     Database::Database(const std::string &filepath) : filepath(filepath), tables(std::map<std::string, Table>()) {}
     Database::Database() : filepath(""), tables(std::map<std::string, Table>()) {}
 
+    const std::string &Database::getFilepath() const {return filepath;}
+    const std::map<std::string, Table> &Database::getTables() const {return tables;}
+
     auto Database::create() -> bool {
         fmt::println("< created new database: {}",filepath);
         return true;
@@ -56,7 +59,17 @@ namespace db {
         for (auto pair : tables)
             table_names.push_back(pair.first);
         fmt::println("tables ({}): {}", tables.size(), table_names);
-    };
+    }
+
+    auto Database::saver() -> std::string {
+        auto result = std::string();
+
+        for (auto& [tablename, table] : tables) {
+            result += table.saver()+"\n";
+        }
+
+        return result;
+    }
 
     /////////////////////////////////////
     // DB HANDLING

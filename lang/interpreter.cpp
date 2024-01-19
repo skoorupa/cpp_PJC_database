@@ -39,6 +39,17 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 connected_to_db = true;
                 break;
             }
+            case ast::NodeType::DBSave: {
+                if (!connected_to_db)
+                    throw fmt::format("< not connected to database in {}", node_kind);
+
+                auto filepath = curr_database.getFilepath();
+                auto dbstream = std::fstream(filepath, std::ios::out | std::ios::app);
+
+                dbstream << curr_database.saver();
+
+                break;
+            }
             case ast::NodeType::KFCreateTable: {
                 if (!connected_to_db)
                     throw fmt::format("< not connected to database in {}", node_kind);

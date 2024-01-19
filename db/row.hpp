@@ -25,6 +25,8 @@ namespace db {
         auto get_column(const std::string& column_name, const std::string& table_name) -> Column;
         auto rename_column(const Column& old_column, const Column& new_column) -> void;
 
+        auto saver(const std::vector<Column>&) -> std::string;
+
         auto operator+(const Row&) -> Row;
     };
 }

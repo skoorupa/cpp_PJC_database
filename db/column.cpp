@@ -41,6 +41,14 @@ namespace db {
         return name == other.name && type == other.type && table == other.table;
     }
 
+    auto Column::saver() -> std::string {
+        auto result = fmt::format("add_column({},{}",name,type);
+
+        if (nullable) result += ",nullable";
+
+        return result+")";
+    }
+
     /////////////////////////////////////
 
     auto toColumnType(const std::string& str) -> ColumnType {

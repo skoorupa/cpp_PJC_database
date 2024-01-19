@@ -18,6 +18,7 @@ namespace ast {
         Quit,
         DBConnect,
         DBCreate,
+        DBSave,
 
         KFCreateTable,
         KFGetTable,
@@ -125,11 +126,19 @@ namespace ast {
         const StringLiteral getDbName() const;
     };
 
+    class DBSave : public Node {
+
+    public:
+        DBSave();
+    };
+
     class DBConnect : public Node {
         StringLiteral db_name;
 
     public:
         DBConnect(const StringLiteral &dbName);
+
+        const StringLiteral &getDbName() const;
     };
 
     class KFGetTable : public Node {

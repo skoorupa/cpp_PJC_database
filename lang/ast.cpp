@@ -90,7 +90,10 @@ namespace ast {
     DBCreate::DBCreate(const StringLiteral& stringLiteral) : Node(NodeType::DBCreate), db_name(stringLiteral) {}
     const StringLiteral DBCreate::getDbName() const {return db_name;}
 
+    DBSave::DBSave() : Node(NodeType::DBSave) {}
+
     DBConnect::DBConnect(const StringLiteral &dbName) : Node(NodeType::DBConnect), db_name(dbName) {}
+    const StringLiteral &DBConnect::getDbName() const {return db_name;}
 
     KFCreateTable::KFCreateTable(const ast::StringLiteral &tableName) : Node(NodeType::KFCreateTable), table_name(tableName) {}
     const StringLiteral &KFCreateTable::getTableName() const {return table_name;}

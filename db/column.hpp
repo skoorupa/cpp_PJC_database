@@ -46,6 +46,7 @@ namespace db {
         void setType(ColumnType type);
         void setNullable(bool nullable);
         const std::string &getTable() const;
+        auto saver() -> std::string;
 
         bool operator==(const Column& other) const;
     };

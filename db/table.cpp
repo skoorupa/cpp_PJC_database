@@ -189,6 +189,18 @@ namespace db {
         fmt::println("row amount: {}", rows.size());
     }
 
+    auto Table::saver() -> std::string {
+        auto result = std::string("create_table("+name+") ");
+
+        for (auto& column : columns)
+            result += column.saver()+" ";
+
+        for (auto& row : rows)
+            result += row.saver(columns);
+
+        return result;
+    }
+
     auto format_as(const Table& table) -> std::string {
         return table.getName();
     }

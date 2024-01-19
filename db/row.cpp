@@ -1,3 +1,4 @@
+#include <vector>
 #include "row.hpp"
 
 namespace db {
@@ -52,6 +53,36 @@ namespace db {
         auto node = values.extract(old_column);
         node.key() = old_column;
         values.insert(std::pair<Column, Value>(new_column, node.mapped()));
+    }
+
+    auto Row::saver(const std::vector<Column>& columns) -> std::string {
+        auto result = fmt::format("add_row(");
+
+        for (int i = 0; i < columns.size(); ++i) {
+            auto& value = values.at(columns[i]);
+
+            switch (value.getType()) {
+                case ColumnType::Boolean:
+                case ColumnType::Integer: {
+                    result += value.getValue();
+                    break;
+                }
+                case ColumnType::String:{
+                    result += "\""+value.getValue()+"\"";
+                    break;
+                }
+                case ColumnType::Null:{
+                    result += "NULL";
+                    break;
+                }
+                default:
+                    throw "!!! Saver error: unexpected column type"+format_as(value.getType());
+            }
+
+            if (i != columns.size()-1) result+=",";
+        }
+
+        return result+") ";
     }
 
     auto Row::operator+(const Row& other) -> Row {
