@@ -18,7 +18,7 @@ namespace db {
 
         auto create() -> bool;
         auto connect() -> bool;
-        auto create_table(std::string name) -> Table;
+        auto create_table(std::string name) -> Table&;
         auto get_table(const std::string& name) -> Table&;
         auto rename_table(std::string old_name, std::string new_name) -> void;
         auto remove_table(const std::string& name) -> void;

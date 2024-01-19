@@ -31,8 +31,11 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 break;
             }
             case ast::NodeType::KFCreateTable: {
+                if (!connected_to_db)
+                    throw fmt::format("< not connected to database in {}", node_kind);
+
                 auto command = (ast::KFCreateTable *) node.get();
-                curr_database.create_table(command->getTableName().getValue());
+                curr_tables.push_back(&curr_database.create_table(command->getTableName().getValue()));
                 connected_to_db = true;
                 break;
             }
