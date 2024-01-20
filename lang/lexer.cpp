@@ -130,13 +130,9 @@ namespace lexer {
                     pop_front_str(input); // remove first "
 
                     while(!input.empty() && (*c!=string_char || backslash_flag)) {
-//                        fmt::println("{}",*c);
                         str += *c;
 
-                        if (*c == '\\' && !backslash_flag) // \" nie oznacza zamkniecia stringa
-                            backslash_flag = true;
-                        else
-                            backslash_flag = false;
+                        backslash_flag = *c == '\\' && !backslash_flag;
 
                         pop_front_str(input);
                     }
