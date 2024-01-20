@@ -89,7 +89,7 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                     dbstream = std::fstream(filepath, std::ios::out | std::ios::trunc);
 
                 dbstream << curr_database.saver();
-                fmt::println("< database saved in to {}", fs::absolute(filepath).string());
+                fmt::println("< database saved to {}", fs::absolute(filepath).string());
                 break;
             }
             case ast::NodeType::DBExport: {
