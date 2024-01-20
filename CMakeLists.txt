@@ -37,28 +37,4 @@ add_executable(cpp_based main.cpp
 )
 target_link_libraries(cpp_based fmt)
 
-add_executable(cpp_based_db_test db_test.cpp
-        lang/lexer.cpp
-        lang/lexer.hpp
-        db/db.cpp
-        db/db.hpp
-        db/table.cpp
-        db/table.hpp
-        db/column.cpp
-        db/column.hpp
-        db/row.cpp
-        db/row.hpp
-        lang/ast.cpp
-        lang/ast.hpp
-        lang/parser.cpp
-        lang/parser.hpp
-        lang/interpreter.cpp
-        lang/interpreter.hpp
-        db/result.hpp
-        db/result.cpp
-        db/logic.cpp
-        db/logic.hpp
-)
-target_link_libraries(cpp_based_db_test fmt)
-
 
