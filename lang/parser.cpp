@@ -51,8 +51,10 @@ namespace parser {
             }
             case lexer::TokenType::KFGetTable: {
                 auto args = parse_call_multiple_args();
+                if (args.size() == 0)
+                    throw std::string("!!! Parser error: need arguments for get_table");
+
                 auto tables = std::set<ast::Identifier>();
-                auto result = std::make_unique<ast::KFGetTable>(tables);
 
                 for (auto& arg : args)
                     tables.insert(
@@ -69,6 +71,9 @@ namespace parser {
             }
             case lexer::TokenType::KMAddColumn: {
                 auto args = parse_call_multiple_args();
+                if (args.size() == 0)
+                    throw std::string("!!! Parser error: need arguments for add_column");
+
                 auto identifiers = std::vector<ast::Identifier*>();
 
                 for (auto& arg : args) {
@@ -107,6 +112,9 @@ namespace parser {
             }
             case lexer::TokenType::KMAddRow: {
                 auto args = parse_call_multiple_args();
+                if (args.size() == 0)
+                    throw std::string("!!! Parser error: need arguments for add_row");
+
                 auto values = std::vector<db::Value>();
                 for (const auto& arg : args) {
                     if (arg->getKind() == ast::NodeType::StringLiteral) {
@@ -133,6 +141,8 @@ namespace parser {
             }
             case lexer::TokenType::KMUpdate: {
                 auto args = parse_call_multiple_args();
+                if (args.size() != 2)
+                    throw std::string("!!! Parser error: need 2 arguments for update");
 
                 auto value = db::Value("null", db::ColumnType::Null);
                 if (args[1]->getKind() == ast::NodeType::StringLiteral) {
@@ -256,6 +266,9 @@ namespace parser {
         if (shift_token().getType() != lexer::TokenType::BracketRoundEnd)
             throw fmt::format("!!! Parser error: Expected one argument for {}", get_prev_token());
 
+        if (expression == nullptr)
+            throw fmt::format("!!! Parser error: Exprected one argument, got none");
+
         return expression;
     }
 
@@ -275,9 +288,9 @@ namespace parser {
     auto Parser::parse_call_token_chain() -> std::vector<lexer::Token> {
         shift_token();
         auto token_type = get_token().getType();
-        std::vector<lexer::Token> chain = std::vector<lexer::Token>();
+        auto chain = std::vector<lexer::Token>();
 
-        while (token_type != lexer::TokenType::BracketRoundEnd) {
+        while (token_type != lexer::TokenType::BracketRoundEnd && token_type != lexer::TokenType::EndOfFile) {
             chain.push_back(shift_token());
             token_type = get_token().getType();
         }
