@@ -26,6 +26,10 @@ namespace db {
 
     auto Table::add_column(std::string columnname, ColumnType type, bool nullable) -> void {
         auto column = Column(name, columnname, type, nullable);
+
+        if (has_column(columnname))
+            throw fmt::format("<!!! table {} already has column {}",name,columnname);
+
         columns.push_back(column);
         fmt::println("< added new column to {} - {}",name,columnname);
         for (Row& row : rows)
@@ -78,10 +82,10 @@ namespace db {
     auto Table::rename_column(const std::string& old_name, const std::string& new_name) -> void {
         auto col = get_column_iterator(old_name);
         auto oldcol = *col;
-        if (col == columns.end())
-            throw fmt::format("<!!! cannot find column {} in table {}",old_name,name);
         if (has_column(new_name))
             throw fmt::format("<!!! column {} already exists in table {}",old_name,name);
+        if (col == columns.end())
+            throw fmt::format("<!!! cannot find column {} in table {}",old_name,name);
 
         col->setName(new_name);
         for (Row& row : rows)

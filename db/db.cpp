@@ -20,6 +20,9 @@ namespace db {
     }
 
     auto Database::create_table(std::string name) -> Table& {
+        if (tables.contains(name))
+            throw fmt::format("<!!! database already has table named {}",name);
+
         tables.insert(std::pair<std::string, Table>(name, Table(name)));
         fmt::println("< created new table: {}", name);
         return get_table(name);
@@ -35,6 +38,9 @@ namespace db {
     }
 
     auto Database::rename_table(std::string old_name, std::string new_name) -> void {
+        if (tables.contains(new_name))
+            throw fmt::format("<!!! database already has table named {}",new_name);
+
         get_table(old_name).rename(new_name);
 //      src:  https://stackoverflow.com/questions/5743545/what-is-the-fastest-way-to-change-a-key-of-an-element-inside-stdmap
         auto table = tables.extract(old_name);
