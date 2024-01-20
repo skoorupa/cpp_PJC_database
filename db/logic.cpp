@@ -108,8 +108,12 @@ namespace db {
     }
 
     auto LogicParser::produce_logic_AST() -> BinaryExpression {
-        if (tokens.size() != 3)
-            throw std::string("<!!! where condition needs to be binary expression");
+        if (tokens.size() == 0)
+            return {Value("1", ColumnType::Integer), Operator::Equal, Value("1", ColumnType::Integer)};
+
+        if (tokens.size() != 3 && tokens.size() != 0)
+            throw std::string("<!!! where condition needs to be binary expression (or empty for true condition)");
+
         auto left_token = consume_token();
         auto left = Value(left_token.getValue(), pick_column_type(left_token));
         auto exp_operator = toOperator(consume_token().getValue());
