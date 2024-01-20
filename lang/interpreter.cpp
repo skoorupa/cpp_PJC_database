@@ -323,6 +323,8 @@ auto Interpreter::runAST(ast::Program& program) -> void {
                 if (curr_tables.empty())
                     throw fmt::format("<!!! select used without chosen table");
 
+                curr_result.clear_columns();
+
                 auto command = (ast::KMSelect*)node.get();
 
                 for (auto& expression : command->getExpressions()) {
