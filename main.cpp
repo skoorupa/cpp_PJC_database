@@ -25,14 +25,14 @@
  *  - connect_db(plik) - wczytuje baze/polecenia z podanego pliku
  *  - save_db() - zapisuje bazę danych
  *  - export_db(plik) - eksportuje bazę danych do podanej ścieżki
- *  - get_table(tablica1, tablica2, ...) - pobiera podane tablice w argumentach (alias: from(...))
+ *  - get_table(tablica1, tablica2, ...) - pobiera podane tablice w argumentach (alias: from)
  *  - create_table(nazwa) - tworzy nową tablice w bazie z podaną nazwą
  *
  *  Poniższe polecenia wymagają przed nimi polecenia get_table albo create_table
  *  - add_column(nazwa, typ, nullable) - dodaje kolumnę
- *    nazwa - string
- *    typ - int/string/null
- *    nullable - jeśli kolumna może mieć nulle, należy wpisać nullable, w przeciwnym wypadku pominąć
+ *      nazwa - string
+ *      typ - int/string/null
+ *      nullable - jeśli kolumna może mieć nulle, należy wpisać nullable, w przeciwnym wypadku pominąć
  *  - get_column(nazwa) - pobiera kolumnę
  *  - add_row(...) - dodaje wiersze do tabeli - należy podać wartości w argumencie w kolejności takiej,
  *      w jakiej zostały utworzone kolumny (alias: insert(...))
