@@ -81,6 +81,8 @@ namespace db {
 
         for (Row& row : rows)
             row.remove_value(*col);
+
+        fmt::println("< removed column {} from table {}",columnname,name);
     }
 
     auto Table::rename_column(const std::string& old_name, const std::string& new_name) -> void {
