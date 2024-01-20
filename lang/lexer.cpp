@@ -32,7 +32,7 @@ namespace lexer {
 
             {lexer::TokenType::DBConnect,         "lexer::DBConnect"},
             {lexer::TokenType::DBCreate,          "lexer::DBCreate"},
-            {lexer::TokenType::DBSave,          "lexer::DBSave"},
+            {lexer::TokenType::DBSave,            "lexer::DBSave"},
 
             {lexer::TokenType::KFGetTable,        "lexer::KFGetTable"},
             {lexer::TokenType::KFCreateTable,     "lexer::KFCreateTable"},
