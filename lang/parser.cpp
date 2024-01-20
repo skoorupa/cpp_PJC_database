@@ -71,8 +71,8 @@ namespace parser {
             }
             case lexer::TokenType::KMAddColumn: {
                 auto args = parse_call_multiple_args();
-                if (args.size() != 2)
-                    throw std::string("!!! Parser error: need 2 arguments for add_column");
+                if (args.size() < 2)
+                    throw std::string("!!! Parser error: need at least 2 arguments for add_column");
 
                 auto identifiers = std::vector<ast::Identifier*>();
 
