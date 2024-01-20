@@ -1,13 +1,9 @@
 #include <fmt/core.h>
-#include <fmt/ranges.h>
-#include <fmt/format.h>
 #include <string>
 #include <iostream>
 
-#include "lang/lexer.hpp"
 #include "lang/parser.hpp"
 #include "lang/interpreter.hpp"
-#include "db/db.hpp"
 
 /*
  * Baza danych
@@ -43,7 +39,7 @@
  *  - select(kolumna1, kolumna2, ...) - filtruje kolumny
  *  - where(...) - dodaje warunek do operacji, który muszą spełnić wiersze, by były zawarte w rezultacie
  *     - język obsługuje jedynie proste porównania binarne i operatory: > >= == <= < !=
- *     - where() równoważy where(1==1) - tym sposobem można kasować wszystkie wiersze w rezultacie
+ *     - where() równoważy where(1==1) - tym sposobem można np. kasować wszystkie wiersze w rezultacie
  *  - sort_by(kolumna, asc/desc) - sortuje wiersze po wartości z kolumny (alias: order_by)
  *     - można pominąć drugi argument asc/desc - wtedy będzie sortować rosnąco
  *     - asc - rosnąco, desc - malejąco
@@ -68,53 +64,9 @@
  * */
 
 auto main() -> int {
-    fmt::println("Welcome to database project in C++");
+    fmt::println("Welcome to my database project in C++");
     fmt::println("Author: Adam Skorupski s29441");
     auto interpreter = Interpreter();
-
-    // DEV
-
-    for (const std::string& devcmd : {
-        "create_db('baza.txt')",
-        "create_table(tablica)",
-        "get_table(tablica) add_column(id,int)",
-        "get_table(tablica) add_column(nazwisko,string,nullable)",
-        "get_table(tablica) add_row(1,'skorupski')",
-        "get_table(tablica) add_row(2,\"kacpe\\'rowski\")",
-        "get_table(tablica) print()",
-        "get_table(tablica) add_column(test,string)",
-        "get_table(tablica) print()",
-        "get_table(tablica) get_column(id) rename(identyfikator) print()",
-        "get_table(tablica) where(identyfikator==2) update(identyfikator, -1)",
-        "get_table(tablica) select(tablica.nazwisko, identyfikator) print()",
-        "info()",
-        "create_table(tablica2)",
-        "get_table(tablica2) add_column(id,int)",
-        "get_table(tablica2) add_column(aaaaa,int)",
-        "get_table(tablica2) add_row(1,10)",
-        "get_table(tablica2) add_row(2,20)",
-        "get_table(tablica,tablica2) print()",
-        "create_table(tablica3)",
-        "get_table(tablica3) add_column(id,int)",
-        "get_table(tablica3) add_column(bbbbb,string)",
-        "get_table(tablica3) add_row(111,'10')",
-        "get_table(tablica3) add_row(222,'20')",
-        "get_table(tablica,tablica2,tablica3) print()",
-        "get_table(tablica) sort_by(nazwisko,desc) print()",
-        "get_table(tablica) add_row(3,NULL,\"\")",
-        "get_table(tablica) where(nazwisko==NULL) print()",
-    }) {
-        try {
-            auto parser = parser::Parser(devcmd);
-            auto result = parser.produceAST();
-
-            interpreter.runAST(result);
-        } catch (std::string& message) {
-            fmt::println("{}", message);
-        }
-    }
-
-    // ENDDEV
 
     while (interpreter.isRunning()) {
         auto prompt = std::string();
