@@ -45,6 +45,7 @@ namespace db {
         void setName(const std::string &name);
         void setType(ColumnType type);
         void setNullable(bool nullable);
+        void setTable(const std::string &table);
         const std::string &getTable() const;
         auto saver() -> std::string;
 

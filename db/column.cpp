@@ -35,6 +35,7 @@ namespace db {
     void Column::setType(ColumnType type) {Column::type = type;}
     bool Column::isNullable() const {return nullable;}
     void Column::setNullable(bool nullable) {Column::nullable = nullable;}
+    void Column::setTable(const std::string &table) {Column::table = table;}
     const std::string &Column::getTable() const {return table;}
 
     bool Column::operator==(const Column &other) const {

@@ -22,6 +22,8 @@ namespace db {
 
     auto Table::rename(const std::string& new_name) -> void {
         name = new_name;
+        for (auto& column : columns)
+            column.setTable(new_name);
     }
 
     auto Table::add_column(std::string columnname, ColumnType type, bool nullable) -> void {
